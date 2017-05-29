@@ -170,6 +170,41 @@ void fillHistograms(string prefix)
   HistUtil::fillLepAbsIso03EA(prefix, ana_data);
 }
 
+//______________________________________________________________________________________
+void fillHistogramsTruthMatchingLeptons(string prefix)
+{
+  /// Lepton truth matching category information
+  /// Using isFromX fill the category
+
+  // If we don't have two leptons exit
+  if (ana_data.lepcol["goodSSlep"].size() != 2) return;
+
+  ObjUtil::Lepton lep0 = ana_data.lepcol["goodSSlep"][0];
+  ObjUtil::Lepton lep1 = ana_data.lepcol["goodSSlep"][1];
+
+  // Leading lepton
+  /* 1 : isFromW */        if (lep0.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 2 : isFromZ */        if (lep0.isFromX == 2                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 3 : isFromW/Z */      if (lep0.isFromX == 1 || lep0.isFromX == 2) PlotUtil::plot1D("leptruthcategorySS_lep0", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 4 : isFromB/C/L/LF */ if (lep0.isFromX >= 4                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 5 : isFromB/C */      if (lep0.isFromX == 4 || lep0.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_lep0", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 0 : not matched */    if (lep0.isFromX == 0                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 0, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+
+  // Sub-leading lepton
+  /* 1 : isFromW */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 2 : isFromZ */        if (lep1.isFromX == 2                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 3 : isFromW/Z */      if (lep1.isFromX == 1 || lep0.isFromX == 2) PlotUtil::plot1D("leptruthcategorySS_lep0", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 4 : isFromB/C/L/LF */ if (lep1.isFromX >= 4                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 5 : isFromB/C */      if (lep1.isFromX == 4 || lep0.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_lep0", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 0 : not matched */    if (lep1.isFromX == 0                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 0, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+
+//	  // event category
+//	  /* no fake     */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+//	  /* one fake    */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+//	  /* two fakes   */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+
+}
+
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
@@ -189,6 +224,8 @@ void doSMWWWSSmmAnalysis()
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
@@ -207,6 +244,8 @@ void doSMWWWSSeeAnalysis()
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
   fillHistograms(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSee");
@@ -223,6 +262,8 @@ void doSMWWWSSemAnalysis()
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
   fillHistograms(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSem");
