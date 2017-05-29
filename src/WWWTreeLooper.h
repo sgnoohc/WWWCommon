@@ -38,6 +38,7 @@ void processWWWTreeEvent();
 void getObjects();
 
 void fillHistograms(string prefix);
+void fillHistogramsTruthMatchingLeptons(string prefix);
 
 //-------------------------------------------------------------
 
