@@ -202,7 +202,7 @@ void doSMWWWSSeeAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 121, counter)                                )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) > 100.
                                                               || VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) <  80.)) return;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                                                            )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                                                            )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
@@ -218,7 +218,7 @@ void doSMWWWSSemAnalysis()
   /// Cutflow
   int counter = 0;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                             )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                             )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
@@ -384,6 +384,7 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
 {
   if (!( abs(lepton.pdgId) == 11      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.tightcharge == 2      )) return false;
@@ -395,6 +396,7 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
 {
   if (!( abs(lepton.pdgId) == 13      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
@@ -411,6 +413,7 @@ bool isGood3LElectron(ObjUtil::Lepton& lepton)
 {
   if (!( abs(lepton.pdgId) == 11      )) return false;
   if (!( lepton.p4.Pt() > 20.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
@@ -421,6 +424,7 @@ bool isGood3LMuon(ObjUtil::Lepton& lepton)
 {
   if (!( abs(lepton.pdgId) == 13      )) return false;
   if (!( lepton.p4.Pt() > 20.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
