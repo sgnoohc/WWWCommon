@@ -193,9 +193,9 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   // Sub-leading lepton
   /* 1 : isFromW */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
   /* 2 : isFromZ */        if (lep1.isFromX == 2                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
-  /* 3 : isFromW/Z */      if (lep1.isFromX == 1 || lep0.isFromX == 2) PlotUtil::plot1D("leptruthcategorySS_lep1", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 3 : isFromW/Z */      if (lep1.isFromX == 1 || lep1.isFromX == 2) PlotUtil::plot1D("leptruthcategorySS_lep1", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
   /* 4 : isFromB/C/L/LF */ if (lep1.isFromX >= 4                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
-  /* 5 : isFromB/C */      if (lep1.isFromX == 4 || lep0.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_lep1", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 5 : isFromB/C */      if (lep1.isFromX == 4 || lep1.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_lep1", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
   /* 0 : not matched */    if (lep1.isFromX == 0                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 0, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 
   // event category
