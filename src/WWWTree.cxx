@@ -273,6 +273,22 @@ void WWWTree::Init(TTree *tree) {
   if (nlep_branch) nlep_branch->SetAddress(&nlep_);
   nveto_leptons_branch = tree->GetBranch("nveto_leptons");
   if (nveto_leptons_branch) nveto_leptons_branch->SetAddress(&nveto_leptons_);
+  nVetoEl_relIso03EAless01_branch = tree->GetBranch("nVetoEl_relIso03EAless01");
+  if (nVetoEl_relIso03EAless01_branch) nVetoEl_relIso03EAless01_branch->SetAddress(&nVetoEl_relIso03EAless01_);
+  nVetoEl_relIso03EAless02_branch = tree->GetBranch("nVetoEl_relIso03EAless02");
+  if (nVetoEl_relIso03EAless02_branch) nVetoEl_relIso03EAless02_branch->SetAddress(&nVetoEl_relIso03EAless02_);
+  nVetoEl_relIso03EAless03_branch = tree->GetBranch("nVetoEl_relIso03EAless03");
+  if (nVetoEl_relIso03EAless03_branch) nVetoEl_relIso03EAless03_branch->SetAddress(&nVetoEl_relIso03EAless03_);
+  nVetoEl_relIso03EAless04_branch = tree->GetBranch("nVetoEl_relIso03EAless04");
+  if (nVetoEl_relIso03EAless04_branch) nVetoEl_relIso03EAless04_branch->SetAddress(&nVetoEl_relIso03EAless04_);
+  nVetoMu_relIso03EAless01_branch = tree->GetBranch("nVetoMu_relIso03EAless01");
+  if (nVetoMu_relIso03EAless01_branch) nVetoMu_relIso03EAless01_branch->SetAddress(&nVetoMu_relIso03EAless01_);
+  nVetoMu_relIso03EAless02_branch = tree->GetBranch("nVetoMu_relIso03EAless02");
+  if (nVetoMu_relIso03EAless02_branch) nVetoMu_relIso03EAless02_branch->SetAddress(&nVetoMu_relIso03EAless02_);
+  nVetoMu_relIso03EAless03_branch = tree->GetBranch("nVetoMu_relIso03EAless03");
+  if (nVetoMu_relIso03EAless03_branch) nVetoMu_relIso03EAless03_branch->SetAddress(&nVetoMu_relIso03EAless03_);
+  nVetoMu_relIso03EAless04_branch = tree->GetBranch("nVetoMu_relIso03EAless04");
+  if (nVetoMu_relIso03EAless04_branch) nVetoMu_relIso03EAless04_branch->SetAddress(&nVetoMu_relIso03EAless04_);
   lep_pt_branch = tree->GetBranch("lep_pt");
   if (lep_pt_branch) lep_pt_branch->SetAddress(&lep_pt_);
   lep_eta_branch = tree->GetBranch("lep_eta");
@@ -287,6 +303,16 @@ void WWWTree::Init(TTree *tree) {
   if (lep_3ch_agree_branch) lep_3ch_agree_branch->SetAddress(&lep_3ch_agree_);
   lep_isFromW_branch = tree->GetBranch("lep_isFromW");
   if (lep_isFromW_branch) lep_isFromW_branch->SetAddress(&lep_isFromW_);
+  lep_isFromZ_branch = tree->GetBranch("lep_isFromZ");
+  if (lep_isFromZ_branch) lep_isFromZ_branch->SetAddress(&lep_isFromZ_);
+  lep_isFromB_branch = tree->GetBranch("lep_isFromB");
+  if (lep_isFromB_branch) lep_isFromB_branch->SetAddress(&lep_isFromB_);
+  lep_isFromC_branch = tree->GetBranch("lep_isFromC");
+  if (lep_isFromC_branch) lep_isFromC_branch->SetAddress(&lep_isFromC_);
+  lep_isFromL_branch = tree->GetBranch("lep_isFromL");
+  if (lep_isFromL_branch) lep_isFromL_branch->SetAddress(&lep_isFromL_);
+  lep_isFromLF_branch = tree->GetBranch("lep_isFromLF");
+  if (lep_isFromLF_branch) lep_isFromLF_branch->SetAddress(&lep_isFromLF_);
   lep_ptRatio_branch = tree->GetBranch("lep_ptRatio");
   if (lep_ptRatio_branch) lep_ptRatio_branch->SetAddress(&lep_ptRatio_);
   lep_ptRel_branch = tree->GetBranch("lep_ptRel");
@@ -888,6 +914,14 @@ void WWWTree::GetEntry(unsigned int idx) {
   elveto_isLoaded = false;
   nlep_isLoaded = false;
   nveto_leptons_isLoaded = false;
+  nVetoEl_relIso03EAless01_isLoaded = false;
+  nVetoEl_relIso03EAless02_isLoaded = false;
+  nVetoEl_relIso03EAless03_isLoaded = false;
+  nVetoEl_relIso03EAless04_isLoaded = false;
+  nVetoMu_relIso03EAless01_isLoaded = false;
+  nVetoMu_relIso03EAless02_isLoaded = false;
+  nVetoMu_relIso03EAless03_isLoaded = false;
+  nVetoMu_relIso03EAless04_isLoaded = false;
   lep_p4_isLoaded = false;
   lep_pt_isLoaded = false;
   lep_eta_isLoaded = false;
@@ -896,6 +930,11 @@ void WWWTree::GetEntry(unsigned int idx) {
   lep_charge_isLoaded = false;
   lep_3ch_agree_isLoaded = false;
   lep_isFromW_isLoaded = false;
+  lep_isFromZ_isLoaded = false;
+  lep_isFromB_isLoaded = false;
+  lep_isFromC_isLoaded = false;
+  lep_isFromL_isLoaded = false;
+  lep_isFromLF_isLoaded = false;
   lep_ptRatio_isLoaded = false;
   lep_ptRel_isLoaded = false;
   lep_relIso03_isLoaded = false;
@@ -1270,6 +1309,14 @@ void WWWTree::LoadAllBranches() {
   if (elveto_branch != 0) elveto();
   if (nlep_branch != 0) nlep();
   if (nveto_leptons_branch != 0) nveto_leptons();
+  if (nVetoEl_relIso03EAless01_branch != 0) nVetoEl_relIso03EAless01();
+  if (nVetoEl_relIso03EAless02_branch != 0) nVetoEl_relIso03EAless02();
+  if (nVetoEl_relIso03EAless03_branch != 0) nVetoEl_relIso03EAless03();
+  if (nVetoEl_relIso03EAless04_branch != 0) nVetoEl_relIso03EAless04();
+  if (nVetoMu_relIso03EAless01_branch != 0) nVetoMu_relIso03EAless01();
+  if (nVetoMu_relIso03EAless02_branch != 0) nVetoMu_relIso03EAless02();
+  if (nVetoMu_relIso03EAless03_branch != 0) nVetoMu_relIso03EAless03();
+  if (nVetoMu_relIso03EAless04_branch != 0) nVetoMu_relIso03EAless04();
   if (lep_p4_branch != 0) lep_p4();
   if (lep_pt_branch != 0) lep_pt();
   if (lep_eta_branch != 0) lep_eta();
@@ -1278,6 +1325,11 @@ void WWWTree::LoadAllBranches() {
   if (lep_charge_branch != 0) lep_charge();
   if (lep_3ch_agree_branch != 0) lep_3ch_agree();
   if (lep_isFromW_branch != 0) lep_isFromW();
+  if (lep_isFromZ_branch != 0) lep_isFromZ();
+  if (lep_isFromB_branch != 0) lep_isFromB();
+  if (lep_isFromC_branch != 0) lep_isFromC();
+  if (lep_isFromL_branch != 0) lep_isFromL();
+  if (lep_isFromLF_branch != 0) lep_isFromLF();
   if (lep_ptRatio_branch != 0) lep_ptRatio();
   if (lep_ptRel_branch != 0) lep_ptRel();
   if (lep_relIso03_branch != 0) lep_relIso03();
@@ -3090,6 +3142,110 @@ const int &WWWTree::nveto_leptons() {
   return nveto_leptons_;
 }
 
+const int &WWWTree::nVetoEl_relIso03EAless01() {
+  if (not nVetoEl_relIso03EAless01_isLoaded) {
+    if (nVetoEl_relIso03EAless01_branch != 0) {
+      nVetoEl_relIso03EAless01_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoEl_relIso03EAless01_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoEl_relIso03EAless01_isLoaded = true;
+  }
+  return nVetoEl_relIso03EAless01_;
+}
+
+const int &WWWTree::nVetoEl_relIso03EAless02() {
+  if (not nVetoEl_relIso03EAless02_isLoaded) {
+    if (nVetoEl_relIso03EAless02_branch != 0) {
+      nVetoEl_relIso03EAless02_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoEl_relIso03EAless02_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoEl_relIso03EAless02_isLoaded = true;
+  }
+  return nVetoEl_relIso03EAless02_;
+}
+
+const int &WWWTree::nVetoEl_relIso03EAless03() {
+  if (not nVetoEl_relIso03EAless03_isLoaded) {
+    if (nVetoEl_relIso03EAless03_branch != 0) {
+      nVetoEl_relIso03EAless03_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoEl_relIso03EAless03_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoEl_relIso03EAless03_isLoaded = true;
+  }
+  return nVetoEl_relIso03EAless03_;
+}
+
+const int &WWWTree::nVetoEl_relIso03EAless04() {
+  if (not nVetoEl_relIso03EAless04_isLoaded) {
+    if (nVetoEl_relIso03EAless04_branch != 0) {
+      nVetoEl_relIso03EAless04_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoEl_relIso03EAless04_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoEl_relIso03EAless04_isLoaded = true;
+  }
+  return nVetoEl_relIso03EAless04_;
+}
+
+const int &WWWTree::nVetoMu_relIso03EAless01() {
+  if (not nVetoMu_relIso03EAless01_isLoaded) {
+    if (nVetoMu_relIso03EAless01_branch != 0) {
+      nVetoMu_relIso03EAless01_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoMu_relIso03EAless01_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoMu_relIso03EAless01_isLoaded = true;
+  }
+  return nVetoMu_relIso03EAless01_;
+}
+
+const int &WWWTree::nVetoMu_relIso03EAless02() {
+  if (not nVetoMu_relIso03EAless02_isLoaded) {
+    if (nVetoMu_relIso03EAless02_branch != 0) {
+      nVetoMu_relIso03EAless02_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoMu_relIso03EAless02_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoMu_relIso03EAless02_isLoaded = true;
+  }
+  return nVetoMu_relIso03EAless02_;
+}
+
+const int &WWWTree::nVetoMu_relIso03EAless03() {
+  if (not nVetoMu_relIso03EAless03_isLoaded) {
+    if (nVetoMu_relIso03EAless03_branch != 0) {
+      nVetoMu_relIso03EAless03_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoMu_relIso03EAless03_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoMu_relIso03EAless03_isLoaded = true;
+  }
+  return nVetoMu_relIso03EAless03_;
+}
+
+const int &WWWTree::nVetoMu_relIso03EAless04() {
+  if (not nVetoMu_relIso03EAless04_isLoaded) {
+    if (nVetoMu_relIso03EAless04_branch != 0) {
+      nVetoMu_relIso03EAless04_branch->GetEntry(index);
+    } else {
+      printf("branch nVetoMu_relIso03EAless04_branch does not exist!\n");
+      exit(1);
+    }
+    nVetoMu_relIso03EAless04_isLoaded = true;
+  }
+  return nVetoMu_relIso03EAless04_;
+}
+
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &WWWTree::lep_p4() {
   if (not lep_p4_isLoaded) {
     if (lep_p4_branch != 0) {
@@ -3192,6 +3348,71 @@ const vector<int> &WWWTree::lep_isFromW() {
     lep_isFromW_isLoaded = true;
   }
   return *lep_isFromW_;
+}
+
+const vector<int> &WWWTree::lep_isFromZ() {
+  if (not lep_isFromZ_isLoaded) {
+    if (lep_isFromZ_branch != 0) {
+      lep_isFromZ_branch->GetEntry(index);
+    } else {
+      printf("branch lep_isFromZ_branch does not exist!\n");
+      exit(1);
+    }
+    lep_isFromZ_isLoaded = true;
+  }
+  return *lep_isFromZ_;
+}
+
+const vector<int> &WWWTree::lep_isFromB() {
+  if (not lep_isFromB_isLoaded) {
+    if (lep_isFromB_branch != 0) {
+      lep_isFromB_branch->GetEntry(index);
+    } else {
+      printf("branch lep_isFromB_branch does not exist!\n");
+      exit(1);
+    }
+    lep_isFromB_isLoaded = true;
+  }
+  return *lep_isFromB_;
+}
+
+const vector<int> &WWWTree::lep_isFromC() {
+  if (not lep_isFromC_isLoaded) {
+    if (lep_isFromC_branch != 0) {
+      lep_isFromC_branch->GetEntry(index);
+    } else {
+      printf("branch lep_isFromC_branch does not exist!\n");
+      exit(1);
+    }
+    lep_isFromC_isLoaded = true;
+  }
+  return *lep_isFromC_;
+}
+
+const vector<int> &WWWTree::lep_isFromL() {
+  if (not lep_isFromL_isLoaded) {
+    if (lep_isFromL_branch != 0) {
+      lep_isFromL_branch->GetEntry(index);
+    } else {
+      printf("branch lep_isFromL_branch does not exist!\n");
+      exit(1);
+    }
+    lep_isFromL_isLoaded = true;
+  }
+  return *lep_isFromL_;
+}
+
+const vector<int> &WWWTree::lep_isFromLF() {
+  if (not lep_isFromLF_isLoaded) {
+    if (lep_isFromLF_branch != 0) {
+      lep_isFromLF_branch->GetEntry(index);
+    } else {
+      printf("branch lep_isFromLF_branch does not exist!\n");
+      exit(1);
+    }
+    lep_isFromLF_isLoaded = true;
+  }
+  return *lep_isFromLF_;
 }
 
 const vector<double> &WWWTree::lep_ptRatio() {
@@ -6587,6 +6808,14 @@ const float &matched_emf() { return mytree.matched_emf(); }
 const bool &elveto() { return mytree.elveto(); }
 const int &nlep() { return mytree.nlep(); }
 const int &nveto_leptons() { return mytree.nveto_leptons(); }
+const int &nVetoEl_relIso03EAless01() { return mytree.nVetoEl_relIso03EAless01(); }
+const int &nVetoEl_relIso03EAless02() { return mytree.nVetoEl_relIso03EAless02(); }
+const int &nVetoEl_relIso03EAless03() { return mytree.nVetoEl_relIso03EAless03(); }
+const int &nVetoEl_relIso03EAless04() { return mytree.nVetoEl_relIso03EAless04(); }
+const int &nVetoMu_relIso03EAless01() { return mytree.nVetoMu_relIso03EAless01(); }
+const int &nVetoMu_relIso03EAless02() { return mytree.nVetoMu_relIso03EAless02(); }
+const int &nVetoMu_relIso03EAless03() { return mytree.nVetoMu_relIso03EAless03(); }
+const int &nVetoMu_relIso03EAless04() { return mytree.nVetoMu_relIso03EAless04(); }
 const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &lep_p4() { return mytree.lep_p4(); }
 const vector<float> &lep_pt() { return mytree.lep_pt(); }
 const vector<float> &lep_eta() { return mytree.lep_eta(); }
@@ -6595,6 +6824,11 @@ const vector<float> &lep_mass() { return mytree.lep_mass(); }
 const vector<int> &lep_charge() { return mytree.lep_charge(); }
 const vector<bool> &lep_3ch_agree() { return mytree.lep_3ch_agree(); }
 const vector<int> &lep_isFromW() { return mytree.lep_isFromW(); }
+const vector<int> &lep_isFromZ() { return mytree.lep_isFromZ(); }
+const vector<int> &lep_isFromB() { return mytree.lep_isFromB(); }
+const vector<int> &lep_isFromC() { return mytree.lep_isFromC(); }
+const vector<int> &lep_isFromL() { return mytree.lep_isFromL(); }
+const vector<int> &lep_isFromLF() { return mytree.lep_isFromLF(); }
 const vector<double> &lep_ptRatio() { return mytree.lep_ptRatio(); }
 const vector<double> &lep_ptRel() { return mytree.lep_ptRel(); }
 const vector<double> &lep_relIso03() { return mytree.lep_relIso03(); }
