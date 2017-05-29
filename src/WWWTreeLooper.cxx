@@ -198,7 +198,11 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   /* 5 : isFromB/C */      if (lep1.isFromX == 4 || lep0.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_lep1", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
   /* 0 : not matched */    if (lep1.isFromX == 0                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 0, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 
-//	  // event category
+  // event category
+  /* 1 : both are from W */if (lep0.isFromX == 1 && lep1.isFromX == 1)   PlotUtil::plot1D("leptruthcategorySS"     , 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 2 : one is from W   */if ((lep0.isFromX == 1 && lep1.isFromX != 1)||
+                               (lep1.isFromX == 1 && lep0.isFromX != 1)) PlotUtil::plot1D("leptruthcategorySS"     , 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 3 : none are from W */if (lep0.isFromX != 1 && lep1.isFromX != 1)   PlotUtil::plot1D("leptruthcategorySS"     , 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 //	  /* no fake     */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 //	  /* one fake    */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 //	  /* two fakes   */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
