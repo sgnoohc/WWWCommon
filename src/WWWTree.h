@@ -1,6 +1,6 @@
 // -*- C++ -*-
 // This is a header file generated with the command:
-// makeCMS3ClassFiles("/nfs-7/userdata/bhashemi/WWW_babies/WWW_v0.1.4/skim/www_2l_mia_skim_1.root", "t", "WWWTree", "tas", "mytree")
+// makeCMS3ClassFiles("/nfs-7/userdata/bhashemi/WWW_babies/WWW_v0.1.5/skim/www_incl_amcnlo_skim_1.root", "t", "WWWTree", "tas", "mytree")
 
 #ifndef WWWTree_H
 #define WWWTree_H
@@ -382,6 +382,30 @@ class WWWTree {
   int      nveto_leptons_;
   TBranch *nveto_leptons_branch;
   bool     nveto_leptons_isLoaded;
+  int      nVetoEl_relIso03EAless01_;
+  TBranch *nVetoEl_relIso03EAless01_branch;
+  bool     nVetoEl_relIso03EAless01_isLoaded;
+  int      nVetoEl_relIso03EAless02_;
+  TBranch *nVetoEl_relIso03EAless02_branch;
+  bool     nVetoEl_relIso03EAless02_isLoaded;
+  int      nVetoEl_relIso03EAless03_;
+  TBranch *nVetoEl_relIso03EAless03_branch;
+  bool     nVetoEl_relIso03EAless03_isLoaded;
+  int      nVetoEl_relIso03EAless04_;
+  TBranch *nVetoEl_relIso03EAless04_branch;
+  bool     nVetoEl_relIso03EAless04_isLoaded;
+  int      nVetoMu_relIso03EAless01_;
+  TBranch *nVetoMu_relIso03EAless01_branch;
+  bool     nVetoMu_relIso03EAless01_isLoaded;
+  int      nVetoMu_relIso03EAless02_;
+  TBranch *nVetoMu_relIso03EAless02_branch;
+  bool     nVetoMu_relIso03EAless02_isLoaded;
+  int      nVetoMu_relIso03EAless03_;
+  TBranch *nVetoMu_relIso03EAless03_branch;
+  bool     nVetoMu_relIso03EAless03_isLoaded;
+  int      nVetoMu_relIso03EAless04_;
+  TBranch *nVetoMu_relIso03EAless04_branch;
+  bool     nVetoMu_relIso03EAless04_isLoaded;
   vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > *lep_p4_;
   TBranch *lep_p4_branch;
   bool     lep_p4_isLoaded;
@@ -406,6 +430,21 @@ class WWWTree {
   vector<int> *lep_isFromW_;
   TBranch *lep_isFromW_branch;
   bool     lep_isFromW_isLoaded;
+  vector<int> *lep_isFromZ_;
+  TBranch *lep_isFromZ_branch;
+  bool     lep_isFromZ_isLoaded;
+  vector<int> *lep_isFromB_;
+  TBranch *lep_isFromB_branch;
+  bool     lep_isFromB_isLoaded;
+  vector<int> *lep_isFromC_;
+  TBranch *lep_isFromC_branch;
+  bool     lep_isFromC_isLoaded;
+  vector<int> *lep_isFromL_;
+  TBranch *lep_isFromL_branch;
+  bool     lep_isFromL_isLoaded;
+  vector<int> *lep_isFromLF_;
+  TBranch *lep_isFromLF_branch;
+  bool     lep_isFromLF_isLoaded;
   vector<double> *lep_ptRatio_;
   TBranch *lep_ptRatio_branch;
   bool     lep_ptRatio_isLoaded;
@@ -1280,6 +1319,14 @@ void LoadAllBranches();
   const bool &elveto();
   const int &nlep();
   const int &nveto_leptons();
+  const int &nVetoEl_relIso03EAless01();
+  const int &nVetoEl_relIso03EAless02();
+  const int &nVetoEl_relIso03EAless03();
+  const int &nVetoEl_relIso03EAless04();
+  const int &nVetoMu_relIso03EAless01();
+  const int &nVetoMu_relIso03EAless02();
+  const int &nVetoMu_relIso03EAless03();
+  const int &nVetoMu_relIso03EAless04();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &lep_p4();
   const vector<float> &lep_pt();
   const vector<float> &lep_eta();
@@ -1288,6 +1335,11 @@ void LoadAllBranches();
   const vector<int> &lep_charge();
   const vector<bool> &lep_3ch_agree();
   const vector<int> &lep_isFromW();
+  const vector<int> &lep_isFromZ();
+  const vector<int> &lep_isFromB();
+  const vector<int> &lep_isFromC();
+  const vector<int> &lep_isFromL();
+  const vector<int> &lep_isFromLF();
   const vector<double> &lep_ptRatio();
   const vector<double> &lep_ptRel();
   const vector<double> &lep_relIso03();
@@ -1667,6 +1719,14 @@ namespace tas {
   const bool &elveto();
   const int &nlep();
   const int &nveto_leptons();
+  const int &nVetoEl_relIso03EAless01();
+  const int &nVetoEl_relIso03EAless02();
+  const int &nVetoEl_relIso03EAless03();
+  const int &nVetoEl_relIso03EAless04();
+  const int &nVetoMu_relIso03EAless01();
+  const int &nVetoMu_relIso03EAless02();
+  const int &nVetoMu_relIso03EAless03();
+  const int &nVetoMu_relIso03EAless04();
   const vector<ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > > &lep_p4();
   const vector<float> &lep_pt();
   const vector<float> &lep_eta();
@@ -1675,6 +1735,11 @@ namespace tas {
   const vector<int> &lep_charge();
   const vector<bool> &lep_3ch_agree();
   const vector<int> &lep_isFromW();
+  const vector<int> &lep_isFromZ();
+  const vector<int> &lep_isFromB();
+  const vector<int> &lep_isFromC();
+  const vector<int> &lep_isFromL();
+  const vector<int> &lep_isFromLF();
   const vector<double> &lep_ptRatio();
   const vector<double> &lep_ptRel();
   const vector<double> &lep_relIso03();
