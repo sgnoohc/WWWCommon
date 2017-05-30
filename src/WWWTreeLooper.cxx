@@ -275,6 +275,7 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   }
   else
   {
+    PlotUtil::plot1D("leptruthcategorySS_oneW_csv", -999, ana_data.wgt, ana_data.hist_db, "", 180, -1., 1., prefix);
     PlotUtil::plot1D("leptruthcategorySS_oneW_dr", -999, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
     PlotUtil::plot1D("leptruthcategorySS_oneW", -1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
   }
