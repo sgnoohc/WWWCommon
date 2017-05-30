@@ -212,6 +212,21 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
 //	  /* one fake    */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 //	  /* two fakes   */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 
+  if ((lep0.isFromX == 1 && lep1.isFromX != 1) || (lep1.isFromX == 1 && lep0.isFromX != 1))
+  {
+    if (lep0.isFromX == 1)
+    {
+      if      (lep1.isFromX == 4) PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      else if (lep1.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_oneW", 1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      else                        PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+    }
+    else if (lep1.isFromX == 1)
+    {
+      if      (lep1.isFromX == 4) PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      else if (lep1.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_oneW", 1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      else                        PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+    }
+  }
 }
 
 //=====================================================================================
@@ -506,7 +521,7 @@ bool isVetoMuon(ObjUtil::Lepton& lepton)
 bool isGoodSSJet(ObjUtil::Jet& jet)
 {
   if (!( jet.p4.Pt() > 20.        )) return false;
-//	  if (!( fabs(jet.p4.Eta()) < 2.5 )) return false;
+  if (!( fabs(jet.p4.Eta()) < 2.5 )) return false;
   return true;
 }
 
