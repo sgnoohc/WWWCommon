@@ -227,7 +227,7 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
           if (mindr < 0 || mindr > tmpdr)
             mindr = tmpdr;
         }
-        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 9, 0., 9., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, 0., 9., prefix);
       }
       else if (lep1.isFromX == 2)
       {
@@ -251,7 +251,7 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
           if (mindr < 0 || mindr > tmpdr)
             mindr = tmpdr;
         }
-        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 9, 0., 9., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, 0., 9., prefix);
       }
       else if (lep0.isFromX == 2)
       {
@@ -265,7 +265,7 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   }
   else
   {
-    PlotUtil::plot1D("leptruthcategorySS_oneW_dr", -999, ana_data.wgt, ana_data.hist_db, "", 9, 0., 9., prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_dr", -999, ana_data.wgt, ana_data.hist_db, "", 180, 0., 9., prefix);
     PlotUtil::plot1D("leptruthcategorySS_oneW", -1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
   }
 }
