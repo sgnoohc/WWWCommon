@@ -145,6 +145,7 @@ void getObjects()
   ana_data.jetcol["good3Ljet"] = getJets();
   ana_data.jetcol["medbjet"] = getJets();
   ana_data.jetcol["lssbjet"] = getJets();
+  ana_data.jetcol["rmvdjet"] = getRemovedJets();
   ana_data.met = getMET();
   ana_data.wgt = mytree.evt_scale1fb();
 }
@@ -204,19 +205,16 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   /* 0 : not matched */    if (lep1.isFromX == 0                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 0, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
 
   // event category
-  /* 1 : both are from W */if (lep0.isFromX == 1 && lep1.isFromX == 1)   PlotUtil::plot1D("leptruthcategorySS"     , 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+  /* 1 : both are from W */if ( lep0.isFromX == 1 && lep1.isFromX == 1)  PlotUtil::plot1D("leptruthcategorySS"   , 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
   /* 2 : one is from W   */if ((lep0.isFromX == 1 && lep1.isFromX != 1)||
-                               (lep1.isFromX == 1 && lep0.isFromX != 1)) PlotUtil::plot1D("leptruthcategorySS"     , 1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
-  /* 3 : none are from W */if (lep0.isFromX != 1 && lep1.isFromX != 1)   PlotUtil::plot1D("leptruthcategorySS"     , 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
-//	  /* no fake     */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
-//	  /* one fake    */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
-//	  /* two fakes   */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+                               (lep1.isFromX == 1 && lep0.isFromX != 1)) PlotUtil::plot1D("leptruthcategorySS"   , 1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+  /* 3 : none are from W */if ( lep0.isFromX != 1 && lep1.isFromX != 1)  PlotUtil::plot1D("leptruthcategorySS"   , 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
 
   if ((lep0.isFromX == 1 && lep1.isFromX != 1) || (lep1.isFromX == 1 && lep0.isFromX != 1))
   {
     if (lep0.isFromX == 1)
     {
-      if      (lep1.isFromX == 4 || lep1.isFromX == 8)
+      if (lep1.isFromX == 4 || lep1.isFromX == 8)
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
         ObjUtil::Jets removedjets = getRemovedJets();
@@ -231,8 +229,10 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
             csv = jet.btagCSV;
           }
         }
-        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
-        PlotUtil::plot1D("leptruthcategorySS_oneW_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr"         , mindr                          , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_csv"        , csv                            , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_reliso03EA" , lep1.relIso03EA                , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_absiso03EA" , lep1.relIso03EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
 
         mindr = -999;
         csv = -999;
@@ -245,8 +245,10 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
             csv = jet.btagCSV;
           }
         }
-        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
-        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr"         , mindr                          , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv"        , csv                            , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso03EA" , lep0.relIso03EA                , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso03EA" , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
 
       }
       else if (lep1.isFromX == 2)
@@ -275,8 +277,10 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
             csv = jet.btagCSV;
           }
         }
-        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
-        PlotUtil::plot1D("leptruthcategorySS_oneW_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr"         , mindr                          , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_csv"        , csv                            , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_reliso03EA" , lep0.relIso03EA                , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_absiso03EA" , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
 
         mindr = -999;
         csv = -999;
@@ -289,8 +293,10 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
             csv = jet.btagCSV;
           }
         }
-        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
-        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr"         , mindr                          , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv"        , csv                            , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso03EA" , lep1.relIso03EA                , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso03EA" , lep1.relIso03EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
       }
       else if (lep0.isFromX == 2)
       {
@@ -304,11 +310,15 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   }
   else
   {
-    PlotUtil::plot1D("leptruthcategorySS_oneW_csv", -999, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
-    PlotUtil::plot1D("leptruthcategorySS_oneW_dr", -999, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
-    PlotUtil::plot1D("leptruthcategorySS_oneW", -1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
-    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr", -999, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
-    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv",-999, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_csv"                , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_dr"                 , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW"                    , -1   , ana_data.wgt , ana_data.hist_db , "" , 3     , 0.  , 3.   , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv"        , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso03EA" , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso03EA" , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_reliso03EA"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_absiso03EA"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
   }
 }
 
@@ -575,6 +585,12 @@ bool isGood3LMuon(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGoodRemovedBJet(ObjUtil::Jet& jet)
+{
   return true;
 }
 
