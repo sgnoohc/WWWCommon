@@ -220,11 +220,14 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
         ObjUtil::Jets removedjets = getRemovedJets();
+        float mindr = -999;
         for (auto& jet : removedjets)
         {
-          float dr = VarUtil::DR(lep1, jet);
-          PlotUtil::plot1D("leptruthcategorySS_oneW_dr", dr, ana_data.wgt, ana_data.hist_db, "", 9, 0., 9., prefix);
+          float tmpdr = VarUtil::DR(lep1, jet);
+          if (mindr < 0 || mindr > tmpdr)
+            mindr = tmpdr;
         }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 9, 0., 9., prefix);
       }
       else if (lep1.isFromX == 2)
       {
@@ -241,11 +244,14 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
         ObjUtil::Jets removedjets = getRemovedJets();
+        float mindr = -999;
         for (auto& jet : removedjets)
         {
-          float dr = VarUtil::DR(lep0, jet);
-          PlotUtil::plot1D("leptruthcategorySS_oneW_dr", dr, ana_data.wgt, ana_data.hist_db, "", 9, 0., 9., prefix);
+          float tmpdr = VarUtil::DR(lep1, jet);
+          if (mindr < 0 || mindr > tmpdr)
+            mindr = tmpdr;
         }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 9, 0., 9., prefix);
       }
       else if (lep0.isFromX == 2)
       {
