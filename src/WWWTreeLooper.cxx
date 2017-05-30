@@ -168,6 +168,7 @@ void fillHistograms(string prefix)
   HistUtil::fillLepSumPt(prefix, ana_data);
   HistUtil::fillLepRelIso03EA(prefix, ana_data);
   HistUtil::fillLepAbsIso03EA(prefix, ana_data);
+  HistUtil::fillLepTightCharge(prefix, ana_data);
 }
 
 //______________________________________________________________________________________
