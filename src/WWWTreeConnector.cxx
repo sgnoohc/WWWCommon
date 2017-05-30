@@ -59,6 +59,19 @@ ObjUtil::Jets getJets(/*WWWTree& mytree*/)
   return jets;
 }
 
+ObjUtil::Jets getRemovedJets(/*WWWTree& mytree*/)
+{
+  ObjUtil::Jets jets;
+  for (unsigned int ijet = 0; ijet < mytree.removed_jets_p4().size(); ++ijet)
+  {
+    ObjUtil::Jet jet;
+    jet.p4.SetPtEtaPhiE(mytree.removed_jets_p4().at(ijet).pt(),mytree.removed_jets_p4().at(ijet).eta(),mytree.removed_jets_p4().at(ijet).phi(),mytree.removed_jets_p4().at(ijet).energy());
+    jet.btagCSV       = mytree.removed_jets_csv().at(ijet);
+    jets.push_back(jet);
+  }
+  return jets;
+}
+
 ObjUtil::Jets getBJets(/*WWWTree& mytree*/)
 {
   ObjUtil::Jets jets;
