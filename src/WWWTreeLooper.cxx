@@ -233,6 +233,21 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
         }
         PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
         PlotUtil::plot1D("leptruthcategorySS_oneW_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+
+        mindr = -999;
+        csv = -999;
+        for (auto& jet : removedjets)
+        {
+          float tmpdr = VarUtil::DR(lep0, jet);
+          if (mindr < 0 || mindr > tmpdr)
+          {
+            mindr = tmpdr;
+            csv = jet.btagCSV;
+          }
+        }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+
       }
       else if (lep1.isFromX == 2)
       {
@@ -262,6 +277,20 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
         }
         PlotUtil::plot1D("leptruthcategorySS_oneW_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
         PlotUtil::plot1D("leptruthcategorySS_oneW_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
+
+        mindr = -999;
+        csv = -999;
+        for (auto& jet : removedjets)
+        {
+          float tmpdr = VarUtil::DR(lep1, jet);
+          if (mindr < 0 || mindr > tmpdr)
+          {
+            mindr = tmpdr;
+            csv = jet.btagCSV;
+          }
+        }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr", mindr, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv", csv, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
       }
       else if (lep0.isFromX == 2)
       {
@@ -278,6 +307,8 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
     PlotUtil::plot1D("leptruthcategorySS_oneW_csv", -999, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
     PlotUtil::plot1D("leptruthcategorySS_oneW_dr", -999, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
     PlotUtil::plot1D("leptruthcategorySS_oneW", -1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr", -999, ana_data.wgt, ana_data.hist_db, "", 180, -1., 5., prefix);
+    PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv",-999, ana_data.wgt, ana_data.hist_db, "", 180, 0., 1., prefix);
   }
 }
 
