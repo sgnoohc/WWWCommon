@@ -122,11 +122,13 @@ void processWWWTreeEvent()
 
   /// run analysis
   ana_data.leptons = ana_data.lepcol["goodSSlep"];
+  ana_data.jets = ana_data.jetcol["goodSSjet"];
   doSMWWWSSmmAnalysis();
   doSMWWWSSemAnalysis();
   doSMWWWSSeeAnalysis();
 
   ana_data.leptons = ana_data.lepcol["good3Llep"];
+  ana_data.jets = ana_data.jetcol["good3Ljet"];
   doSMWWW3L0SFOSAnalysis();
   doSMWWW3L1SFOSAnalysis();
   doSMWWW3L2SFOSAnalysis();
@@ -165,6 +167,7 @@ void fillHistograms(string prefix)
 {
   HistUtil::fillMET(prefix, ana_data);
   HistUtil::fillLepMTs(prefix, ana_data);
+  HistUtil::fillLepMlvjs(prefix, ana_data);
   HistUtil::fillLepSumPt(prefix, ana_data);
   HistUtil::fillLepRelIso03EA(prefix, ana_data);
   HistUtil::fillLepAbsIso03EA(prefix, ana_data);
