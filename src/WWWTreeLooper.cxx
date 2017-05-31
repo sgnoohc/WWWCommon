@@ -382,7 +382,7 @@ void doSMWWWSSeeAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 121, counter)                                )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) > 100.
                                                               || VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) <  80.)) return;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                                                            )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                                                            )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
@@ -400,7 +400,7 @@ void doSMWWWSSemAnalysis()
   /// Cutflow
   int counter = 0;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
@@ -476,7 +476,7 @@ void doSMWWW3L1SFOSAnalysis()
   std::cout << __LINE__ << " " << Mll << std::endl;
 
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( (MZ - Mll > 35.) || (Mll - MZ > 20.) )) return;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return;
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 4);
   /// Select object containers for plotting
@@ -512,7 +512,7 @@ void doSMWWW3L2SFOSAnalysis()
 
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll0 - MZ) > 20.      )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll1 - MZ) > 20.      )) return;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55. )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55. )) return;
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 5);
   /// Select object containers for plotting
@@ -585,8 +585,8 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 11      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-//	  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( lepton.relIso03EA < 0.05      )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+//	  if (!( lepton.relIso03EA < 0.05      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.tightcharge == 2      )) return false;
   return true;
@@ -598,8 +598,8 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 13      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-//	  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( lepton.relIso03EA < 0.05      )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+//	  if (!( lepton.relIso03EA < 0.05      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
 }
