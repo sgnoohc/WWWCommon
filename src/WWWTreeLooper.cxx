@@ -214,7 +214,8 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   {
     if (lep0.isFromX == 1)
     {
-      if (lep1.isFromX == 4 || lep1.isFromX == 8)
+//	      if (lep1.isFromX == 4 || lep1.isFromX == 8)
+      if (lep1.isFromX >= 4)
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
         ObjUtil::Jets removedjets = getRemovedJets();
@@ -270,7 +271,8 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
     }
     else if (lep1.isFromX == 1)
     {
-      if      (lep0.isFromX == 4 || lep0.isFromX == 8)
+//	      if (lep0.isFromX == 4 || lep0.isFromX == 8)
+      if (lep0.isFromX >= 4)
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
         ObjUtil::Jets removedjets = getRemovedJets();
@@ -380,7 +382,7 @@ void doSMWWWSSeeAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 121, counter)                                )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) > 100.
                                                               || VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) <  80.)) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                                                            )) return;
+//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                                                            )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
