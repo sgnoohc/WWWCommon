@@ -474,7 +474,7 @@ void doSMWWW3L1SFOSAnalysis()
   std::cout << __LINE__ << " " << Mll << std::endl;
 
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( (MZ - Mll > 35.) || (Mll - MZ > 20.) )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return;
+//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return;
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 4);
   /// Select object containers for plotting
@@ -510,7 +510,7 @@ void doSMWWW3L2SFOSAnalysis()
 
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll0 - MZ) > 20.      )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll1 - MZ) > 20.      )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55. )) return;
+//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55. )) return;
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 5);
   /// Select object containers for plotting
