@@ -34,13 +34,16 @@ ObjUtil::Leptons getLeptons(/*WWWTree& mytree*/)
     lepton.miniRelIsoCMS3_EAv2     = mytree.lep_miniRelIsoCMS3_EAv2().at(ilep);
     lepton.miniRelIsoCMS3_DB       = mytree.lep_miniRelIsoCMS3_DB().at(ilep);
     // truth matching
-    lepton.isFromX = 0;
-    if (mytree.lep_isFromW ().at(ilep)) lepton.isFromX |= (1<<0);
-    if (mytree.lep_isFromZ ().at(ilep)) lepton.isFromX |= (1<<1);
-    if (mytree.lep_isFromB ().at(ilep)) lepton.isFromX |= (1<<2);
-    if (mytree.lep_isFromC ().at(ilep)) lepton.isFromX |= (1<<3);
-    if (mytree.lep_isFromL ().at(ilep)) lepton.isFromX |= (1<<4);
-    if (mytree.lep_isFromLF().at(ilep)) lepton.isFromX |= (1<<5);
+    if (LoopUtil::getCurrentTFileName().Contains("WWW_v0.1.5"))
+    {
+      lepton.isFromX = 0;
+      if (mytree.lep_isFromW ().at(ilep)) lepton.isFromX |= (1<<0);
+      if (mytree.lep_isFromZ ().at(ilep)) lepton.isFromX |= (1<<1);
+      if (mytree.lep_isFromB ().at(ilep)) lepton.isFromX |= (1<<2);
+      if (mytree.lep_isFromC ().at(ilep)) lepton.isFromX |= (1<<3);
+      if (mytree.lep_isFromL ().at(ilep)) lepton.isFromX |= (1<<4);
+      if (mytree.lep_isFromLF().at(ilep)) lepton.isFromX |= (1<<5);
+    }
     leptons.push_back(lepton);
   }
   return leptons;
