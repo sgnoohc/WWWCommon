@@ -289,6 +289,8 @@ void doSMWWW3L1SFOSAnalysis()
   if (abs(lep1.pdgId) == 11) Mll = VarUtil::Mass(lep1, lep2);
   if (abs(lep1.pdgId) == 13) Mll = VarUtil::Mass(lep0, lep1);
 
+  std::cout << __LINE__ << " " << Mll << std::endl;
+
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( (MZ - Mll > 35.) || (Mll - MZ > 20.) )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return;
 
@@ -338,9 +340,9 @@ void doSMWWW3L2SFOSAnalysis()
 bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
 {
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return false;
-  if      (type == 2) {                             if (!( is2SFOSEvent()                                     )) return false; }
-  else if (type == 1) {                             if (!( is1SFOSEvent()                                     )) return false; }
-  else if (type == 0) {                             if (!( is0SFOSEvent()                                     )) return false; }
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( totalcharge() == 1                                 )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( getNumSFOSPairs() == type                          )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
                                                            ana_data.lepcol["good3Llep"][0].p4 +
                                                            ana_data.lepcol["good3Llep"][1].p4 +
@@ -349,6 +351,20 @@ bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return false;
   return true;
+
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return false;
+//	  if      (type == 2) {                             if (!( is2SFOSEvent()                                     )) return false; }
+//	  else if (type == 1) {                             if (!( is1SFOSEvent()                                     )) return false; }
+//	  else if (type == 0) {                             if (!( is0SFOSEvent()                                     )) return false; }
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
+//	                                                           ana_data.lepcol["good3Llep"][0].p4 +
+//	                                                           ana_data.lepcol["good3Llep"][1].p4 +
+//	                                                           ana_data.lepcol["good3Llep"][2].p4,
+//	                                                           ana_data.met.p4)) > 2.5                            )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return false;
+//	  return true;
 }
 
 //=====================================================================================
@@ -482,6 +498,26 @@ bool isGoodWWWLooseBJet(ObjUtil::Jet& jet)
   if (!( jet.p4.Pt() > 20.          )) return false;
   if (!( Analyses::isLooseBJet(jet) )) return false;
   return true;
+}
+
+//______________________________________________________________________________________
+int totalcharge()
+{
+  return abs(mytree.lep_pdgId().at(0)/abs(mytree.lep_pdgId().at(0)) +
+             mytree.lep_pdgId().at(1)/abs(mytree.lep_pdgId().at(1)) +
+             mytree.lep_pdgId().at(2)/abs(mytree.lep_pdgId().at(2)));
+}
+
+//______________________________________________________________________________________
+int getNumSFOSPairs(){
+  /*Loops through pairs of entries in the lep_pdgId vector and counts how many have opposite value*/
+  int num_SFOS = 0;
+  for (int i = 0; i < (int) mytree.lep_pdgId().size(); i++){
+    for (int j = i+1; j < (int) mytree.lep_pdgId().size(); j++){
+      if (mytree.lep_pdgId().at(i) == -mytree.lep_pdgId().at(j)) num_SFOS++;
+    }
+  }
+  return num_SFOS;
 }
 
 //______________________________________________________________________________________
