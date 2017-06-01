@@ -46,14 +46,14 @@ void fillHistogramsTruthMatchingLeptons(string prefix);
 
 //-------------------------------------------------------------
 
-void doSMWWWSSmmAnalysis();
-void doSMWWWSSemAnalysis();
-void doSMWWWSSeeAnalysis();
+bool doSMWWWSSmmAnalysis();
+bool doSMWWWSSemAnalysis();
+bool doSMWWWSSeeAnalysis();
 bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter);
 
-void doSMWWW3L0SFOSAnalysis();
-void doSMWWW3L1SFOSAnalysis();
-void doSMWWW3L2SFOSAnalysis();
+bool doSMWWW3L0SFOSAnalysis();
+bool doSMWWW3L1SFOSAnalysis();
+bool doSMWWW3L2SFOSAnalysis();
 bool passSMWWW3Lcommonselection(string prefix, int pdgidprod, int& counter);
 
 void selectObjects();

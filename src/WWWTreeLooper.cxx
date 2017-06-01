@@ -366,11 +366,11 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
 //=====================================================================================
 
 //______________________________________________________________________________________
-void doSMWWWSSmmAnalysis()
+bool doSMWWWSSmmAnalysis()
 {
   /// Cutflow
   int counter = 0;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 169, counter) )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 169, counter) )) return failed(__LINE__);
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
@@ -381,17 +381,18 @@ void doSMWWWSSmmAnalysis()
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
+  return true;
 }
 
 //______________________________________________________________________________________
-void doSMWWWSSeeAnalysis()
+bool doSMWWWSSeeAnalysis()
 {
   /// Cutflow
   int counter = 0;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 121, counter)                                )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 121, counter)                                )) return failed(__LINE__);
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) > 100.
-                                                              || VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) <  80.)) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                                                            )) return;
+                                                              || VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) <  80.)) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                                                            )) return failed(__LINE__);
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
@@ -401,15 +402,16 @@ void doSMWWWSSeeAnalysis()
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSee");
+  return true;
 }
 
 //______________________________________________________________________________________
-void doSMWWWSSemAnalysis()
+bool doSMWWWSSemAnalysis()
 {
   /// Cutflow
   int counter = 0;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return failed(__LINE__);
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
@@ -419,6 +421,7 @@ void doSMWWWSSemAnalysis()
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSem");
+  return true;
 }
 
 //______________________________________________________________________________________
@@ -443,11 +446,11 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
 }
 
 //______________________________________________________________________________________
-void doSMWWW3L0SFOSAnalysis()
+bool doSMWWW3L0SFOSAnalysis()
 {
   /// Cutflow
   int counter = 0;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 0, counter) )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 0, counter) )) return failed(__LINE__);
 
   ObjUtil::Lepton lep0 = ana_data.lepcol["good3Llep"][0];
   ObjUtil::Lepton lep1 = ana_data.lepcol["good3Llep"][1];
@@ -460,21 +463,22 @@ void doSMWWW3L0SFOSAnalysis()
   float Mee = 0;
   if (abs(lep1.pdgId) == 11) Mee = Mll;
 
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( Mll > 20.            )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mee - MZ) > 15. )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( Mll > 20.            )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mee - MZ) > 15. )) return failed(__LINE__);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 3);
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
   printEventList("3L0SFOS");
+  return true;
 }
 
 //______________________________________________________________________________________
-void doSMWWW3L1SFOSAnalysis()
+bool doSMWWW3L1SFOSAnalysis()
 {
   /// Cutflow
   int counter = 0;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 1, counter) )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 1, counter) )) return failed(__LINE__);
 
   ObjUtil::Lepton lep0 = ana_data.lepcol["good3Llep"][0];
   ObjUtil::Lepton lep1 = ana_data.lepcol["good3Llep"][1];
@@ -486,21 +490,22 @@ void doSMWWW3L1SFOSAnalysis()
 
   std::cout << __LINE__ << " " << Mll << std::endl;
 
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( (MZ - Mll > 35.) || (Mll - MZ > 20.) )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( (MZ - Mll > 35.) || (Mll - MZ > 20.) )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return failed(__LINE__);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 4);
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
   printEventList("3L1SFOS");
+  return true;
 }
 
 //______________________________________________________________________________________
-void doSMWWW3L2SFOSAnalysis()
+bool doSMWWW3L2SFOSAnalysis()
 {
   /// Cutflow
   int counter = 0;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 2, counter) )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 2, counter) )) return failed(__LINE__);
 
   std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_pdgId<ObjUtil::Lepton>);
 
@@ -521,14 +526,15 @@ void doSMWWW3L2SFOSAnalysis()
     Mll1 = VarUtil::Mass(lep0, lep2);
   }
 
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll0 - MZ) > 20.      )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll1 - MZ) > 20.      )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55. )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll0 - MZ) > 20.      )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll1 - MZ) > 20.      )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55. )) return failed(__LINE__);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 5);
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
   printEventList("3L2SFOS");
+  return true;
 }
 
 //______________________________________________________________________________________
@@ -593,23 +599,23 @@ bool isGoodSSLepton(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isGoodSSElectron(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 11      )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.1      )) return failed(__LINE__);
-  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
-  if (!( lepton.tightcharge != 0      )) return failed(__LINE__);
+  if (!( abs(lepton.pdgId) == 11      )) return false;
+  if (!( lepton.p4.Pt() > 30.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( lepton.tightcharge != 0      )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodSSMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 13      )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.1      )) return failed(__LINE__);
-  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
+  if (!( abs(lepton.pdgId) == 13      )) return false;
+  if (!( lepton.p4.Pt() > 30.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
 }
 
@@ -622,22 +628,22 @@ bool isGood3LLepton(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isGood3LElectron(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 11      )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 20.         )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.1      )) return failed(__LINE__);
-  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
+  if (!( abs(lepton.pdgId) == 11      )) return false;
+  if (!( lepton.p4.Pt() > 20.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGood3LMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 13      )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 20.         )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.1      )) return failed(__LINE__);
-  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
+  if (!( abs(lepton.pdgId) == 13      )) return false;
+  if (!( lepton.p4.Pt() > 20.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
 }
 
@@ -656,48 +662,48 @@ bool isVetoLepton(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isVetoElectron(ObjUtil::Lepton& lepton)
 {
-  if (!( lepton.p4.Pt() > 10.        )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return failed(__LINE__);
+  if (!( lepton.p4.Pt() > 10.        )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isVetoMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( lepton.p4.Pt() > 10.        )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return failed(__LINE__);
+  if (!( lepton.p4.Pt() > 10.        )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodSSJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 30.        )) return failed(__LINE__);
-  if (!( fabs(jet.p4.Eta()) < 2.5 )) return failed(__LINE__);
+  if (!( jet.p4.Pt() > 30.        )) return false;
+  if (!( fabs(jet.p4.Eta()) < 2.5 )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGood3LJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 25.        )) return failed(__LINE__);
-  if (!( fabs(jet.p4.Eta()) < 4.5 )) return failed(__LINE__);
+  if (!( jet.p4.Pt() > 25.        )) return false;
+  if (!( fabs(jet.p4.Eta()) < 4.5 )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodWWWMediumBJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 25.           )) return failed(__LINE__);
-  if (!( Analyses::isMediumBJet(jet) )) return failed(__LINE__);
+  if (!( jet.p4.Pt() > 25.           )) return false;
+  if (!( Analyses::isMediumBJet(jet) )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodWWWLooseBJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 20.          )) return failed(__LINE__);
-  if (!( Analyses::isLooseBJet(jet) )) return failed(__LINE__);
+  if (!( jet.p4.Pt() > 20.          )) return false;
+  if (!( Analyses::isLooseBJet(jet) )) return false;
   return true;
 }
 
@@ -729,34 +735,34 @@ bool is2SFOSEvent()
           abs(ana_data.lepcol["good3Llep"][2].pdgId) == 11) ||
          (abs(ana_data.lepcol["good3Llep"][0].pdgId) == 13  &&
           abs(ana_data.lepcol["good3Llep"][1].pdgId) == 13  &&
-          abs(ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return failed(__LINE__);
+          abs(ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool is1SFOSEvent()
 {
-  if (!( !is2SFOSEvent()                                       )) return failed(__LINE__);
+  if (!( !is2SFOSEvent()                                       )) return false;
   if (!( (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
               ana_data.lepcol["good3Llep"][2].pdgId) == 11) ||
          (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return failed(__LINE__);
+              ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool is0SFOSEvent()
 {
-  if (!( !is2SFOSEvent()                                       )) return failed(__LINE__);
-  if (!( !is1SFOSEvent()                                       )) return failed(__LINE__);
+  if (!( !is2SFOSEvent()                                       )) return false;
+  if (!( !is1SFOSEvent()                                       )) return false;
   if (!( (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
               ana_data.lepcol["good3Llep"][2].pdgId) != 11) &&
          (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) != 13)    )) return failed(__LINE__);
+              ana_data.lepcol["good3Llep"][2].pdgId) != 13)    )) return false;
   return true;
 }
 
