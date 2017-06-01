@@ -45,6 +45,7 @@ ww_2l2nu_dbl_scat_skim_1.root
 ww_2l2nu_powheg_skim_1.root
 ww_lnuqq_powheg_skim_1.root
 www_2l_mia_skim_1.root
+www_2l_ext1_mia_skim_1.root
 www_incl_amcnlo_skim_1.root
 wwz_incl_amcnlo_skim_1.root
 wz_1l3n_amcnlo_skim_1.root
