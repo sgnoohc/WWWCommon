@@ -430,7 +430,7 @@ bool doSMWWWSSemAnalysis()
 //______________________________________________________________________________________
 bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
 {
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(ana_data.lepcol["goodSSlep"].size());
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
