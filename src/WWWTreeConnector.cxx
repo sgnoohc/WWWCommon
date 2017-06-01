@@ -34,6 +34,7 @@ ObjUtil::Leptons getLeptons(/*WWWTree& mytree*/)
     lepton.miniRelIsoCMS3_EA       = mytree.lep_miniRelIsoCMS3_EA().at(ilep);
     lepton.miniRelIsoCMS3_EAv2     = mytree.lep_miniRelIsoCMS3_EAv2().at(ilep);
     lepton.miniRelIsoCMS3_DB       = mytree.lep_miniRelIsoCMS3_DB().at(ilep);
+    lepton.id                      = mytree.lep_tightId().at(ilep);
     // truth matching
     if (LoopUtil::getCurrentTFileName().Contains("WWW_v0.1.5"))
     {
