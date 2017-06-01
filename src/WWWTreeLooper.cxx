@@ -614,11 +614,11 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isGoodSSMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 13      )) return false;
-  if (!( lepton.p4.Pt() > 30.         )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( abs(lepton.pdgId) == 13      )) return failed(__LINE__);
+  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
+  if (!( lepton.relIso03EA < 0.1      )) return failed(__LINE__);
+  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
   return true;
 }
 
