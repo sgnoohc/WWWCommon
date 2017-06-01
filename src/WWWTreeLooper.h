@@ -71,8 +71,6 @@ bool isGood3LJet(ObjUtil::Jet& jet);
 bool isGoodWWWMediumBJet(ObjUtil::Jet& jet);
 bool isGoodWWWLooseBJet(ObjUtil::Jet& jet);
 
-bool isGoodRemovedBJet(ObjUtil::Jet& jet);
-
 int totalcharge();
 int getNumSFOSPairs();
 bool is0SFOSEvent();
