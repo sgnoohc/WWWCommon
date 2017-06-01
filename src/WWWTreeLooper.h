@@ -38,6 +38,7 @@ void processWWWTreeEvent();
 void getObjects();
 
 void fillHistograms(string prefix);
+void fillHistogramsTruthMatchingLeptons(string prefix);
 
 //-------------------------------------------------------------
 
@@ -70,6 +71,8 @@ bool isGood3LJet(ObjUtil::Jet& jet);
 bool isGoodWWWMediumBJet(ObjUtil::Jet& jet);
 bool isGoodWWWLooseBJet(ObjUtil::Jet& jet);
 
+int totalcharge();
+int getNumSFOSPairs();
 bool is0SFOSEvent();
 bool is1SFOSEvent();
 bool is2SFOSEvent();

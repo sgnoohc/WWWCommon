@@ -122,11 +122,13 @@ void processWWWTreeEvent()
 
   /// run analysis
   ana_data.leptons = ana_data.lepcol["goodSSlep"];
+  ana_data.jets = ana_data.jetcol["goodSSjet"];
   doSMWWWSSmmAnalysis();
   doSMWWWSSemAnalysis();
   doSMWWWSSeeAnalysis();
 
   ana_data.leptons = ana_data.lepcol["good3Llep"];
+  ana_data.jets = ana_data.jetcol["good3Ljet"];
   doSMWWW3L0SFOSAnalysis();
   doSMWWW3L1SFOSAnalysis();
   doSMWWW3L2SFOSAnalysis();
@@ -143,6 +145,7 @@ void getObjects()
   ana_data.jetcol["good3Ljet"] = getJets();
   ana_data.jetcol["medbjet"] = getJets();
   ana_data.jetcol["lssbjet"] = getJets();
+  ana_data.jetcol["rmvdjet"] = getRemovedJets();
   ana_data.met = getMET();
   ana_data.wgt = mytree.evt_scale1fb();
 }
@@ -164,10 +167,187 @@ void afterLoop()
 void fillHistograms(string prefix)
 {
   HistUtil::fillMET(prefix, ana_data);
+  HistUtil::fillMjj(prefix, ana_data);
+  HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
   HistUtil::fillLepMTs(prefix, ana_data);
+  HistUtil::fillLepMlvjs(prefix, ana_data);
   HistUtil::fillLepSumPt(prefix, ana_data);
   HistUtil::fillLepRelIso03EA(prefix, ana_data);
   HistUtil::fillLepAbsIso03EA(prefix, ana_data);
+  HistUtil::fillLepTightCharge(prefix, ana_data);
+  HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
+}
+
+//______________________________________________________________________________________
+void fillHistogramsTruthMatchingLeptons(string prefix)
+{
+  /// Lepton truth matching category information
+  /// Using isFromX fill the category
+
+  // If we don't have two leptons exit
+  if (ana_data.lepcol["goodSSlep"].size() != 2) return;
+
+  ObjUtil::Lepton lep0 = ana_data.lepcol["goodSSlep"][0];
+  ObjUtil::Lepton lep1 = ana_data.lepcol["goodSSlep"][1];
+
+  // Leading lepton
+  /* 1 : isFromW */        if (lep0.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 2 : isFromZ */        if (lep0.isFromX == 2                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 3 : isFromW/Z */      if (lep0.isFromX == 1 || lep0.isFromX == 2) PlotUtil::plot1D("leptruthcategorySS_lep0", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 4 : isFromB/C/L/LF */ if (lep0.isFromX >= 4                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 5 : isFromB/C */      if (lep0.isFromX == 4 || lep0.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_lep0", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 0 : not matched */    if (lep0.isFromX == 0                     ) PlotUtil::plot1D("leptruthcategorySS_lep0", 0, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+
+  // Sub-leading lepton
+  /* 1 : isFromW */        if (lep1.isFromX == 1                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 2 : isFromZ */        if (lep1.isFromX == 2                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 3 : isFromW/Z */      if (lep1.isFromX == 1 || lep1.isFromX == 2) PlotUtil::plot1D("leptruthcategorySS_lep1", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 4 : isFromB/C/L/LF */ if (lep1.isFromX >= 4                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 5 : isFromB/C */      if (lep1.isFromX == 4 || lep1.isFromX == 8) PlotUtil::plot1D("leptruthcategorySS_lep1", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  /* 0 : not matched */    if (lep1.isFromX == 0                     ) PlotUtil::plot1D("leptruthcategorySS_lep1", 0, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+
+  // event category
+  /* 1 : both are from W */if ( lep0.isFromX == 1 && lep1.isFromX == 1)  PlotUtil::plot1D("leptruthcategorySS"   , 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+  /* 2 : one is from W   */if ((lep0.isFromX == 1 && lep1.isFromX != 1)||
+                               (lep1.isFromX == 1 && lep0.isFromX != 1)) PlotUtil::plot1D("leptruthcategorySS"   , 1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+  /* 3 : none are from W */if ( lep0.isFromX != 1 && lep1.isFromX != 1)  PlotUtil::plot1D("leptruthcategorySS"   , 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+
+  if ((lep0.isFromX == 1 && lep1.isFromX != 1) || (lep1.isFromX == 1 && lep0.isFromX != 1))
+  {
+    if (lep0.isFromX == 1)
+    {
+//	      if (lep1.isFromX == 4 || lep1.isFromX == 8)
+      if (lep1.isFromX >= 4)
+      {
+        PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+        ObjUtil::Jets removedjets = getRemovedJets();
+        float mindr = -999;
+        float csv = -999;
+        for (auto& jet : removedjets)
+        {
+          float tmpdr = VarUtil::DR(lep1, jet);
+          if (mindr < 0 || mindr > tmpdr)
+          {
+            mindr = tmpdr;
+            csv = jet.btagCSV;
+          }
+        }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr"         , mindr                        , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_csv"        , csv                          , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_reliso03EA" , lep1.relIso03EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_absiso03EA" , lep1.relIso03EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_reliso04EA" , lep1.relIso04EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_absiso04EA" , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_ip3d"       , lep1.ip3d                    , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_sip3d"      , lep1.sip3d                   , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
+
+        mindr = -999;
+        csv = -999;
+        for (auto& jet : removedjets)
+        {
+          float tmpdr = VarUtil::DR(lep0, jet);
+          if (mindr < 0 || mindr > tmpdr)
+          {
+            mindr = tmpdr;
+            csv = jet.btagCSV;
+          }
+        }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr"         , mindr                        , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv"        , csv                          , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso03EA" , lep0.relIso03EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso03EA" , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso04EA" , lep0.relIso04EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso04EA" , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_ip3d"       , lep0.ip3d                    , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_sip3d"      , lep0.sip3d                   , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
+
+      }
+      else if (lep1.isFromX == 2)
+      {
+        PlotUtil::plot1D("leptruthcategorySS_oneW", 1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      }
+      else
+      {
+        PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      }
+    }
+    else if (lep1.isFromX == 1)
+    {
+//	      if (lep0.isFromX == 4 || lep0.isFromX == 8)
+      if (lep0.isFromX >= 4)
+      {
+        PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+        ObjUtil::Jets removedjets = getRemovedJets();
+        float mindr = -999;
+        float csv = -999;
+        for (auto& jet : removedjets)
+        {
+          float tmpdr = VarUtil::DR(lep1, jet);
+          if (mindr < 0 || mindr > tmpdr)
+          {
+            mindr = tmpdr;
+            csv = jet.btagCSV;
+          }
+        }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_dr"         , mindr                        , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_csv"        , csv                          , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_reliso03EA" , lep0.relIso03EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_absiso03EA" , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_reliso04EA" , lep0.relIso04EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_absiso04EA" , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_ip3d"       , lep0.ip3d                    , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_sip3d"      , lep0.sip3d                   , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
+
+        mindr = -999;
+        csv = -999;
+        for (auto& jet : removedjets)
+        {
+          float tmpdr = VarUtil::DR(lep1, jet);
+          if (mindr < 0 || mindr > tmpdr)
+          {
+            mindr = tmpdr;
+            csv = jet.btagCSV;
+          }
+        }
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr"         , mindr                        , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv"        , csv                          , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.   , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso03EA" , lep1.relIso03EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso03EA" , lep1.relIso03EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso04EA" , lep1.relIso04EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso04EA" , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_ip3d"       , lep1.ip3d                    , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("leptruthcategorySS_oneW_matched_sip3d"      , lep1.sip3d                   , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
+      }
+      else if (lep0.isFromX == 2)
+      {
+        PlotUtil::plot1D("leptruthcategorySS_oneW", 1, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      }
+      else
+      {
+        PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+      }
+    }
+  }
+  else
+  {
+  PlotUtil::plot1D("leptruthcategorySS_oneW_csv"                , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.    , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_dr"                 , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.    , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW"                    , -1   , ana_data.wgt , ana_data.hist_db , "" , 3     , 0.  , 3.    , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_dr"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , -1. , 5.    , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_csv"        , -999 , ana_data.wgt , ana_data.hist_db , "" , 180   , 0.  , 1.    , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso03EA" , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso03EA" , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_reliso03EA"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_absiso03EA"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_reliso04EA"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_absiso04EA"         , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_ip3d"               , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015 , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_sip3d"              , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.    , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_reliso04EA" , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_absiso04EA" , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25  , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_ip3d"       , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015 , prefix);
+  PlotUtil::plot1D("leptruthcategorySS_oneW_matched_sip3d"      , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.    , prefix);
+  }
 }
 
 //=====================================================================================
@@ -189,6 +369,8 @@ void doSMWWWSSmmAnalysis()
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
@@ -202,11 +384,13 @@ void doSMWWWSSeeAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 121, counter)                                )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) > 100.
                                                               || VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) <  80.)) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                                                            )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                                                            )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
-  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
+  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
   fillHistograms(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSee");
@@ -218,11 +402,13 @@ void doSMWWWSSemAnalysis()
   /// Cutflow
   int counter = 0;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55.                             )) return;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
-  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
+  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
   fillHistograms(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSem");
@@ -236,15 +422,18 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].p4.Pt() > 30.                                               )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][1].p4.Pt() > 30.                                               )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 105.      )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) >  65.      )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 110.                                                        )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  50.                                                        )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return false;
   return true;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 105.      )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) >  65.      )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MaxDEtajj(ana_data) < 2.5                                                          )) return false;
 }
 
 //______________________________________________________________________________________
@@ -288,6 +477,8 @@ void doSMWWW3L1SFOSAnalysis()
   float Mll = 0;
   if (abs(lep1.pdgId) == 11) Mll = VarUtil::Mass(lep1, lep2);
   if (abs(lep1.pdgId) == 13) Mll = VarUtil::Mass(lep0, lep1);
+
+  std::cout << __LINE__ << " " << Mll << std::endl;
 
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( (MZ - Mll > 35.) || (Mll - MZ > 20.) )) return;
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return;
@@ -338,9 +529,9 @@ void doSMWWW3L2SFOSAnalysis()
 bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
 {
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return false;
-  if      (type == 2) {                             if (!( is2SFOSEvent()                                     )) return false; }
-  else if (type == 1) {                             if (!( is1SFOSEvent()                                     )) return false; }
-  else if (type == 0) {                             if (!( is0SFOSEvent()                                     )) return false; }
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( totalcharge() == 1                                 )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( getNumSFOSPairs() == type                          )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
                                                            ana_data.lepcol["good3Llep"][0].p4 +
                                                            ana_data.lepcol["good3Llep"][1].p4 +
@@ -349,6 +540,20 @@ bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return false;
   return true;
+
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return false;
+//	  if      (type == 2) {                             if (!( is2SFOSEvent()                                     )) return false; }
+//	  else if (type == 1) {                             if (!( is1SFOSEvent()                                     )) return false; }
+//	  else if (type == 0) {                             if (!( is0SFOSEvent()                                     )) return false; }
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
+//	                                                           ana_data.lepcol["good3Llep"][0].p4 +
+//	                                                           ana_data.lepcol["good3Llep"][1].p4 +
+//	                                                           ana_data.lepcol["good3Llep"][2].p4,
+//	                                                           ana_data.met.p4)) > 2.5                            )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return false;
+//	  return true;
 }
 
 //=====================================================================================
@@ -385,9 +590,9 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 11      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( lepton.relIso03EA < 0.06      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
-  if (!( lepton.tightcharge == 2      )) return false;
+  if (!( lepton.tightcharge != 0      )) return false;
   return true;
 }
 
@@ -397,7 +602,7 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 13      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( lepton.relIso03EA < 0.06      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
 }
@@ -427,6 +632,12 @@ bool isGood3LMuon(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGoodRemovedBJet(ObjUtil::Jet& jet)
+{
   return true;
 }
 
@@ -482,6 +693,26 @@ bool isGoodWWWLooseBJet(ObjUtil::Jet& jet)
   if (!( jet.p4.Pt() > 20.          )) return false;
   if (!( Analyses::isLooseBJet(jet) )) return false;
   return true;
+}
+
+//______________________________________________________________________________________
+int totalcharge()
+{
+  return abs(mytree.lep_pdgId().at(0)/abs(mytree.lep_pdgId().at(0)) +
+             mytree.lep_pdgId().at(1)/abs(mytree.lep_pdgId().at(1)) +
+             mytree.lep_pdgId().at(2)/abs(mytree.lep_pdgId().at(2)));
+}
+
+//______________________________________________________________________________________
+int getNumSFOSPairs(){
+  /*Loops through pairs of entries in the lep_pdgId vector and counts how many have opposite value*/
+  int num_SFOS = 0;
+  for (int i = 0; i < (int) mytree.lep_pdgId().size(); i++){
+    for (int j = i+1; j < (int) mytree.lep_pdgId().size(); j++){
+      if (mytree.lep_pdgId().at(i) == -mytree.lep_pdgId().at(j)) num_SFOS++;
+    }
+  }
+  return num_SFOS;
 }
 
 //______________________________________________________________________________________
