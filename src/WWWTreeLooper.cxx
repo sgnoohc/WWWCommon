@@ -761,6 +761,7 @@ bool is0SFOSEvent()
 void printEventList(string prefix)
 {
   std::cout << prefix.c_str() << ": make_tuple(" << mytree.evt() << "," <<  mytree.run() << "," << mytree.lumi() << ")," << std::endl;
+  std::cout << prefix.c_str() << "HJ: " << mytree.run() << ":" <<  mytree.lumi() << ":" << mytree.evt() << std::endl;
 }
 
 //eof
