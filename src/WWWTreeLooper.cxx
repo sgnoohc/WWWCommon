@@ -130,9 +130,12 @@ void processWWWTreeEvent()
   /// run analysis
   ana_data.leptons = ana_data.lepcol["goodSSlep"];
   ana_data.jets = ana_data.jetcol["goodSSjet"];
+  LoopUtil::eventlistloaded = false;
   doSMWWWSSmmAnalysis();
   doSMWWWSSemAnalysis();
+  LoopUtil::eventlistloaded = true;
   doSMWWWSSeeAnalysis();
+  LoopUtil::eventlistloaded = false;
 
   ana_data.leptons = ana_data.lepcol["good3Llep"];
   ana_data.jets = ana_data.jetcol["good3Ljet"];
