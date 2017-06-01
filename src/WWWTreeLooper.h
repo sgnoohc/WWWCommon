@@ -16,6 +16,10 @@
 
 // C++
 #include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include <sstream>
 
 // Ditto
 #include "Ditto.h"
@@ -79,7 +83,7 @@ bool is2SFOSEvent();
 
 void printEventList(string prefix);
 
-bool failed(int uniqueID);
+bool failed(int cutid);
 
 #endif
 //eof

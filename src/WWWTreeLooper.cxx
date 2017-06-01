@@ -48,6 +48,9 @@ void beforeLoop(TChain* chain, TString output_name_, int nevents)
   // If output_name contains "_skimtree" remove it.
   LoopUtil::output_name.ReplaceAll("_skimtree", "");
 
+  // load event list to check
+  LoopUtil::loadEventListToCheck();
+
 }
 
 
@@ -421,22 +424,22 @@ void doSMWWWSSemAnalysis()
 //______________________________________________________________________________________
 bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
 {
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 100.                                                        )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  60.                                                        )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 100.                                                        )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  60.                                                        )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return failed(__COUNTER__);
   return true;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 105.      )) return false;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) >  65.      )) return false;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MaxDEtajj(ana_data) < 2.5                                                          )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 105.      )) return failed(__COUNTER__);
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) >  65.      )) return failed(__COUNTER__);
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MaxDEtajj(ana_data) < 2.5                                                          )) return failed(__COUNTER__);
 }
 
 //______________________________________________________________________________________
@@ -531,31 +534,31 @@ void doSMWWW3L2SFOSAnalysis()
 //______________________________________________________________________________________
 bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
 {
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( totalcharge() == 1                                 )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( getNumSFOSPairs() == type                          )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( totalcharge() == 1                                 )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( getNumSFOSPairs() == type                          )) return failed(__COUNTER__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
                                                            ana_data.lepcol["good3Llep"][0].p4 +
                                                            ana_data.lepcol["good3Llep"][1].p4 +
                                                            ana_data.lepcol["good3Llep"][2].p4,
-                                                           ana_data.met.p4)) > 2.5                            )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return false;
+                                                           ana_data.met.p4)) > 2.5                            )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return failed(__COUNTER__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return failed(__COUNTER__);
   return true;
 
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return false;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return false;
-//	  if      (type == 2) {                             if (!( is2SFOSEvent()                                     )) return false; }
-//	  else if (type == 1) {                             if (!( is1SFOSEvent()                                     )) return false; }
-//	  else if (type == 0) {                             if (!( is0SFOSEvent()                                     )) return false; }
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return failed(__COUNTER__);
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return failed(__COUNTER__);
+//	  if      (type == 2) {                             if (!( is2SFOSEvent()                                     )) return failed(__COUNTER__); }
+//	  else if (type == 1) {                             if (!( is1SFOSEvent()                                     )) return failed(__COUNTER__); }
+//	  else if (type == 0) {                             if (!( is0SFOSEvent()                                     )) return failed(__COUNTER__); }
 //	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
 //	                                                           ana_data.lepcol["good3Llep"][0].p4 +
 //	                                                           ana_data.lepcol["good3Llep"][1].p4 +
 //	                                                           ana_data.lepcol["good3Llep"][2].p4,
-//	                                                           ana_data.met.p4)) > 2.5                            )) return false;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return false;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return false;
+//	                                                           ana_data.met.p4)) > 2.5                            )) return failed(__COUNTER__);
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return failed(__COUNTER__);
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return failed(__COUNTER__);
 //	  return true;
 }
 
@@ -590,23 +593,23 @@ bool isGoodSSLepton(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isGoodSSElectron(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 11      )) return false;
-  if (!( lepton.p4.Pt() > 30.         )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
-  if (!( lepton.tightcharge != 0      )) return false;
+  if (!( abs(lepton.pdgId) == 11      )) return failed(__COUNTER__);
+  if (!( lepton.p4.Pt() > 30.         )) return failed(__COUNTER__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__COUNTER__);
+  if (!( lepton.relIso03EA < 0.1      )) return failed(__COUNTER__);
+  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__COUNTER__);
+  if (!( lepton.tightcharge != 0      )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodSSMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 13      )) return false;
-  if (!( lepton.p4.Pt() > 30.         )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( abs(lepton.pdgId) == 13      )) return failed(__COUNTER__);
+  if (!( lepton.p4.Pt() > 30.         )) return failed(__COUNTER__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__COUNTER__);
+  if (!( lepton.relIso03EA < 0.1      )) return failed(__COUNTER__);
+  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__COUNTER__);
   return true;
 }
 
@@ -619,22 +622,22 @@ bool isGood3LLepton(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isGood3LElectron(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 11      )) return false;
-  if (!( lepton.p4.Pt() > 20.         )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( abs(lepton.pdgId) == 11      )) return failed(__COUNTER__);
+  if (!( lepton.p4.Pt() > 20.         )) return failed(__COUNTER__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__COUNTER__);
+  if (!( lepton.relIso03EA < 0.1      )) return failed(__COUNTER__);
+  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGood3LMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( abs(lepton.pdgId) == 13      )) return false;
-  if (!( lepton.p4.Pt() > 20.         )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( abs(lepton.pdgId) == 13      )) return failed(__COUNTER__);
+  if (!( lepton.p4.Pt() > 20.         )) return failed(__COUNTER__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__COUNTER__);
+  if (!( lepton.relIso03EA < 0.1      )) return failed(__COUNTER__);
+  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__COUNTER__);
   return true;
 }
 
@@ -653,48 +656,48 @@ bool isVetoLepton(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isVetoElectron(ObjUtil::Lepton& lepton)
 {
-  if (!( lepton.p4.Pt() > 10.        )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
+  if (!( lepton.p4.Pt() > 10.        )) return failed(__COUNTER__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool isVetoMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( lepton.p4.Pt() > 10.        )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
+  if (!( lepton.p4.Pt() > 10.        )) return failed(__COUNTER__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodSSJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 30.        )) return false;
-  if (!( fabs(jet.p4.Eta()) < 2.5 )) return false;
+  if (!( jet.p4.Pt() > 30.        )) return failed(__COUNTER__);
+  if (!( fabs(jet.p4.Eta()) < 2.5 )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGood3LJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 25.        )) return false;
-  if (!( fabs(jet.p4.Eta()) < 4.5 )) return false;
+  if (!( jet.p4.Pt() > 25.        )) return failed(__COUNTER__);
+  if (!( fabs(jet.p4.Eta()) < 4.5 )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodWWWMediumBJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 25.           )) return false;
-  if (!( Analyses::isMediumBJet(jet) )) return false;
+  if (!( jet.p4.Pt() > 25.           )) return failed(__COUNTER__);
+  if (!( Analyses::isMediumBJet(jet) )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool isGoodWWWLooseBJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 20.          )) return false;
-  if (!( Analyses::isLooseBJet(jet) )) return false;
+  if (!( jet.p4.Pt() > 20.          )) return failed(__COUNTER__);
+  if (!( Analyses::isLooseBJet(jet) )) return failed(__COUNTER__);
   return true;
 }
 
@@ -726,34 +729,34 @@ bool is2SFOSEvent()
           abs(ana_data.lepcol["good3Llep"][2].pdgId) == 11) ||
          (abs(ana_data.lepcol["good3Llep"][0].pdgId) == 13  &&
           abs(ana_data.lepcol["good3Llep"][1].pdgId) == 13  &&
-          abs(ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return false;
+          abs(ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool is1SFOSEvent()
 {
-  if (!( !is2SFOSEvent()                                       )) return false;
+  if (!( !is2SFOSEvent()                                       )) return failed(__COUNTER__);
   if (!( (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
               ana_data.lepcol["good3Llep"][2].pdgId) == 11) ||
          (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return false;
+              ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return failed(__COUNTER__);
   return true;
 }
 
 //______________________________________________________________________________________
 bool is0SFOSEvent()
 {
-  if (!( !is2SFOSEvent()                                       )) return false;
-  if (!( !is1SFOSEvent()                                       )) return false;
+  if (!( !is2SFOSEvent()                                       )) return failed(__COUNTER__);
+  if (!( !is1SFOSEvent()                                       )) return failed(__COUNTER__);
   if (!( (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
               ana_data.lepcol["good3Llep"][2].pdgId) != 11) &&
          (abs(ana_data.lepcol["good3Llep"][0].pdgId +
               ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) != 13)    )) return false;
+              ana_data.lepcol["good3Llep"][2].pdgId) != 13)    )) return failed(__COUNTER__);
   return true;
 }
 
@@ -765,9 +768,13 @@ void printEventList(string prefix)
 }
 
 //______________________________________________________________________________________
-bool failed(int uniqueID)
+bool failed(int cutid)
 {
-
+  std::vector<int> eventid;
+  eventid.push_back(mytree.run());
+  eventid.push_back(mytree.lumi());
+  eventid.push_back(mytree.evt());
+  return LoopUtil::failed(eventid, cutid);
 }
 
 //eof
