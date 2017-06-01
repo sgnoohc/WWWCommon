@@ -592,7 +592,7 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.06      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
-  if (!( lepton.tightcharge == 2      )) return false;
+  if (!( lepton.tightcharge != 0      )) return false;
   return true;
 }
 
