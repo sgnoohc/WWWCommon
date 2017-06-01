@@ -426,7 +426,7 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 100.                                                        )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  60.                                                        )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) > 400.      )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return false;
   return true;
