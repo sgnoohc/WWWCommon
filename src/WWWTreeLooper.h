@@ -79,5 +79,7 @@ bool is2SFOSEvent();
 
 void printEventList(string prefix);
 
+bool failed(int uniqueID);
+
 #endif
 //eof

@@ -764,4 +764,10 @@ void printEventList(string prefix)
   std::cout << prefix.c_str() << "HJ: " << mytree.run() << ":" <<  mytree.lumi() << ":" << mytree.evt() << std::endl;
 }
 
+//______________________________________________________________________________________
+bool failed(int uniqueID)
+{
+
+}
+
 //eof
