@@ -83,7 +83,7 @@ bool is2SFOSEvent();
 
 void printEventList(string prefix);
 
-bool failed(int cutid);
+bool failed(float cutid);
 
 #endif
 //eof
