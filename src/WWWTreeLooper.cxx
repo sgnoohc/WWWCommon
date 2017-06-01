@@ -598,9 +598,9 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 13      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso04DB < 0.15     )) return false;
+//	  if (!( lepton.relIso04DB < 0.15     )) return false;
 //	  if (!( lepton.relIso03EA < 0.1      )) return false;
-//	  if (!( lepton.relIso03EA < 0.05      )) return false;
+  if (!( lepton.relIso03EA < 0.06      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
 }
