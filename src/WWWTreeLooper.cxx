@@ -604,7 +604,7 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
 {
   if (!( abs(lepton.pdgId) == 11      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
-//	  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.tightcharge != 0      )) return false;
