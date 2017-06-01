@@ -14,5 +14,6 @@ ditto_hadd \
   -b 'ww_2l2nu,ww_lnuqq,wpwp' -B 'WW' \
   -4 'zz_2l,zz_2q,zz_4l' '-$' 'ZZ' \
   -g 'ttg_,tth_,ttw_incl,ttz_incl' -G 'ttX' \
-  -k 'tzq_,stt_,sttw_,sttwll_' -K 'tX' \
+  -k 'stt_,sttw_,sttwll_' -K 'tX' \
   -d ${1}/sync_haddoutput -i ${1}/output/
+#	  -k 'tzq_,stt_,sttw_,sttwll_' -K 'tX' \

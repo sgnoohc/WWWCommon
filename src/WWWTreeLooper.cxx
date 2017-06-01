@@ -49,7 +49,7 @@ void beforeLoop(TChain* chain, TString output_name_, int nevents)
   LoopUtil::output_name.ReplaceAll("_skimtree", "");
 
   // load event list to check
-  LoopUtil::loadEventListToCheck();
+  //LoopUtil::loadEventListToCheck();
 
 }
 
@@ -223,7 +223,6 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   {
     if (lep0.isFromX == 1)
     {
-//	      if (lep1.isFromX == 4 || lep1.isFromX == 8)
       if (lep1.isFromX >= 4)
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
@@ -280,7 +279,6 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
     }
     else if (lep1.isFromX == 1)
     {
-//	      if (lep0.isFromX == 4 || lep0.isFromX == 8)
       if (lep0.isFromX >= 4)
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 0, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
@@ -376,8 +374,8 @@ bool doSMWWWSSmmAnalysis()
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons("SS");
+  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
@@ -397,8 +395,8 @@ bool doSMWWWSSeeAnalysis()
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
   fillHistograms(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons("SS");
+  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSee");
@@ -416,8 +414,8 @@ bool doSMWWWSSemAnalysis()
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
   fillHistograms(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons("SS");
+  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons("SS");
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSem");
