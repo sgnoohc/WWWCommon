@@ -434,7 +434,7 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return failed(__LINE__);
-  if (mytree.evt() == 827)
+  if (mytree.run() == 827)
   {
     std::cout << "here" << std::endl;
     std::cout << ana_data.jets.size() << std::endl;
