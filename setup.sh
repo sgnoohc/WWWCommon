@@ -10,3 +10,5 @@ source ~/ditto/bin/thisditto.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source setup_ditto $DIR
 #source ditto_include_core ~/cmstas/core
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export PATH=${DIR}/scripts:${PATH}
