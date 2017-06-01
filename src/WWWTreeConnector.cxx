@@ -17,8 +17,8 @@ ObjUtil::Leptons getLeptons(/*WWWTree& mytree*/)
     lepton.dz                      = mytree.lep_dz().at(ilep);
     lepton.ip3d                    = mytree.lep_ip3d().at(ilep);
     lepton.sip3d                   = mytree.lep_ip3d().at(ilep) / mytree.lep_ip3derr().at(ilep);;
-//	    lepton.tightcharge             = mytree.lep_3ch_agree().at(ilep);
     lepton.tightcharge             = mytree.lep_tightCharge().at(ilep);
+    lepton.tightcharge             = mytree.lep_3ch_agree().at(ilep);
     lepton.charge                  = mytree.lep_charge().at(ilep);
     lepton.pdgId                   = mytree.lep_pdgId().at(ilep);
     // Isolation related
