@@ -167,6 +167,7 @@ void afterLoop()
 void fillHistograms(string prefix)
 {
   HistUtil::fillMET(prefix, ana_data);
+  HistUtil::fillMjj(prefix, ana_data);
   HistUtil::fillLepMTs(prefix, ana_data);
   HistUtil::fillLepMlvjs(prefix, ana_data);
   HistUtil::fillLepSumPt(prefix, ana_data);
@@ -428,9 +429,9 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
 //	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) >  65.      )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 110.                                                        )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  50.                                                        )) return false;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MaxDEtajj(ana_data) < 2.5                                                          )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
+//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MaxDEtajj(ana_data) < 2.5                                                          )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return false;
   return true;
 }
