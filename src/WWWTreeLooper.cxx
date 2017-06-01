@@ -419,15 +419,14 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
 {
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].p4.Pt() > 30.                                               )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][1].p4.Pt() > 30.                                               )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 110.                                                        )) return false;
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  50.                                                        )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 100.                                                        )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  60.                                                        )) return false;
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) > 400.      )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return false;
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return false;
   return true;
@@ -590,7 +589,7 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 11      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.06      )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.tightcharge != 0      )) return false;
   return true;
@@ -602,7 +601,7 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 13      )) return false;
   if (!( lepton.p4.Pt() > 30.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.06      )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   return true;
 }
@@ -666,7 +665,7 @@ bool isVetoMuon(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isGoodSSJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 20.        )) return false;
+  if (!( jet.p4.Pt() > 30.        )) return false;
   if (!( fabs(jet.p4.Eta()) < 2.5 )) return false;
   return true;
 }
