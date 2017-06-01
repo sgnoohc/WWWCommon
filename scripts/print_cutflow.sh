@@ -4,3 +4,6 @@ if [ -z $1 ]; then
 fi
 ditto_plot -v SR_counts  -i $1/haddoutput/ -e '--print_cutflow --print_cutflow_bins 1,2,3,4,5,6' -d plots_$1/
 cat plots_$1/SMWWWAnalysis_SR_counts_*counter.csv
+
+ditto_plot -v SR_counts  -i $1/sync_haddoutput/ -e '--print_cutflow --print_cutflow_bins 1,2,3,4,5,6' -d plots_sync_hadd_$1/
+cat plots_sync_hadd_$1/SMWWWAnalysis_SR_counts_*counter.csv

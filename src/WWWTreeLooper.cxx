@@ -114,8 +114,12 @@ void processWWWTreeEvent()
     if (mytree.gen_ht() > 100.)
       return;
 
-  /// Set objects
+  // Set objects
   getObjects();
+
+  // Mia sample reweighting
+  if (LoopUtil::output_name.Contains("www_2l_ext1_mia_skim_1")) ana_data.wgt *= 0.066805*164800./(91900.+164800.);
+  if (LoopUtil::output_name.Contains("www_2l_mia_skim_1"))      ana_data.wgt *= 0.066805*91900./(91900.+164800.);
 
   /// selectObjects for analysis
   selectObjects();
