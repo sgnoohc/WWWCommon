@@ -208,7 +208,6 @@ bool doSMWWWSSmmAnalysis()
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
   fillHistograms("SS");
-  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
   return true;
@@ -255,9 +254,6 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
 {
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(ana_data.lepcol["goodSSlep"][1].ip3d) < 0.005                                          )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(ana_data.lepcol["goodSSlep"][0].ip3d) < 0.005                                          )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
@@ -427,12 +423,11 @@ bool isGoodSSLepton(ObjUtil::Lepton& lepton)
 bool isGoodSSElectron(ObjUtil::Lepton& lepton)
 {
   if (!( abs(lepton.pdgId) == 11      )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 20.         )) return failed(__LINE__);
+  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
   if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
   if (!( lepton.tightcharge != 0      )) return failed(__LINE__);
-//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
@@ -440,11 +435,10 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
 bool isGoodSSMuon(ObjUtil::Lepton& lepton)
 {
   if (!( abs(lepton.pdgId) == 13      )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 20.         )) return failed(__LINE__);
+  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
   if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
-//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
