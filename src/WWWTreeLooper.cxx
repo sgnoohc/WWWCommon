@@ -435,12 +435,6 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return failed(__LINE__);
-  if (mytree.run() == 827 && mytree.lumi() == 2 && mytree.evt() == 83)
-  {
-    std::cout << "here" << std::endl;
-    std::cout << ana_data.jets.size() << std::endl;
-    std::cout << VarUtil::MjjClosest(ana_data) << std::endl;
-  }
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 100.                                                        )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  60.                                                        )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return failed(__LINE__);
@@ -609,7 +603,7 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
   if (!( lepton.tightcharge != 0      )) return failed(__LINE__);
-//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
+  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
@@ -621,7 +615,7 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
   if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
-//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
+  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
