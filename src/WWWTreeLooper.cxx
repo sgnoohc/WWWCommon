@@ -375,20 +375,6 @@ bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return failed(__LINE__);
   return true;
-
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return failed(__LINE__);
-//	  if      (type == 2) {                             if (!( is2SFOSEvent()                                     )) return failed(__LINE__); }
-//	  else if (type == 1) {                             if (!( is1SFOSEvent()                                     )) return failed(__LINE__); }
-//	  else if (type == 0) {                             if (!( is0SFOSEvent()                                     )) return failed(__LINE__); }
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
-//	                                                           ana_data.lepcol["good3Llep"][0].p4 +
-//	                                                           ana_data.lepcol["good3Llep"][1].p4 +
-//	                                                           ana_data.lepcol["good3Llep"][2].p4,
-//	                                                           ana_data.met.p4)) > 2.5                            )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return failed(__LINE__);
-//	  return true;
 }
 
 //=====================================================================================
@@ -551,45 +537,6 @@ int getNumSFOSPairs(){
 }
 
 //______________________________________________________________________________________
-bool is2SFOSEvent()
-{
-  if (!( (abs(ana_data.lepcol["good3Llep"][0].pdgId) == 11  &&
-          abs(ana_data.lepcol["good3Llep"][1].pdgId) == 11  &&
-          abs(ana_data.lepcol["good3Llep"][2].pdgId) == 11) ||
-         (abs(ana_data.lepcol["good3Llep"][0].pdgId) == 13  &&
-          abs(ana_data.lepcol["good3Llep"][1].pdgId) == 13  &&
-          abs(ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool is1SFOSEvent()
-{
-  if (!( !is2SFOSEvent()                                       )) return false;
-  if (!( (abs(ana_data.lepcol["good3Llep"][0].pdgId +
-              ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) == 11) ||
-         (abs(ana_data.lepcol["good3Llep"][0].pdgId +
-              ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) == 13)    )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool is0SFOSEvent()
-{
-  if (!( !is2SFOSEvent()                                       )) return false;
-  if (!( !is1SFOSEvent()                                       )) return false;
-  if (!( (abs(ana_data.lepcol["good3Llep"][0].pdgId +
-              ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) != 11) &&
-         (abs(ana_data.lepcol["good3Llep"][0].pdgId +
-              ana_data.lepcol["good3Llep"][1].pdgId +
-              ana_data.lepcol["good3Llep"][2].pdgId) != 13)    )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
 void printEventList(string prefix)
 {
   std::cout << prefix.c_str() << ": make_tuple(" << mytree.evt() << "," <<  mytree.run() << "," << mytree.lumi() << ")," << std::endl;
@@ -632,6 +579,18 @@ void fillHistogramsTruthMatchingLeptons3L(string prefix)
 
   PlotUtil::plot1D("truth3L_nlep_isFromW", prompt, ana_data.wgt, ana_data.hist_db, "", 4, 0., 4., prefix);
 }
+
+
+
+
+//======================================================================================
+//======================================================================================
+//======================================================================================
+//======================================================================================
+//======================================================================================
+//======================================================================================
+
+
 
 //______________________________________________________________________________________
 void fillHistogramsTruthMatchingLeptons(string prefix)

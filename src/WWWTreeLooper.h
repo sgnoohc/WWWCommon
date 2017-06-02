@@ -78,9 +78,6 @@ bool isGoodWWWLooseBJet(ObjUtil::Jet& jet);
 
 int totalcharge();
 int getNumSFOSPairs();
-bool is0SFOSEvent();
-bool is1SFOSEvent();
-bool is2SFOSEvent();
 
 void printEventList(string prefix);
 
