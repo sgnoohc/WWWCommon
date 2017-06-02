@@ -457,12 +457,6 @@ bool isGood3LMuon(ObjUtil::Lepton& lepton)
 }
 
 //______________________________________________________________________________________
-bool isGoodRemovedBJet(ObjUtil::Jet& jet)
-{
-  return true;
-}
-
-//______________________________________________________________________________________
 bool isVetoLepton(ObjUtil::Lepton& lepton)
 {
   return isVetoElectron(lepton) || isVetoMuon(lepton);
