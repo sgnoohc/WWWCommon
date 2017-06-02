@@ -643,9 +643,9 @@ void fillHistogramsTruthMatchingLeptons3L(string prefix)
 
   // Counting number of prompt vs. fake
   int prompt = 0;
-  if (lep0.isFromX == (1 << 1) || lep0.isFromX == (1 << 2)) prompt++;
-  if (lep1.isFromX == (1 << 1) || lep1.isFromX == (1 << 2)) prompt++;
-  if (lep2.isFromX == (1 << 1) || lep2.isFromX == (1 << 2)) prompt++;
+  if (lep0.isFromX == (1 << 0) || lep0.isFromX == (1 << 1)) prompt++;
+  if (lep1.isFromX == (1 << 0) || lep1.isFromX == (1 << 1)) prompt++;
+  if (lep2.isFromX == (1 << 0) || lep2.isFromX == (1 << 1)) prompt++;
 
   PlotUtil::plot1D("truth3L_nlep_isFromW", prompt, ana_data.wgt, ana_data.hist_db, "", 4, 0., 4., prefix);
 }
