@@ -41,21 +41,23 @@ void loadWWWTreeEvent();
 void processWWWTreeEvent();
 void getObjects();
 
-void fillHistograms(string prefix);
-void fillHistogramsTruthMatchingLeptons(string prefix);
-void fillHistogramsTruthMatchingLeptons3L(string prefix);
-
 //-------------------------------------------------------------
+// Event selections
 
+// SS selections
+bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter);
 bool doSMWWWSSmmAnalysis();
 bool doSMWWWSSemAnalysis();
 bool doSMWWWSSeeAnalysis();
-bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter);
 
+// 3L selections
+bool passSMWWW3Lcommonselection(string prefix, int pdgidprod, int& counter);
 bool doSMWWW3L0SFOSAnalysis();
 bool doSMWWW3L1SFOSAnalysis();
 bool doSMWWW3L2SFOSAnalysis();
-bool passSMWWW3Lcommonselection(string prefix, int pdgidprod, int& counter);
+
+//-------------------------------------------------------------
+// Object selections
 
 void selectObjects();
 
@@ -76,12 +78,20 @@ bool isGood3LJet(ObjUtil::Jet& jet);
 bool isGoodWWWMediumBJet(ObjUtil::Jet& jet);
 bool isGoodWWWLooseBJet(ObjUtil::Jet& jet);
 
+//-------------------------------------------------------------
+// Utility functions
+
 int totalcharge();
 int getNumSFOSPairs();
-
 void printEventList(string prefix);
-
 bool failed(float cutid);
+
+//-------------------------------------------------------------
+// Histogramming functions
+
+void fillHistograms(string prefix);
+void fillHistogramsTruthMatchingLeptons3L(string prefix);
+void fillHistogramsTruthMatchingLeptons(string prefix);
 
 #endif
 //eof

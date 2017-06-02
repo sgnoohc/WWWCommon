@@ -170,24 +170,6 @@ void afterLoop()
   PrintUtil::exit();
 }
 
-//______________________________________________________________________________________
-void fillHistograms(string prefix)
-{
-  HistUtil::fillMET(prefix, ana_data);
-  HistUtil::fillMjj(prefix, ana_data);
-  HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
-  HistUtil::fillLepMTs(prefix, ana_data);
-  HistUtil::fillLepMlvjs(prefix, ana_data);
-  HistUtil::fillLepSumPt(prefix, ana_data);
-  HistUtil::fillLepRelIso03EA(prefix, ana_data);
-  HistUtil::fillLepAbsIso03EA(prefix, ana_data);
-  HistUtil::fillLepRelIso04EA(prefix, ana_data);
-  HistUtil::fillLepAbsIso04EA(prefix, ana_data);
-  HistUtil::fillLepIP(prefix, ana_data);
-  HistUtil::fillLepTightCharge(prefix, ana_data);
-  HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
-}
-
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
@@ -195,6 +177,29 @@ void fillHistograms(string prefix)
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
+
+
+//`````````````````````````````````````````````````````````````````````````````````````
+// Same sign selections
+//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+//______________________________________________________________________________________
+bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
+{
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 100.                                                        )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  60.                                                        )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return failed(__LINE__);
+  return true;
+}
 
 //______________________________________________________________________________________
 bool doSMWWWSSmmAnalysis()
@@ -210,6 +215,23 @@ bool doSMWWWSSmmAnalysis()
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
+  return true;
+}
+
+//______________________________________________________________________________________
+bool doSMWWWSSemAnalysis()
+{
+  /// Cutflow
+  int counter = 0;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
+
+  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
+  fillHistograms(__FUNCTION__);
+  fillHistograms("SS");
+  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
+  printEventList("SSem");
   return true;
 }
 
@@ -232,38 +254,26 @@ bool doSMWWWSSeeAnalysis()
   return true;
 }
 
-//______________________________________________________________________________________
-bool doSMWWWSSemAnalysis()
-{
-  /// Cutflow
-  int counter = 0;
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return failed(__LINE__);
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return failed(__LINE__);
-  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
-  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
-  fillHistograms(__FUNCTION__);
-  fillHistograms("SS");
-  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
-  printEventList("SSem");
-  return true;
-}
+
+//`````````````````````````````````````````````````````````````````````````````````````
+// Same sign selections
+//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 //______________________________________________________________________________________
-bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
+bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
 {
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) < 100.                                                        )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::MjjClosest(ana_data) >  60.                                                        )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( totalcharge() == 1                                 )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( getNumSFOSPairs() == type                          )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
+                                                           ana_data.lepcol["good3Llep"][0].p4 +
+                                                           ana_data.lepcol["good3Llep"][1].p4 +
+                                                           ana_data.lepcol["good3Llep"][2].p4,
+                                                           ana_data.met.p4)) > 2.5                            )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return failed(__LINE__);
   return true;
 }
 
@@ -357,23 +367,6 @@ bool doSMWWW3L2SFOSAnalysis()
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
   printEventList("3L2SFOS");
-  return true;
-}
-
-//______________________________________________________________________________________
-bool passSMWWW3Lcommonselection(string prefix, int type, int& counter)
-{
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 3                                 )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( totalcharge() == 1                                 )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( getNumSFOSPairs() == type                          )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
-                                                           ana_data.lepcol["good3Llep"][0].p4 +
-                                                           ana_data.lepcol["good3Llep"][1].p4 +
-                                                           ana_data.lepcol["good3Llep"][2].p4,
-                                                           ana_data.met.p4)) > 2.5                            )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return failed(__LINE__);
   return true;
 }
 
@@ -510,6 +503,14 @@ bool isGoodWWWLooseBJet(ObjUtil::Jet& jet)
   return true;
 }
 
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
+// Utility functions
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
+
 //______________________________________________________________________________________
 int totalcharge()
 {
@@ -545,6 +546,32 @@ bool failed(float cutid)
   eventid.push_back(mytree.lumi());
   eventid.push_back(mytree.evt());
   return LoopUtil::failed(eventid, cutid);
+}
+
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
+// Histogram functions
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
+
+//______________________________________________________________________________________
+void fillHistograms(string prefix)
+{
+  HistUtil::fillMET(prefix, ana_data);
+  HistUtil::fillMjj(prefix, ana_data);
+  HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
+  HistUtil::fillLepMTs(prefix, ana_data);
+  HistUtil::fillLepMlvjs(prefix, ana_data);
+  HistUtil::fillLepSumPt(prefix, ana_data);
+  HistUtil::fillLepRelIso03EA(prefix, ana_data);
+  HistUtil::fillLepAbsIso03EA(prefix, ana_data);
+  HistUtil::fillLepRelIso04EA(prefix, ana_data);
+  HistUtil::fillLepAbsIso04EA(prefix, ana_data);
+  HistUtil::fillLepIP(prefix, ana_data);
+  HistUtil::fillLepTightCharge(prefix, ana_data);
+  HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
 }
 
 //______________________________________________________________________________________
