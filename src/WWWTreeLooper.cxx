@@ -338,30 +338,51 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
   }
   else if (lep0.isFromX != 1 && lep1.isFromX != 1)
   {
-    PlotUtil::plot1D("lep0misid_reliso03EA" , lep0.relIso03EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lep0misid_absiso03EA" , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lep0misid_reliso04EA" , lep0.relIso04EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lep0misid_absiso04EA" , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lep0misid_ip3d"       , lep0.ip3d                    , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
-    PlotUtil::plot1D("lep0misid_sip3d"      , lep0.sip3d                   , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
-    PlotUtil::plot1D("lep1misid_reliso03EA" , lep1.relIso03EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lep1misid_absiso03EA" , lep1.relIso03EA*lep0.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lep1misid_reliso04EA" , lep1.relIso04EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lep1misid_absiso04EA" , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lep1misid_ip3d"       , lep1.ip3d                    , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
-    PlotUtil::plot1D("lep1misid_sip3d"      , lep1.sip3d                   , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
-    PlotUtil::plot1D("lepmisid_reliso03EA"  , lep0.relIso03EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lepmisid_absiso03EA"  , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lepmisid_reliso04EA"  , lep0.relIso04EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lepmisid_absiso04EA"  , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lepmisid_ip3d"        , lep0.ip3d                    , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
-    PlotUtil::plot1D("lepmisid_sip3d"       , lep0.sip3d                   , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
-    PlotUtil::plot1D("lepmisid_reliso03EA"  , lep1.relIso03EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lepmisid_absiso03EA"  , lep1.relIso03EA*lep0.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lepmisid_reliso04EA"  , lep1.relIso04EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
-    PlotUtil::plot1D("lepmisid_absiso04EA"  , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
-    PlotUtil::plot1D("lepmisid_ip3d"        , lep1.ip3d                    , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
-    PlotUtil::plot1D("lepmisid_sip3d"       , lep1.sip3d                   , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
+    if (lep0.isFromX == (1<<1)) PlotUtil::plot1D("lep0misid_mcmatch"    , 0 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<2)) PlotUtil::plot1D("lep0misid_mcmatch"    , 1 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<3)) PlotUtil::plot1D("lep0misid_mcmatch"    , 2 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<4)) PlotUtil::plot1D("lep0misid_mcmatch"    , 3 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<5)) PlotUtil::plot1D("lep0misid_mcmatch"    , 4 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<1)) PlotUtil::plot1D("lep1misid_mcmatch"    , 0 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<2)) PlotUtil::plot1D("lep1misid_mcmatch"    , 1 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<3)) PlotUtil::plot1D("lep1misid_mcmatch"    , 2 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<4)) PlotUtil::plot1D("lep1misid_mcmatch"    , 3 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<5)) PlotUtil::plot1D("lep1misid_mcmatch"    , 4 , ana_data.wgt    , ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<1)) PlotUtil::plot1D("lepmisid_mcmatch"    , 0 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<2)) PlotUtil::plot1D("lepmisid_mcmatch"    , 1 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<3)) PlotUtil::plot1D("lepmisid_mcmatch"    , 2 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<4)) PlotUtil::plot1D("lepmisid_mcmatch"    , 3 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep0.isFromX == (1<<5)) PlotUtil::plot1D("lepmisid_mcmatch"    , 4 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<1)) PlotUtil::plot1D("lepmisid_mcmatch"    , 0 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<2)) PlotUtil::plot1D("lepmisid_mcmatch"    , 1 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<3)) PlotUtil::plot1D("lepmisid_mcmatch"    , 2 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<4)) PlotUtil::plot1D("lepmisid_mcmatch"    , 3 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+    if (lep1.isFromX == (1<<5)) PlotUtil::plot1D("lepmisid_mcmatch"    , 4 , ana_data.wgt / 2., ana_data.hist_db , "" , 5 , 0. , 5.    , prefix);
+
+    PlotUtil::plot1D("lep0misid_reliso03EA" , lep0.relIso03EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lep0misid_absiso03EA" , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lep0misid_reliso04EA" , lep0.relIso04EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lep0misid_absiso04EA" , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lep0misid_ip3d"       , lep0.ip3d                    , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 0.015 , prefix);
+    PlotUtil::plot1D("lep0misid_sip3d"      , lep0.sip3d                   , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 4.    , prefix);
+    PlotUtil::plot1D("lep1misid_reliso03EA" , lep1.relIso03EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lep1misid_absiso03EA" , lep1.relIso03EA*lep0.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lep1misid_reliso04EA" , lep1.relIso04EA              , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lep1misid_absiso04EA" , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lep1misid_ip3d"       , lep1.ip3d                    , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 0.015 , prefix);
+    PlotUtil::plot1D("lep1misid_sip3d"      , lep1.sip3d                   , ana_data.wgt    , ana_data.hist_db , "" , 10000 , 0. , 4.    , prefix);
+    PlotUtil::plot1D("lepmisid_reliso03EA"  , lep0.relIso03EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lepmisid_absiso03EA"  , lep0.relIso03EA*lep0.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lepmisid_reliso04EA"  , lep0.relIso04EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lepmisid_absiso04EA"  , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lepmisid_ip3d"        , lep0.ip3d                    , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 0.015 , prefix);
+    PlotUtil::plot1D("lepmisid_sip3d"       , lep0.sip3d                   , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 4.    , prefix);
+    PlotUtil::plot1D("lepmisid_reliso03EA"  , lep1.relIso03EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lepmisid_absiso03EA"  , lep1.relIso03EA*lep0.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lepmisid_reliso04EA"  , lep1.relIso04EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 0.25  , prefix);
+    PlotUtil::plot1D("lepmisid_absiso04EA"  , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 7.25  , prefix);
+    PlotUtil::plot1D("lepmisid_ip3d"        , lep1.ip3d                    , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 0.015 , prefix);
+    PlotUtil::plot1D("lepmisid_sip3d"       , lep1.sip3d                   , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0. , 4.    , prefix);
   }
   else
   {
