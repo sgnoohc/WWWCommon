@@ -181,6 +181,9 @@ void fillHistograms(string prefix)
   HistUtil::fillLepSumPt(prefix, ana_data);
   HistUtil::fillLepRelIso03EA(prefix, ana_data);
   HistUtil::fillLepAbsIso03EA(prefix, ana_data);
+  HistUtil::fillLepRelIso04EA(prefix, ana_data);
+  HistUtil::fillLepAbsIso04EA(prefix, ana_data);
+  HistUtil::fillLepIP(prefix, ana_data);
   HistUtil::fillLepTightCharge(prefix, ana_data);
   HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
 }
