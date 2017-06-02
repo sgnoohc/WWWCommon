@@ -134,11 +134,11 @@ void processWWWTreeEvent()
   doSMWWWSSemAnalysis();
   doSMWWWSSeeAnalysis();
 
-  ana_data.leptons = ana_data.lepcol["good3Llep"];
-  ana_data.jets = ana_data.jetcol["good3Ljet"];
-  doSMWWW3L0SFOSAnalysis();
-  doSMWWW3L1SFOSAnalysis();
-  doSMWWW3L2SFOSAnalysis();
+//	  ana_data.leptons = ana_data.lepcol["good3Llep"];
+//	  ana_data.jets = ana_data.jetcol["good3Ljet"];
+//	  doSMWWW3L0SFOSAnalysis();
+//	  doSMWWW3L1SFOSAnalysis();
+//	  doSMWWW3L2SFOSAnalysis();
 
 }
 
@@ -376,10 +376,10 @@ bool doSMWWWSSmmAnalysis()
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
   /// Select object containers for plotting
-  fillHistograms(__FUNCTION__);
-  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
-  fillHistogramsTruthMatchingLeptons("SS");
-  fillHistograms("SS");
+//	  fillHistograms(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons("SS");
+//	  fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
   return true;
@@ -397,10 +397,10 @@ bool doSMWWWSSeeAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
-  fillHistograms(__FUNCTION__);
-  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
-  fillHistogramsTruthMatchingLeptons("SS");
-  fillHistograms("SS");
+//	  fillHistograms(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons("SS");
+//	  fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSee");
   return true;
@@ -416,10 +416,10 @@ bool doSMWWWSSemAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
-  fillHistograms(__FUNCTION__);
-  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
-  fillHistogramsTruthMatchingLeptons("SS");
-  fillHistograms("SS");
+//	  fillHistograms(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+//	  fillHistogramsTruthMatchingLeptons("SS");
+//	  fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSem");
   return true;
@@ -606,9 +606,10 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 11      )) return failed(__LINE__);
   if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.1      )) return failed(__LINE__);
+  if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
   if (!( lepton.tightcharge != 0      )) return failed(__LINE__);
+//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
@@ -618,8 +619,9 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( abs(lepton.pdgId) == 13      )) return failed(__LINE__);
   if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.1      )) return failed(__LINE__);
+  if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
+//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
