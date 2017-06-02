@@ -603,7 +603,7 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
   if (!( lepton.tightcharge != 0      )) return failed(__LINE__);
-  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
+//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
@@ -615,7 +615,7 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
   if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
   if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
-  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
+//	  if (!( fabs(lepton.sip3d) < 3       )) return failed(__LINE__);
   return true;
 }
 
