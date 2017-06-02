@@ -280,6 +280,18 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
         PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
         PlotUtil::plot1D("ngentau", mytree.ngenTau(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
         PlotUtil::plot1D("nTaus20", mytree.nTaus20(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
+        PlotUtil::plot1D("misidlep1isfromnothing_reliso03EA" , lep1.relIso03EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlep1isfromnothing_absiso03EA" , lep1.relIso03EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlep1isfromnothing_reliso04EA" , lep1.relIso04EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlep1isfromnothing_absiso04EA" , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlep1isfromnothing_ip3d"       , lep1.ip3d                    , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("misidlep1isfromnothing_sip3d"      , lep1.sip3d                   , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_reliso03EA" , lep1.relIso03EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_absiso03EA" , lep1.relIso03EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_reliso04EA" , lep1.relIso04EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_absiso04EA" , lep1.relIso04EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_ip3d"       , lep1.ip3d                    , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_sip3d"      , lep1.sip3d                   , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
       }
     }
     else if (lep1.isFromX == 1)
@@ -337,6 +349,18 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
         PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
         PlotUtil::plot1D("ngentau", mytree.ngenTau(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
         PlotUtil::plot1D("nTaus20", mytree.nTaus20(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
+        PlotUtil::plot1D("misidlep0isfromnothing_reliso03EA" , lep0.relIso03EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlep0isfromnothing_absiso03EA" , lep0.relIso03EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlep0isfromnothing_reliso04EA" , lep0.relIso04EA              , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlep0isfromnothing_absiso04EA" , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlep0isfromnothing_ip3d"       , lep0.ip3d                    , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("misidlep0isfromnothing_sip3d"      , lep0.sip3d                   , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_reliso03EA" , lep0.relIso03EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_absiso03EA" , lep0.relIso03EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_reliso04EA" , lep0.relIso04EA              , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_absiso04EA" , lep0.relIso04EA*lep1.p4.Pt() , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 7.25 , prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_ip3d"       , lep0.ip3d                    , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 0.015, prefix);
+        PlotUtil::plot1D("misidlepisfromnothing_sip3d"      , lep0.sip3d                   , ana_data.wgt/2. , ana_data.hist_db , "" , 10000 , 0.  , 4.   , prefix);
       }
     }
   }
