@@ -397,8 +397,8 @@ bool doSMWWWSSeeAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
-//	  fillHistograms(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
+  fillHistograms(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons(__FUNCTION__);
 //	  fillHistogramsTruthMatchingLeptons("SS");
 //	  fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
