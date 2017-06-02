@@ -278,6 +278,8 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
       else
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+        PlotUtil::plot1D("ngentau", mytree.ngenTau(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
+        PlotUtil::plot1D("nTaus20", mytree.nTaus20(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
       }
     }
     else if (lep1.isFromX == 1)
@@ -333,6 +335,8 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
       else
       {
         PlotUtil::plot1D("leptruthcategorySS_oneW", 2, ana_data.wgt, ana_data.hist_db, "", 3, 0., 3., prefix);
+        PlotUtil::plot1D("ngentau", mytree.ngenTau(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
+        PlotUtil::plot1D("nTaus20", mytree.nTaus20(), ana_data.wgt, ana_data.hist_db, "", 5, 0., 5., prefix);
       }
     }
   }
