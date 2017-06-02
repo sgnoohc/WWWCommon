@@ -291,6 +291,7 @@ bool doSMWWW3L0SFOSAnalysis()
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 3);
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
+  fillHistogramsTruthMatchingLeptons3L(__FUNCTION__);
   printEventList("3L0SFOS");
   return true;
 }
@@ -605,6 +606,50 @@ bool failed(float cutid)
   eventid.push_back(mytree.lumi());
   eventid.push_back(mytree.evt());
   return LoopUtil::failed(eventid, cutid);
+}
+
+//______________________________________________________________________________________
+void fillHistogramsTruthMatchingLeptons3L(string prefix)
+{
+  /// Lepton truth matching category information
+  /// Using isFromX fill the category
+
+  // If we don't have two leptons exit
+  if (ana_data.lepcol["goodSSlep"].size() != 3)
+    return;
+
+  // Read the three leptons
+  ObjUtil::Lepton lep0 = ana_data.lepcol["good3Llep"][0];
+  ObjUtil::Lepton lep1 = ana_data.lepcol["good3Llep"][1];
+  ObjUtil::Lepton lep2 = ana_data.lepcol["good3Llep"][2];
+
+  // Fill histogram based on truth matching
+  if (lep0.isFromX == (1 << 1)) PlotUtil::plot1D("truth3L_lep0_isFromX", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep0.isFromX == (1 << 2)) PlotUtil::plot1D("truth3L_lep0_isFromX", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep0.isFromX == (1 << 3)) PlotUtil::plot1D("truth3L_lep0_isFromX", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep0.isFromX == (1 << 4)) PlotUtil::plot1D("truth3L_lep0_isFromX", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep0.isFromX == (1 << 5)) PlotUtil::plot1D("truth3L_lep0_isFromX", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep0.isFromX == (1 << 6)) PlotUtil::plot1D("truth3L_lep0_isFromX", 6, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep1.isFromX == (1 << 1)) PlotUtil::plot1D("truth3L_lep1_isFromX", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep1.isFromX == (1 << 2)) PlotUtil::plot1D("truth3L_lep1_isFromX", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep1.isFromX == (1 << 3)) PlotUtil::plot1D("truth3L_lep1_isFromX", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep1.isFromX == (1 << 4)) PlotUtil::plot1D("truth3L_lep1_isFromX", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep1.isFromX == (1 << 5)) PlotUtil::plot1D("truth3L_lep1_isFromX", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep1.isFromX == (1 << 6)) PlotUtil::plot1D("truth3L_lep1_isFromX", 6, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep2.isFromX == (1 << 1)) PlotUtil::plot1D("truth3L_lep2_isFromX", 1, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep2.isFromX == (1 << 2)) PlotUtil::plot1D("truth3L_lep2_isFromX", 2, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep2.isFromX == (1 << 3)) PlotUtil::plot1D("truth3L_lep2_isFromX", 3, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep2.isFromX == (1 << 4)) PlotUtil::plot1D("truth3L_lep2_isFromX", 4, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep2.isFromX == (1 << 5)) PlotUtil::plot1D("truth3L_lep2_isFromX", 5, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+  if (lep2.isFromX == (1 << 6)) PlotUtil::plot1D("truth3L_lep2_isFromX", 6, ana_data.wgt, ana_data.hist_db, "", 6, 0., 6., prefix);
+
+  // Counting number of prompt vs. fake
+  int prompt = 0;
+  if (lep0.isFromX == (1 << 1) || lep0.isFromX == (1 << 2)) prompt++;
+  if (lep1.isFromX == (1 << 1) || lep1.isFromX == (1 << 2)) prompt++;
+  if (lep2.isFromX == (1 << 1) || lep2.isFromX == (1 << 2)) prompt++;
+
+  PlotUtil::plot1D("truth3L_nlep_isFromW", prompt, ana_data.wgt, ana_data.hist_db, "", 4, 0., 4., prefix);
 }
 
 //______________________________________________________________________________________

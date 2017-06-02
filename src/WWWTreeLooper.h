@@ -43,6 +43,7 @@ void getObjects();
 
 void fillHistograms(string prefix);
 void fillHistogramsTruthMatchingLeptons(string prefix);
+void fillHistogramsTruthMatchingLeptons3L(string prefix);
 
 //-------------------------------------------------------------
 
