@@ -142,6 +142,7 @@ void processWWWTreeEvent()
       }
       else
       {
+        HistUtil::fillCounter("TotalWs", ana_data, nW+nWfromH);
         HistUtil::fillCounter("Hdecay", ana_data, 1);
         return;
       }
