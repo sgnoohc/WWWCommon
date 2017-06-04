@@ -59,3 +59,4 @@ zz_2l2q_powheg_skim_1.root
 zz_2q2n_amcnlo_skim_1.root
 zz_4l_powheg_skim_1.root
 zzz_incl_amcnlo_skim_1.root
+vh_nonbb_amcnlo_skim_1.root

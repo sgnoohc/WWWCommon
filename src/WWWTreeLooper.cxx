@@ -117,6 +117,25 @@ void processWWWTreeEvent()
     if (mytree.gen_ht() > 100.)
       return;
 
+  // VH Non-bb sample counting
+  bool isHWW = false;
+  if (LoopUtil::output_name.Contains("vh_non"))
+  {
+    for (unsigned int igen = 0; igen < mytree.genPart_pdgId().size(); ++igen)
+    {
+      if (mytree.genPart_motherId().at(igen) == 25)
+        if (abs(mytree.genPart_pdgId().at(igen)) == 24)
+          isHWW = true;
+    }
+    // if not HWW skip
+    if (!isHWW)
+    {
+      HistUtil::fillCounter("Hdecay", ana_data, 0);
+      return;
+    }
+    HistUtil::fillCounter("Hdecay", ana_data, 1);
+  }
+
   // Set objects
   getObjects();
 
