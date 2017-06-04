@@ -118,22 +118,46 @@ void processWWWTreeEvent()
       return;
 
   // VH Non-bb sample counting
-  bool isHWW = false;
+  int nW = 0;
+  int nZ = 0;
+  int nWfromH = 0;
+  int nZfromH = 0;
   if (LoopUtil::output_name.Contains("vh_non"))
   {
     for (unsigned int igen = 0; igen < mytree.genPart_pdgId().size(); ++igen)
     {
-      if (mytree.genPart_motherId().at(igen) == 25)
-        if (abs(mytree.genPart_pdgId().at(igen)) == 24)
-          isHWW = true;
+      if (abs(mytree.genPart_pdgId().at(igen)) == 24 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) != 25) nW++;
+      if (abs(mytree.genPart_pdgId().at(igen)) == 23 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) != 25) nZ++;
+      if (abs(mytree.genPart_pdgId().at(igen)) == 24 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) == 25) nWfromH++;
+      if (abs(mytree.genPart_pdgId().at(igen)) == 23 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) == 25) nZfromH++;
     }
-    // if not HWW skip
-    if (!isHWW)
+
+    // WH
+    if (nW == 1)
     {
-      HistUtil::fillCounter("Hdecay", ana_data, 0);
+      HistUtil::fillCounter("Hprod", ana_data, 1);
+      if (nWfromH == 2)
+      {
+        HistUtil::fillCounter("Hdecay", ana_data, 0);
+      }
+      else
+      {
+        HistUtil::fillCounter("Hdecay", ana_data, 1);
+        return;
+      }
+    }
+    // ZH
+    else if (nZ == 1)
+    {
+      HistUtil::fillCounter("Hprod", ana_data, 2);
       return;
     }
-    HistUtil::fillCounter("Hdecay", ana_data, 1);
+    // unknown
+    else
+    {
+      HistUtil::fillCounter("Hprod", ana_data, 0);
+      return;
+    }
   }
 
   // Set objects
