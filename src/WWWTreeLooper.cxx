@@ -604,6 +604,7 @@ bool failed(float cutid)
 void fillHistograms(string prefix)
 {
   HistUtil::fillMET(prefix, ana_data);
+  HistUtil::fillLepMljs(prefix, ana_data);
   HistUtil::fillMjj(prefix, ana_data);
   HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
   HistUtil::fillLepMTs(prefix, ana_data);

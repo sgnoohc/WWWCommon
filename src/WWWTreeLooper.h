@@ -56,6 +56,9 @@ bool doSMWWW3L0SFOSAnalysis();
 bool doSMWWW3L1SFOSAnalysis();
 bool doSMWWW3L2SFOSAnalysis();
 
+// SS WWW* selections
+bool doSMWWWStarSSmmAnalysis();
+
 //-------------------------------------------------------------
 // Object selections
 
