@@ -6,7 +6,6 @@ fi
 ditto_hadd \
   -1 'www_2l' '-!' www \
   -2 'vh_nonbb' '-@' vh \
-  -3 'vh_nonbb,www_2l' '-#' wwwboth \
   -y 'ttbar_1l,wjets_' -Y 'tt1l-W' \
   -o 'dy_,zz_2l,zz_2q,zz_4l' -O 'Z-ZZ' \
   -r 'wz_1l,wz_3l,wz_ln' -R 'WZ' \
@@ -16,3 +15,4 @@ ditto_hadd \
   -d ${1}/haddoutput -i ${1}/output/
 
 #	  -2 'www_2l' '-@' wwwmia \
+#	  -3 'vh_nonbb,www_2l' '-#' wwwboth \
