@@ -254,7 +254,6 @@ bool doSMWWWSSmmAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
-  /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
   fillHistograms("SS");
   HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
@@ -411,6 +410,22 @@ bool doSMWWW3L2SFOSAnalysis()
   /// Select object containers for plotting
   fillHistograms(__FUNCTION__);
   printEventList("3L2SFOS");
+  return true;
+}
+
+bool doSMWWWStarSSmmAnalysis()
+{
+  /// Cutflow
+  int counter = 0;
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 169, counter) )) return failed(__LINE__);
+  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
+
+  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
+  /// Select object containers for plotting
+  fillHistograms(__FUNCTION__);
+  fillHistograms("SS");
+  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
+  printEventList("SSmm");
   return true;
 }
 
@@ -604,19 +619,20 @@ bool failed(float cutid)
 void fillHistograms(string prefix)
 {
   HistUtil::fillMET(prefix, ana_data);
-  HistUtil::fillLepMljs(prefix, ana_data);
   HistUtil::fillMjj(prefix, ana_data);
-  HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
+  HistUtil::fillLeps(prefix, ana_data);
   HistUtil::fillLepMTs(prefix, ana_data);
-  HistUtil::fillLepMlvjs(prefix, ana_data);
   HistUtil::fillLepSumPt(prefix, ana_data);
-  HistUtil::fillLepRelIso03EA(prefix, ana_data);
-  HistUtil::fillLepAbsIso03EA(prefix, ana_data);
-  HistUtil::fillLepRelIso04EA(prefix, ana_data);
-  HistUtil::fillLepAbsIso04EA(prefix, ana_data);
-  HistUtil::fillLepIP(prefix, ana_data);
-  HistUtil::fillLepTightCharge(prefix, ana_data);
-  HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
+  HistUtil::fillLepMljs(prefix, ana_data);
+//	  HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
+//	  HistUtil::fillLepMlvjs(prefix, ana_data);
+//	  HistUtil::fillLepRelIso03EA(prefix, ana_data);
+//	  HistUtil::fillLepAbsIso03EA(prefix, ana_data);
+//	  HistUtil::fillLepRelIso04EA(prefix, ana_data);
+//	  HistUtil::fillLepAbsIso04EA(prefix, ana_data);
+//	  HistUtil::fillLepIP(prefix, ana_data);
+//	  HistUtil::fillLepTightCharge(prefix, ana_data);
+//	  HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
 }
 
 //______________________________________________________________________________________
