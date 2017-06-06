@@ -41,13 +41,6 @@ void beforeLoop(TChain* chain, TString output_name_, int nevents)
   output_name_.ReplaceAll(".root", "");
   LoopUtil::output_name = output_name_;
 
-  // If output_name does not contain "_skimtree" then skim the event
-  //if (!output_name.Contains("_skimtree"))
-  //  LoopUtil::setDoSkim();
-
-  // If output_name contains "_skimtree" remove it.
-  LoopUtil::output_name.ReplaceAll("_skimtree", "");
-
   // load event list to check
   //LoopUtil::loadEventListToCheck();
 
@@ -64,10 +57,6 @@ void loop()
   {
 
     initWWWTree();
-
-    // I am assuming I only run one file at a time
-    // NOTE: Later I should probably update this to be more general
-    if (LoopUtil::doskim) TreeUtil::createSkimTree((LoopUtil::output_name+"_skimtree.root").Data());
 
     // Loop over the TTree
     while (LoopUtil::nextEvent())
@@ -93,112 +82,31 @@ void initWWWTree()
 {
   // Init the Class
   mytree.Init(LoopUtil::getCurrentTTree());
-  //if (LoopUtil::doskim) mytree.LoadAllBranches();
 }
 
 //______________________________________________________________________________________
 void loadWWWTreeEvent()
 {
-  //mytree.LoadTree(LoopUtil::getCurrentTTreeEventIndex());
   mytree.GetEntry(LoopUtil::getCurrentTTreeEventIndex());
 }
 
 //______________________________________________________________________________________
 void processWWWTreeEvent()
 {
+  // W/Zjets has HT stitching.
+  // VHNonbb sample needs to be filtered to accept only WHWWW
+  if (!passGenLevelEventFilter())
+    return;
 
-  // HT filter stitching for DY
-  if (LoopUtil::output_name.Contains("dy_m50") && !LoopUtil::output_name.Contains("_ht"))
-    if (mytree.gen_ht() > 100.)
-      return;
-
-  // HT filter stitching for wjets
-  if (LoopUtil::output_name.Contains("wjets_incl"))
-    if (mytree.gen_ht() > 100.)
-      return;
-
-  // VH Non-bb sample counting
-  int nW = 0;
-  int nZ = 0;
-  int nWfromH = 0;
-  int nZfromH = 0;
-  if (LoopUtil::output_name.Contains("vh_non"))
-  {
-    for (unsigned int igen = 0; igen < mytree.genPart_pdgId().size(); ++igen)
-    {
-      if (abs(mytree.genPart_pdgId().at(igen)) == 24 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) != 25) nW++;
-      if (abs(mytree.genPart_pdgId().at(igen)) == 23 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) != 25) nZ++;
-      if (abs(mytree.genPart_pdgId().at(igen)) == 24 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) == 25) nWfromH++;
-      if (abs(mytree.genPart_pdgId().at(igen)) == 23 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) == 25) nZfromH++;
-    }
-
-    // WH
-    if (nW == 1)
-    {
-      HistUtil::fillCounter("Hprod", ana_data, 1);
-      if (nWfromH == 2)
-      {
-        HistUtil::fillCounter("Hdecay", ana_data, 0);
-      }
-      else
-      {
-        HistUtil::fillCounter("TotalWs", ana_data, nW+nWfromH);
-        HistUtil::fillCounter("Hdecay", ana_data, 1);
-        return;
-      }
-    }
-    // ZH
-    else if (nZ == 1)
-    {
-      HistUtil::fillCounter("Hprod", ana_data, 2);
-      return;
-    }
-    // unknown
-    else
-    {
-      HistUtil::fillCounter("Hprod", ana_data, 0);
-      return;
-    }
-  }
-
-  // Set objects
+  // Get objects
   getObjects();
 
-  // Mia sample reweighting
-  if (LoopUtil::output_name.Contains("www_2l_ext1_mia_skim_1")) ana_data.wgt *= 0.066805*164800./(91900.+164800.);
-  if (LoopUtil::output_name.Contains("www_2l_mia_skim_1"))      ana_data.wgt *= 0.066805*91900./(91900.+164800.);
-
-  /// selectObjects for analysis
+  // selectObjects for analysis
   selectObjects();
 
-  /// run analysis
-  ana_data.leptons = ana_data.lepcol["goodSSlep"];
-  ana_data.jets = ana_data.jetcol["goodSSjet"];
-  doSMWWWSSmmAnalysis();
-  doSMWWWSSemAnalysis();
-  doSMWWWSSeeAnalysis();
+  // run analysis
+  runSignalRegions();
 
-  ana_data.leptons = ana_data.lepcol["good3Llep"];
-  ana_data.jets = ana_data.jetcol["good3Ljet"];
-  doSMWWW3L0SFOSAnalysis();
-  doSMWWW3L1SFOSAnalysis();
-  doSMWWW3L2SFOSAnalysis();
-
-}
-
-//______________________________________________________________________________________
-void getObjects()
-{
-  /// Get objects
-  ana_data.lepcol["goodSSlep"] = getLeptons();
-  ana_data.lepcol["good3Llep"] = getLeptons();
-  ana_data.jetcol["goodSSjet"] = getJets();
-  ana_data.jetcol["good3Ljet"] = getJets();
-  ana_data.jetcol["medbjet"] = getJets();
-  ana_data.jetcol["lssbjet"] = getJets();
-  ana_data.jetcol["rmvdjet"] = getRemovedJets();
-  ana_data.met = getMET();
-  ana_data.wgt = mytree.evt_scale1fb();
 }
 
 //______________________________________________________________________________________
@@ -214,6 +122,166 @@ void afterLoop()
   PrintUtil::exit();
 }
 
+
+
+
+
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
+// Object selections
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
+
+//______________________________________________________________________________________
+void getObjects()
+{
+  /// Get objects
+  ana_data.lepcol["goodSSlep"] = getLeptons();
+  ana_data.lepcol["good3Llep"] = getLeptons();
+  ana_data.jetcol["goodSSjet"] = getJets();
+  ana_data.jetcol["good3Ljet"] = getJets();
+  ana_data.jetcol["medbjet"] = getJets();
+  ana_data.jetcol["lssbjet"] = getJets();
+  ana_data.jetcol["rmvdjet"] = getRemovedJets();
+  ana_data.met = getMET();
+  ana_data.wgt = mytree.evt_scale1fb();
+
+  // To hadd 2lep WWW samples reweight each files for maximal statistics
+  reweightWWW2lepFilteredSample();
+}
+
+//______________________________________________________________________________________
+void selectObjects()
+{
+  Analyses::selectObjs<ObjUtil::Lepton>(ana_data.lepcol["goodSSlep"] , isGoodSSLepton);
+  Analyses::selectObjs<ObjUtil::Lepton>(ana_data.lepcol["good3Llep"] , isGood3LLepton);
+  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["goodSSjet"] , isGoodSSJet);
+  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["good3Ljet"] , isGood3LJet);
+  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["medbjet"]   , isGoodWWWMediumBJet);
+  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["lssbjet"]   , isGoodWWWLooseBJet);
+
+  /// Sort by abs(pdgId) descending order
+  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_abspdgId<ObjUtil::Lepton>);
+}
+
+//______________________________________________________________________________________
+bool isGoodSSLepton(ObjUtil::Lepton& lepton)
+{
+  return isGoodSSElectron(lepton) || isGoodSSMuon(lepton);
+}
+
+//______________________________________________________________________________________
+bool isGoodSSElectron(ObjUtil::Lepton& lepton)
+{
+  if (!( abs(lepton.pdgId) == 11      )) return failed(__LINE__);
+  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
+  if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
+  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
+  if (!( lepton.tightcharge != 0      )) return failed(__LINE__);
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGoodSSMuon(ObjUtil::Lepton& lepton)
+{
+  if (!( abs(lepton.pdgId) == 13      )) return failed(__LINE__);
+  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
+  if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
+  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGood3LLepton(ObjUtil::Lepton& lepton)
+{
+  return isGood3LElectron(lepton) || isGood3LMuon(lepton);
+}
+
+//______________________________________________________________________________________
+bool isGood3LElectron(ObjUtil::Lepton& lepton)
+{
+  if (!( abs(lepton.pdgId) == 11      )) return false;
+  if (!( lepton.p4.Pt() > 20.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGood3LMuon(ObjUtil::Lepton& lepton)
+{
+  if (!( abs(lepton.pdgId) == 13      )) return false;
+  if (!( lepton.p4.Pt() > 20.         )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
+  if (!( lepton.relIso03EA < 0.1      )) return false;
+  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isVetoLepton(ObjUtil::Lepton& lepton)
+{
+  return isVetoElectron(lepton) || isVetoMuon(lepton);
+}
+
+//______________________________________________________________________________________
+bool isVetoElectron(ObjUtil::Lepton& lepton)
+{
+  if (!( lepton.p4.Pt() > 10.        )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isVetoMuon(ObjUtil::Lepton& lepton)
+{
+  if (!( lepton.p4.Pt() > 10.        )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGoodSSJet(ObjUtil::Jet& jet)
+{
+  if (!( jet.p4.Pt() > 30.        )) return false;
+  if (!( fabs(jet.p4.Eta()) < 2.5 )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGood3LJet(ObjUtil::Jet& jet)
+{
+  if (!( jet.p4.Pt() > 25.        )) return false;
+  if (!( fabs(jet.p4.Eta()) < 4.5 )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGoodWWWMediumBJet(ObjUtil::Jet& jet)
+{
+  if (!( jet.p4.Pt() > 25.           )) return false;
+  if (!( Analyses::isMediumBJet(jet) )) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool isGoodWWWLooseBJet(ObjUtil::Jet& jet)
+{
+  if (!( jet.p4.Pt() > 20.          )) return false;
+  if (!( Analyses::isLooseBJet(jet) )) return false;
+  return true;
+}
+
+
+
+
+
+
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
@@ -221,6 +289,23 @@ void afterLoop()
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
+
+
+//______________________________________________________________________________________
+void runSignalRegions()
+{
+  ana_data.leptons = ana_data.lepcol["goodSSlep"];
+  ana_data.jets    = ana_data.jetcol["goodSSjet"];
+  doSMWWWSSmmAnalysis();
+  doSMWWWSSemAnalysis();
+  doSMWWWSSeeAnalysis();
+
+  ana_data.leptons = ana_data.lepcol["good3Llep"];
+  ana_data.jets    = ana_data.jetcol["good3Ljet"];
+  doSMWWW3L0SFOSAnalysis();
+  doSMWWW3L1SFOSAnalysis();
+  doSMWWW3L2SFOSAnalysis();
+}
 
 
 //`````````````````````````````````````````````````````````````````````````````````````
@@ -232,8 +317,8 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
 {
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSlep"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
-  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSlep"][1].p4.Pt() > 20.                                               )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
+  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][1].p4.Pt() > 30.                                               )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
   HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
@@ -255,10 +340,11 @@ bool doSMWWWSSmmAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 169, counter) )) return failed(__LINE__);
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
+  /// Histogramming
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 0);
+  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   fillHistograms(__FUNCTION__);
   fillHistograms("SS");
-  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSmm");
   return true;
 }
@@ -272,10 +358,11 @@ bool doSMWWWSSemAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return failed(__LINE__);
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
+  /// Histogramming
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 1);
+  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   fillHistograms(__FUNCTION__);
   fillHistograms("SS");
-  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSem");
   return true;
 }
@@ -291,10 +378,11 @@ bool doSMWWWSSeeAnalysis()
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                                                            )) return failed(__LINE__);
   HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
 
+  /// Histogramming
   HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 2);
+  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   fillHistograms(__FUNCTION__);
   fillHistograms("SS");
-  HistUtil::fillCounter("SMWWWAnalysis_SS", ana_data, 0);
   printEventList("SSee");
   return true;
 }
@@ -302,7 +390,7 @@ bool doSMWWWSSeeAnalysis()
 
 
 //`````````````````````````````````````````````````````````````````````````````````````
-// Same sign selections
+// 3 Lepton regions
 //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 //______________________________________________________________________________________
@@ -415,6 +503,7 @@ bool doSMWWW3L2SFOSAnalysis()
   return true;
 }
 
+//______________________________________________________________________________________
 bool doSMWWWStarSSmmAnalysis()
 {
   /// Cutflow
@@ -431,140 +520,10 @@ bool doSMWWWStarSSmmAnalysis()
   return true;
 }
 
-//=====================================================================================
-//=====================================================================================
-//=====================================================================================
-// Object selections
-//=====================================================================================
-//=====================================================================================
-//=====================================================================================
 
-//______________________________________________________________________________________
-void selectObjects()
-{
-  Analyses::selectObjs<ObjUtil::Lepton>(ana_data.lepcol["goodSSlep"] , isGoodSSLepton);
-  Analyses::selectObjs<ObjUtil::Lepton>(ana_data.lepcol["good3Llep"] , isGood3LLepton);
-  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["goodSSjet"] , isGoodSSJet);
-  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["good3Ljet"] , isGood3LJet);
-  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["medbjet"]   , isGoodWWWMediumBJet);
-  Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["lssbjet"]   , isGoodWWWLooseBJet);
 
-  /// Sort by abs(pdgId) descending order
-  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_abspdgId<ObjUtil::Lepton>);
-}
 
-//______________________________________________________________________________________
-bool isGoodSSLepton(ObjUtil::Lepton& lepton)
-{
-  return isGoodSSElectron(lepton) || isGoodSSMuon(lepton);
-}
 
-//______________________________________________________________________________________
-bool isGoodSSElectron(ObjUtil::Lepton& lepton)
-{
-  if (!( abs(lepton.pdgId) == 11      )) return failed(__LINE__);
-//	  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 20.         )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
-  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
-  if (!( lepton.tightcharge != 0      )) return failed(__LINE__);
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isGoodSSMuon(ObjUtil::Lepton& lepton)
-{
-  if (!( abs(lepton.pdgId) == 13      )) return failed(__LINE__);
-//	  if (!( lepton.p4.Pt() > 30.         )) return failed(__LINE__);
-  if (!( lepton.p4.Pt() > 20.         )) return failed(__LINE__);
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return failed(__LINE__);
-  if (!( lepton.relIso03EA < 0.06     )) return failed(__LINE__);
-  if (!( fabs(lepton.ip3d) < 0.015    )) return failed(__LINE__);
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isGood3LLepton(ObjUtil::Lepton& lepton)
-{
-  return isGood3LElectron(lepton) || isGood3LMuon(lepton);
-}
-
-//______________________________________________________________________________________
-bool isGood3LElectron(ObjUtil::Lepton& lepton)
-{
-  if (!( abs(lepton.pdgId) == 11      )) return false;
-  if (!( lepton.p4.Pt() > 20.         )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isGood3LMuon(ObjUtil::Lepton& lepton)
-{
-  if (!( abs(lepton.pdgId) == 13      )) return false;
-  if (!( lepton.p4.Pt() > 20.         )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
-  if (!( lepton.relIso03EA < 0.1      )) return false;
-  if (!( fabs(lepton.ip3d) < 0.015    )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isVetoLepton(ObjUtil::Lepton& lepton)
-{
-  return isVetoElectron(lepton) || isVetoMuon(lepton);
-}
-
-//______________________________________________________________________________________
-bool isVetoElectron(ObjUtil::Lepton& lepton)
-{
-  if (!( lepton.p4.Pt() > 10.        )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isVetoMuon(ObjUtil::Lepton& lepton)
-{
-  if (!( lepton.p4.Pt() > 10.        )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isGoodSSJet(ObjUtil::Jet& jet)
-{
-  if (!( jet.p4.Pt() > 30.        )) return false;
-  if (!( fabs(jet.p4.Eta()) < 2.5 )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isGood3LJet(ObjUtil::Jet& jet)
-{
-  if (!( jet.p4.Pt() > 25.        )) return false;
-  if (!( fabs(jet.p4.Eta()) < 4.5 )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isGoodWWWMediumBJet(ObjUtil::Jet& jet)
-{
-  if (!( jet.p4.Pt() > 25.           )) return false;
-  if (!( Analyses::isMediumBJet(jet) )) return false;
-  return true;
-}
-
-//______________________________________________________________________________________
-bool isGoodWWWLooseBJet(ObjUtil::Jet& jet)
-{
-  if (!( jet.p4.Pt() > 20.          )) return false;
-  if (!( Analyses::isLooseBJet(jet) )) return false;
-  return true;
-}
 
 //=====================================================================================
 //=====================================================================================
@@ -611,6 +570,92 @@ bool failed(float cutid)
   return LoopUtil::failed(eventid, cutid);
 }
 
+//______________________________________________________________________________________
+bool passGenLevelEventFilter()
+{
+  if (!passGenLevelWHWWW()) return false;
+  if (!passGenLevelWjetsHTStitch()) return false;
+  if (!passGenLevelZjetsHTStitch()) return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool passGenLevelWHWWW()
+{
+  // VH Non-bb sample counting
+  int nW = 0;
+  int nZ = 0;
+  int nWfromH = 0;
+  int nZfromH = 0;
+  if (LoopUtil::output_name.Contains("vh_non"))
+  {
+    for (unsigned int igen = 0; igen < mytree.genPart_pdgId().size(); ++igen)
+    {
+      if (abs(mytree.genPart_pdgId().at(igen)) == 24 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) != 25) nW++;
+      if (abs(mytree.genPart_pdgId().at(igen)) == 23 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) != 25) nZ++;
+      if (abs(mytree.genPart_pdgId().at(igen)) == 24 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) == 25) nWfromH++;
+      if (abs(mytree.genPart_pdgId().at(igen)) == 23 && mytree.genPart_status().at(igen) == 22 && mytree.genPart_motherId().at(igen) == 25) nZfromH++;
+    }
+
+    // WH
+    if (nW == 1)
+    {
+      HistUtil::fillCounter("Hprod", ana_data, 1);
+      if (nWfromH == 2)
+      {
+        HistUtil::fillCounter("Hdecay", ana_data, 0);
+      }
+      else
+      {
+        HistUtil::fillCounter("TotalWs", ana_data, nW+nWfromH);
+        HistUtil::fillCounter("Hdecay", ana_data, 1);
+        return false;
+      }
+    }
+    // ZH
+    else if (nZ == 1)
+    {
+      HistUtil::fillCounter("Hprod", ana_data, 2);
+      return false;
+    }
+    // unknown
+    else
+    {
+      HistUtil::fillCounter("Hprod", ana_data, 0);
+      return false;
+    }
+  }
+  return true;
+}
+
+//______________________________________________________________________________________
+bool passGenLevelWjetsHTStitch()
+{
+  // HT filter stitching for wjets
+  if (LoopUtil::output_name.Contains("wjets_incl"))
+    if (mytree.gen_ht() > 100.)
+      return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+bool passGenLevelZjetsHTStitch()
+{
+  // HT filter stitching for DY
+  if (LoopUtil::output_name.Contains("dy_m50") && !LoopUtil::output_name.Contains("_ht"))
+    if (mytree.gen_ht() > 100.)
+      return false;
+  return true;
+}
+
+//______________________________________________________________________________________
+void reweightWWW2lepFilteredSample()
+{
+  if (LoopUtil::output_name.Contains("www_2l_ext1_mia_skim_1")) ana_data.wgt *= 0.066805*164800./(91900.+164800.);
+  if (LoopUtil::output_name.Contains("www_2l_mia_skim_1"))      ana_data.wgt *= 0.066805*91900./(91900.+164800.);
+}
+
+
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
@@ -628,6 +673,7 @@ void fillHistograms(string prefix)
   HistUtil::fillLepMTs(prefix, ana_data);
   HistUtil::fillLepSumPt(prefix, ana_data);
   HistUtil::fillLepMljs(prefix, ana_data);
+  HistUtil::fillLepDPhiljs(prefix, ana_data);
 //	  HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
 //	  HistUtil::fillLepMlvjs(prefix, ana_data);
 //	  HistUtil::fillLepRelIso03EA(prefix, ana_data);
@@ -637,6 +683,16 @@ void fillHistograms(string prefix)
 //	  HistUtil::fillLepIP(prefix, ana_data);
 //	  HistUtil::fillLepTightCharge(prefix, ana_data);
 //	  HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
+  fillHiggsMassVariables(prefix);
+}
+
+//______________________________________________________________________________________
+void fillHiggsMassVariables(string prefix)
+{
+  ObjUtil::Jet jet0;
+  ObjUtil::Jet jet1;
+  VarUtil::MjjClosest(ana_data, jet0, jet1);
+  PlotUtil::plot1D("mljj" , (jet0.p4+jet1.p4+ana_data.leptons[1].p4).M(), ana_data.wgt , ana_data.hist_db , "" , 180 , 0. , 360, prefix);
 }
 
 //______________________________________________________________________________________
@@ -935,5 +991,6 @@ void fillHistogramsTruthMatchingLeptons(string prefix)
     PlotUtil::plot1D("leptruthcategorySS_oneW_matched_sip3d"      , -999 , ana_data.wgt , ana_data.hist_db , "" , 10000 , 0.  , 4.    , prefix);
   }
 }
+
 
 //eof
