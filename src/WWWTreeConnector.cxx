@@ -11,31 +11,38 @@ ObjUtil::Leptons getLeptons(/*WWWTree& mytree*/)
   for (int ilep = 0; ilep < mytree.nlep(); ++ilep)
   {
     ObjUtil::Lepton lepton;
-    lepton.p4.SetPtEtaPhiM(mytree.lep_pt().at(ilep),mytree.lep_eta().at(ilep),mytree.lep_phi().at(ilep),mytree.lep_mass().at(ilep));
+    lepton.p4.SetPtEtaPhiM(mytree.lep_pt().at(ilep),
+                           mytree.lep_eta().at(ilep),
+                           mytree.lep_phi().at(ilep),
+                           mytree.lep_mass().at(ilep));
     // General
-    lepton.dxy                     = mytree.lep_dxy().at(ilep);
-    lepton.dz                      = mytree.lep_dz().at(ilep);
-    lepton.ip3d                    = fabs(mytree.lep_ip3d().at(ilep));
-    lepton.sip3d                   = fabs(mytree.lep_ip3d().at(ilep)) / mytree.lep_ip3derr().at(ilep);;
-    lepton.tightcharge             = mytree.lep_3ch_agree().at(ilep);
-    lepton.charge                  = mytree.lep_charge().at(ilep);
-    lepton.pdgId                   = mytree.lep_pdgId().at(ilep);
+    lepton.dxy                 = mytree.lep_dxy().at(ilep);
+    lepton.dz                  = mytree.lep_dz().at(ilep);
+    lepton.ip3d                = fabs(mytree.lep_ip3d().at(ilep));
+    lepton.sip3d               = fabs(mytree.lep_ip3d().at(ilep))
+                                 / mytree.lep_ip3derr().at(ilep);
+    lepton.tightcharge         = mytree.lep_3ch_agree().at(ilep);
+    lepton.charge              = mytree.lep_charge().at(ilep);
+    lepton.pdgId               = mytree.lep_pdgId().at(ilep);
+
     // Isolation related
-    lepton.ptRatio                 = mytree.lep_ptRatio().at(ilep);
-    lepton.ptRel                   = mytree.lep_ptRel().at(ilep);
-    lepton.relIso03                = mytree.lep_relIso03().at(ilep);
-    lepton.relIso03DB              = mytree.lep_relIso03DB().at(ilep);
-    lepton.relIso03EA              = mytree.lep_relIso03EA().at(ilep);
-    lepton.relIso03EAv2            = mytree.lep_relIso03EAv2().at(ilep);
-    lepton.relIso04DB              = mytree.lep_relIso04DB().at(ilep);
-    lepton.relIso04EA              = mytree.lep_relIso04EA().at(ilep);
-    lepton.relIso04EAv2            = mytree.lep_relIso04EAv2().at(ilep);
-    lepton.miniRelIsoCMS3_EA       = mytree.lep_miniRelIsoCMS3_EA().at(ilep);
-    lepton.miniRelIsoCMS3_EAv2     = mytree.lep_miniRelIsoCMS3_EAv2().at(ilep);
-    lepton.miniRelIsoCMS3_DB       = mytree.lep_miniRelIsoCMS3_DB().at(ilep);
-    lepton.id                      = mytree.lep_tightId().at(ilep);
+    lepton.ptRatio             = mytree.lep_ptRatio().at(ilep);
+    lepton.ptRel               = mytree.lep_ptRel().at(ilep);
+    lepton.relIso03            = mytree.lep_relIso03().at(ilep);
+    lepton.relIso03DB          = mytree.lep_relIso03DB().at(ilep);
+    lepton.relIso03EA          = mytree.lep_relIso03EA().at(ilep);
+    lepton.relIso03EAv2        = mytree.lep_relIso03EAv2().at(ilep);
+    lepton.relIso04DB          = mytree.lep_relIso04DB().at(ilep);
+    lepton.relIso04EA          = mytree.lep_relIso04EA().at(ilep);
+    lepton.relIso04EAv2        = mytree.lep_relIso04EAv2().at(ilep);
+    lepton.miniRelIsoCMS3_EA   = mytree.lep_miniRelIsoCMS3_EA().at(ilep);
+    lepton.miniRelIsoCMS3_EAv2 = mytree.lep_miniRelIsoCMS3_EAv2().at(ilep);
+    lepton.miniRelIsoCMS3_DB   = mytree.lep_miniRelIsoCMS3_DB().at(ilep);
+    lepton.id                  = mytree.lep_tightId().at(ilep);
+
     // truth matching
-    if (LoopUtil::getCurrentTFileName().Contains("WWW_v0.1.5"))
+    if (LoopUtil::getCurrentTFileName().Contains("WWW_v0.1.5") ||
+        LoopUtil::getCurrentTFileName().Contains("WWW_v0.1.6"))
     {
       lepton.isFromX = 0;
       if (mytree.lep_isFromW ().at(ilep)) lepton.isFromX |= (1<<0);
@@ -56,8 +63,11 @@ ObjUtil::Jets getJets(/*WWWTree& mytree*/)
   for (int ijet = 0; ijet < mytree.njets(); ++ijet)
   {
     ObjUtil::Jet jet;
-    jet.p4.SetPtEtaPhiE(mytree.jets_p4().at(ijet).pt(),mytree.jets_p4().at(ijet).eta(),mytree.jets_p4().at(ijet).phi(),mytree.jets_p4().at(ijet).energy());
-    jet.btagCSV       = mytree.jets_csv().at(ijet);
+    jet.p4.SetPtEtaPhiE(mytree.jets_p4().at(ijet).pt(),
+                        mytree.jets_p4().at(ijet).eta(),
+                        mytree.jets_p4().at(ijet).phi(),
+                        mytree.jets_p4().at(ijet).energy());
+    jet.btagCSV = mytree.jets_csv().at(ijet);
     jets.push_back(jet);
   }
   return jets;
@@ -69,8 +79,11 @@ ObjUtil::Jets getRemovedJets(/*WWWTree& mytree*/)
   for (unsigned int ijet = 0; ijet < mytree.removed_jets_p4().size(); ++ijet)
   {
     ObjUtil::Jet jet;
-    jet.p4.SetPtEtaPhiE(mytree.removed_jets_p4().at(ijet).pt(),mytree.removed_jets_p4().at(ijet).eta(),mytree.removed_jets_p4().at(ijet).phi(),mytree.removed_jets_p4().at(ijet).energy());
-    jet.btagCSV       = mytree.removed_jets_csv().at(ijet);
+    jet.p4.SetPtEtaPhiE(mytree.removed_jets_p4().at(ijet).pt(),
+                        mytree.removed_jets_p4().at(ijet).eta(),
+                        mytree.removed_jets_p4().at(ijet).phi(),
+                        mytree.removed_jets_p4().at(ijet).energy());
+    jet.btagCSV = mytree.removed_jets_csv().at(ijet);
     jets.push_back(jet);
   }
   return jets;

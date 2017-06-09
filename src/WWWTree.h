@@ -13,14 +13,14 @@
 #include "TH1F.h"
 #include "TFile.h"
 #include "TBits.h"
-#include <vector> 
-#include <unistd.h> 
+#include <vector>
+#include <unistd.h>
 typedef ROOT::Math::LorentzVector< ROOT::Math::PxPyPzE4D<float> > LorentzVector;
 
-using namespace std; 
+using namespace std;
 class WWWTree {
- private: 
- protected: 
+ private:
+ protected:
   unsigned int index;
   int      run_;
   TBranch *run_branch;
@@ -1195,10 +1195,10 @@ class WWWTree {
   vector<float> *weightsf_lepip_FS_;
   TBranch *weightsf_lepip_FS_branch;
   bool     weightsf_lepip_FS_isLoaded;
-public: 
+public:
 void Init(TTree *tree);
-void GetEntry(unsigned int idx); 
-void LoadAllBranches(); 
+void GetEntry(unsigned int idx);
+void LoadAllBranches();
   const int &run();
   const int &lumi();
   const unsigned long long &evt();
