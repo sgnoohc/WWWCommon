@@ -29,6 +29,7 @@
 #include "WWWTreeConnector.h"
 #include "WWWTreeLooperAnalysisData.h"
 #include "WWWTreeLooperUtil.h"
+#include "WWWTreeLooperEventSelections.h"
 #include "WWWTreeLooperObjectSelections.h"
 
 using namespace Ditto;
@@ -61,19 +62,6 @@ bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter);
 bool passSMWWWSSmmAnalysis();
 bool passSMWWWSSemAnalysis();
 bool passSMWWWSSeeAnalysis();
-
-bool passSSNLepCut   (float&, string&, std::vector<int>&, int);
-bool passSSChannel   (float&, string&, std::vector<int>&, int);
-bool passSSLep0PtCut (float&, string&, std::vector<int>&, float);
-bool passSSLep1PtCut (float&, string&, std::vector<int>&, float);
-bool passSSNJetCut   (float&, string&, std::vector<int>&, int);
-bool passSSJet0PtCut (float&, string&, std::vector<int>&, float);
-bool passSS3rdLepVeto(float&, string&, std::vector<int>&);
-bool passSSLowMllCut (float&, string&, std::vector<int>&, float);
-bool passSSWMassCut  (float&, string&, std::vector<int>&, float, float);
-bool passSSMjjCut    (float&, string&, std::vector<int>&, float);
-bool passSSDEtajjCut (float&, string&, std::vector<int>&, float);
-bool passSSBVeto     (float&, string&, std::vector<int>&, string);
 
 // 3L selections
 bool passSMWWW3Lcommonselection(string prefix, int pdgidprod, int& counter);

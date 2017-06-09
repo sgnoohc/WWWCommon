@@ -21,7 +21,6 @@ using namespace Ditto;
 int totalcharge();
 int getNumSFOSPairs();
 void printEventList(string prefix);
-bool failed(float cutid);
 bool passGenLevelEventFilter();
 bool passGenLevelWHWWW();
 bool passGenLevelWjetsHTStitch();
@@ -29,5 +28,6 @@ bool passGenLevelZjetsHTStitch();
 void reweightWWW2lepFilteredSample();
 void selectWtaggedJets();
 void selectWtaggedJetsViaLeadJets();
+void getEventID(std::vector<int>&);
 
 #endif

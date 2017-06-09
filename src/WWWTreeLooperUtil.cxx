@@ -41,16 +41,6 @@ void printEventList(string prefix)
 }
 
 //______________________________________________________________________________________
-bool failed(float cutid)
-{
-  std::vector<int> eventid;
-  eventid.push_back(mytree.run());
-  eventid.push_back(mytree.lumi());
-  eventid.push_back(mytree.evt());
-  return LoopUtil::failed(eventid, cutid);
-}
-
-//______________________________________________________________________________________
 bool passGenLevelEventFilter()
 {
   if (!passGenLevelWHWWW()) return false;
@@ -157,16 +147,9 @@ void selectWtaggedJetsViaLeadJets()
 }
 
 //______________________________________________________________________________________
-void processSSEvents(string prefix, int iSR)
+void getEventID(std::vector<int>& eventid)
 {
-  /// Histogramming
-  fillHistograms(prefix);
-  fillHistograms("SS");
-  printEventList("SSmm");
-}
-
-//______________________________________________________________________________________
-void fillCounter(int iSR)
-{
-//	  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, iSR, SR[iSR]);
+  eventid.push_back(mytree.run());
+  eventid.push_back(mytree.lumi());
+  eventid.push_back(mytree.evt());
 }
