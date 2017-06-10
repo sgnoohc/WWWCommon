@@ -140,9 +140,9 @@ void runSignalRegions()
 {
   ana_data.leptons = ana_data.lepcol["goodSSlep"];
   ana_data.jets    = ana_data.jetcol["goodSSjet"];
-  if (passSMWWWSSmmAnalysis()) { }
-  if (passSMWWWSSemAnalysis()) { }
-  if (passSMWWWSSeeAnalysis()) { }
+  if (passSMWWWSSmmAnalysis()) fillHistograms("SSmm");
+  if (passSMWWWSSemAnalysis()) fillHistograms("SSem");
+  if (passSMWWWSSeeAnalysis()) fillHistograms("SSee");
 
 //	  ana_data.leptons = ana_data.lepcol["good3Llep"];
 //	  ana_data.jets    = ana_data.jetcol["good3Ljet"];
@@ -159,60 +159,19 @@ void runSignalRegions()
 //______________________________________________________________________________________
 bool passSMWWWSSmmAnalysis()
 {
-  CutUtil::pass(ss_common_cuts);
-  /// Cutflow
-//	  int counter = 0;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 169, counter) )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
-  return true;
+  return CutUtil::pass(ssmm_cuts);
 }
 
 //______________________________________________________________________________________
 bool passSMWWWSSemAnalysis()
 {
-  CutUtil::pass(ss_common_cuts);
-  /// Cutflow
-//	  int counter = 0;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 143, counter) )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                             )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
-  return true;
+  return CutUtil::pass(ssem_cuts);
 }
 
 //______________________________________________________________________________________
 bool passSMWWWSSeeAnalysis()
 {
-  CutUtil::pass(ss_common_cuts);
-  /// Cutflow
-//	  int counter = 0;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWWSScommonselection(__FUNCTION__, 121, counter)                                )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) > 100.
-//	                                                              || VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) <  80.)) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 40.                                                            )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter);
-  return true;
-}
-
-//______________________________________________________________________________________
-bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter)
-{
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"].size() == 2                                                    )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId + ana_data.lepcol["goodSSlep"][1].pdgId > 0           )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][1].p4.Pt() > 30.                                               )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"].size() >= 2                                                    )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["goodSSjet"][0].p4.Pt() > 30.                                               )) return failed(__LINE__);
-//	  selectWtaggedJets();
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["WbosonSSjet"][0], ana_data.jetcol["WbosonSSjet"][1]) < 100.  )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["WbosonSSjet"][0], ana_data.jetcol["WbosonSSjet"][1]) >  60.  )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return failed(__LINE__);
-  return true;
+  return CutUtil::pass(ssee_cuts);
 }
 
 

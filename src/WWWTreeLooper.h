@@ -45,20 +45,10 @@ void processWWWTreeEvent();
 //-------------------------------------------------------------
 // Event selections
 
-enum {
-  SSmm,
-  SSem,
-  SSee,
-  SFOS0,
-  SFOS1,
-  SFOS2
-};
-
 // Run the analysis
 void runSignalRegions();
 
 // SS selections
-bool passSMWWWSScommonselection(string prefix, int pdgidprod, int& counter);
 bool passSMWWWSSmmAnalysis();
 bool passSMWWWSSemAnalysis();
 bool passSMWWWSSeeAnalysis();

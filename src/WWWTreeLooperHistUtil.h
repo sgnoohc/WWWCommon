@@ -19,9 +19,9 @@ using namespace Ditto;
 // Histogramming functions
 
 void fillHistograms(string prefix);
-void fillLepWPair(string prefix);
-void fillHistogramsTruthMatchingLeptons3L(string prefix);
-void fillHistogramsTruthMatchingLeptons(string prefix);
-void fillHiggsMassVariables(string prefix);
+//	void fillLepWPair(string prefix);
+//	void fillHistogramsTruthMatchingLeptons3L(string prefix);
+//	void fillHistogramsTruthMatchingLeptons(string prefix);
+//	void fillHiggsMassVariables(string prefix);
 
 #endif

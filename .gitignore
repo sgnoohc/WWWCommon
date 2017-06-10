@@ -2,4 +2,10 @@ src/WWWTree.o
 src/WWWTreeConnector.o
 src/WWWTreeLooper.o
 src/ditto_ana_wwwcommon.o
+src/WWWTreeLooperAnalysisData.o
+src/WWWTreeLooperCuts.o
+src/WWWTreeLooperEventSelections.o
+src/WWWTreeLooperHistUtil.o
+src/WWWTreeLooperObjectSelections.o
+src/WWWTreeLooperUtil.o
 makefile

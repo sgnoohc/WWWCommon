@@ -38,18 +38,75 @@
 #include "WWWTreeLooperEventSelections.h"
 
 CutUtil::Cuts ss_common_cuts;
+CutUtil::Cuts ssmm_cuts;
+CutUtil::Cuts ssem_cuts;
+CutUtil::Cuts ssee_cuts;
 
+using namespace std::placeholders;
+
+//______________________________________________________________________________________
 void loadEventSelections()
 {
-  using namespace std::placeholders;
+  loadSSSelections();
+}
+
+//______________________________________________________________________________________
+void loadSSSelections()
+{
+  loadSSCommonSelections();
+  loadSSemSelections();
+  loadSSmmSelections();
+  loadSSeeSelections();
+}
+
+//______________________________________________________________________________________
+void loadSSCommonSelections()
+{
+
+  // Fill the common cuts
   ss_common_cuts.clear();
   ss_common_cuts.push_back(SS_NLepEqTwoCut);
   ss_common_cuts.push_back(SS_Lep0PtCut);
   ss_common_cuts.push_back(SS_Lep1PtCut);
   ss_common_cuts.push_back(SS_NJetCut);
   ss_common_cuts.push_back(SS_Jet0PtCut);
+  ss_common_cuts.push_back(SS_ThirdLepVeto);
+  ss_common_cuts.push_back(SS_IsoTrackVeto);
+  ss_common_cuts.push_back(SS_WmassCut);
+  ss_common_cuts.push_back(SS_MjjCut);
+  ss_common_cuts.push_back(SS_DEtajjCut);
+  ss_common_cuts.push_back(SS_BVeto);
+
 }
 
+//______________________________________________________________________________________
+void loadSSmmSelections()
+{
+  ssmm_cuts.push_back(std::bind(SS_FlavorChan, 169, _1));
+  ssmm_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  ssmm_cuts.insert(ssmm_cuts.end(), ss_common_cuts.begin(), ss_common_cuts.end());
+}
+
+//______________________________________________________________________________________
+void loadSSemSelections()
+{
+  ssem_cuts.push_back(std::bind(SS_FlavorChan, 143, _1));
+  ssem_cuts.push_back(std::bind(SS_MllCut, 30, _1));
+  ssem_cuts.push_back(std::bind(SS_METCut, 40, _1));
+  ssem_cuts.insert(ssem_cuts.end(), ss_common_cuts.begin(), ss_common_cuts.end());
+}
+
+//______________________________________________________________________________________
+void loadSSeeSelections()
+{
+  ssee_cuts.push_back(std::bind(SS_FlavorChan, 121, _1));
+  ssee_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  ssee_cuts.push_back(std::bind(SS_METCut, 40, _1));
+  ssee_cuts.push_back(SS_ZVeto);
+  ssee_cuts.insert(ssee_cuts.end(), ss_common_cuts.begin(), ss_common_cuts.end());
+}
+
+//______________________________________________________________________________________
 void SS_NLepEqTwoCut(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
@@ -58,6 +115,7 @@ void SS_NLepEqTwoCut(CutUtil::CutData& cutdata)
   getEventID(cutdata.eventid);
 }
 
+//______________________________________________________________________________________
 void SS_FlavorChan(int pdgidprod, CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
@@ -70,6 +128,7 @@ void SS_FlavorChan(int pdgidprod, CutUtil::CutData& cutdata)
   getEventID(cutdata.eventid);
 }
 
+//______________________________________________________________________________________
 void SS_Lep0PtCut(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
@@ -82,6 +141,7 @@ void SS_Lep0PtCut(CutUtil::CutData& cutdata)
   getEventID(cutdata.eventid);
 }
 
+//______________________________________________________________________________________
 void SS_Lep1PtCut(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
@@ -94,6 +154,7 @@ void SS_Lep1PtCut(CutUtil::CutData& cutdata)
   getEventID(cutdata.eventid);
 }
 
+//______________________________________________________________________________________
 void SS_NJetCut(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
@@ -102,6 +163,7 @@ void SS_NJetCut(CutUtil::CutData& cutdata)
   getEventID(cutdata.eventid);
 }
 
+//______________________________________________________________________________________
 void SS_Jet0PtCut(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
@@ -114,15 +176,130 @@ void SS_Jet0PtCut(CutUtil::CutData& cutdata)
   getEventID(cutdata.eventid);
 }
 
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId * ana_data.lepcol["goodSSlep"][1].pdgId == pdgidprod  )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["goodSSlep"][0].pdgId + ana_data.lepcol["goodSSlep"][1].pdgId > 0           )) return failed(__LINE__);
+//______________________________________________________________________________________
+void SS_ThirdLepVeto(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val = mytree.nlep();
+  cutdata.pass = (cutdata.val == 2);
+  getEventID(cutdata.eventid);
+}
 
-//	  selectWtaggedJets();
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nlep() == 2                                                                          )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( mytree.nisoTrack_mt2() == 0                                                                 )) return failed(__LINE__);
+//______________________________________________________________________________________
+void SS_IsoTrackVeto(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val = mytree.nisoTrack_mt2();
+  cutdata.pass = (cutdata.val == 0);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_WmassCut(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  if (ana_data.jetcol["goodSSjet"].size() >= 2)
+  {
+    selectWtaggedJets();
+    cutdata.val =
+      VarUtil::Mass(ana_data.jetcol["WbosonSSjet"][0],
+          ana_data.jetcol["WbosonSSjet"][1]);
+  }
+  else
+  {
+    cutdata.val = -999;
+  }
+  cutdata.pass = (cutdata.val < 100. && cutdata.val > 60.);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_MjjCut(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val =
+    ana_data.jetcol["goodSSjet"].size() >= 2 ?
+    VarUtil::Mass(ana_data.jetcol["goodSSjet"][0],
+        ana_data.jetcol["goodSSjet"][1])
+    :
+    -999;
+  cutdata.pass = (cutdata.val < 400.);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_DEtajjCut(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val =
+    ana_data.jetcol["goodSSjet"].size() >= 2 ?
+    VarUtil::DEta(ana_data.jetcol["goodSSjet"][0],
+        ana_data.jetcol["goodSSjet"][1])
+    :
+    -999;
+  cutdata.pass = (cutdata.val < 1.5);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_BVeto(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val = ana_data.jetcol["lssbjet"].size();
+  cutdata.pass = (cutdata.val == 0);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_MjjCut(float cutval, CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val =
+    ana_data.jetcol["goodSSlep"].size() >= 2 ?
+    VarUtil::Mass(ana_data.jetcol["goodSSlep"][0],
+        ana_data.jetcol["goodSSlep"][1])
+    :
+    -999;
+  cutdata.pass = (cutdata.val > cutval);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_MllCut(float cutval, CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val =
+    ana_data.lepcol["goodSSlep"].size() >= 2 ?
+    VarUtil::Mass(ana_data.lepcol["goodSSlep"][0],
+        ana_data.lepcol["goodSSlep"][1])
+    :
+    -999;
+  cutdata.pass = (cutdata.val > cutval);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_METCut(float cutval, CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val = ana_data.met.p4.Pt();
+  cutdata.pass = (cutdata.val > cutval);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SS_ZVeto(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val =
+    ana_data.lepcol["goodSSlep"].size() >= 2 ?
+    VarUtil::Mass(ana_data.lepcol["goodSSlep"][0],
+        ana_data.lepcol["goodSSlep"][1])
+    :
+    -999;
+  cutdata.pass = (cutdata.val > 100. || cutdata.val < 80.);
+  getEventID(cutdata.eventid);
+}
+
+
 //	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.lepcol["goodSSlep"][0], ana_data.lepcol["goodSSlep"][1]) >  40.      )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["WbosonSSjet"][0], ana_data.jetcol["WbosonSSjet"][1]) < 100.  )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["WbosonSSjet"][0], ana_data.jetcol["WbosonSSjet"][1]) >  60.  )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::Mass(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 400.      )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( VarUtil::DEta(ana_data.jetcol["goodSSjet"][0], ana_data.jetcol["goodSSjet"][1]) < 1.5       )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0                                                      )) return failed(__LINE__);
