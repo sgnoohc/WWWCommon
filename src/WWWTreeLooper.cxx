@@ -38,7 +38,8 @@ void beforeLoop(TChain* chain, TString output_name_, int nevents)
   LoopUtil::output_name = output_name_;
 
   // Load event list to check
-  //LoopUtil::loadEventListToCheck();
+  CutUtil::loadEventListToCheck();
+  CutUtil::loadEventListToVerboseCheck();
 
   // Load event selections
   loadEventSelections();
@@ -113,10 +114,33 @@ void processWWWTreeEvent()
 void afterLoop()
 {
   // Save histograms
-  PlotUtil::savePlots(ana_data.hist_db, (LoopUtil::output_name+"_hist.root").Data());
-
-  // Save skimmmed tree
-  if (LoopUtil::doskim) TreeUtil::saveSkimTree();
+  if (getBabyVersion() >= 6)
+  {
+    if (isSignalSample())
+    {
+      PlotUtil::savePlots(ana_data_SS_true.hist_db  , (LoopUtil::output_name + "_hist.root").Data());
+    }
+    else
+    {
+      // Save based on bkg categories
+      PlotUtil::savePlots(ana_data_SS_true.hist_db    , (LoopUtil::output_name + "_SS_true_"    + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_SS_chflip.hist_db  , (LoopUtil::output_name + "_SS_chflip_"  + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_SS_lostlep.hist_db , (LoopUtil::output_name + "_SS_lostlep_" + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_SS_onefake.hist_db , (LoopUtil::output_name + "_SS_onefake_" + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_SS_twofake.hist_db , (LoopUtil::output_name + "_SS_twofake_" + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_SS_others.hist_db  , (LoopUtil::output_name + "_SS_others_"  + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_3L_true.hist_db    , (LoopUtil::output_name + "_3L_true_"    + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_3L_chflip.hist_db  , (LoopUtil::output_name + "_3L_chflip_"  + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_3L_lostlep.hist_db , (LoopUtil::output_name + "_3L_lostlep_" + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_3L_onefake.hist_db , (LoopUtil::output_name + "_3L_onefake_" + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_3L_twofake.hist_db , (LoopUtil::output_name + "_3L_twofake_" + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_3L_others.hist_db  , (LoopUtil::output_name + "_3L_others_"  + "_hist.root").Data());
+    }
+  }
+  else
+  {
+    PlotUtil::savePlots(ana_data.hist_db, (LoopUtil::output_name+"_hist.root").Data());
+  }
 
   // Fun exit
   PrintUtil::exit();
@@ -144,11 +168,11 @@ void runSignalRegions()
   if (passSMWWWSSemAnalysis()) fillHistograms("SSem");
   if (passSMWWWSSeeAnalysis()) fillHistograms("SSee");
 
-//	  ana_data.leptons = ana_data.lepcol["good3Llep"];
-//	  ana_data.jets    = ana_data.jetcol["good3Ljet"];
-//	  doSMWWW3L0SFOSAnalysis();
-//	  doSMWWW3L1SFOSAnalysis();
-//	  doSMWWW3L2SFOSAnalysis();
+  ana_data.leptons = ana_data.lepcol["good3Llep"];
+  ana_data.jets    = ana_data.jetcol["good3Ljet"];
+  if (passSMWWW3L0SFOSAnalysis()) fillHistograms("ThreeLep0SFOS");
+  if (passSMWWW3L1SFOSAnalysis()) fillHistograms("ThreeLep1SFOS");
+  if (passSMWWW3L2SFOSAnalysis()) fillHistograms("ThreeLep2SFOS");
 }
 
 
@@ -159,19 +183,37 @@ void runSignalRegions()
 //______________________________________________________________________________________
 bool passSMWWWSSmmAnalysis()
 {
-  return CutUtil::pass(ssmm_cuts);
+  return CutUtil::pass(ssmm_cuts, "SSmm", (*getAnalysisData("SSmm")));
 }
 
 //______________________________________________________________________________________
 bool passSMWWWSSemAnalysis()
 {
-  return CutUtil::pass(ssem_cuts);
+  return CutUtil::pass(ssem_cuts, "SSem", (*getAnalysisData("SSem")));
 }
 
 //______________________________________________________________________________________
 bool passSMWWWSSeeAnalysis()
 {
-  return CutUtil::pass(ssee_cuts);
+  return CutUtil::pass(ssee_cuts, "SSee", (*getAnalysisData("SSee")));
+}
+
+//______________________________________________________________________________________
+bool passSMWWW3L0SFOSAnalysis()
+{
+  return CutUtil::pass(threelep0_cuts, "ThreeLep0SFOS", (*getAnalysisData("ThreeLep0SFOS")));
+}
+
+//______________________________________________________________________________________
+bool passSMWWW3L1SFOSAnalysis()
+{
+  return CutUtil::pass(threelep1_cuts, "ThreeLep1SFOS", (*getAnalysisData("ThreeLep1SFOS")));
+}
+
+//______________________________________________________________________________________
+bool passSMWWW3L2SFOSAnalysis()
+{
+  return CutUtil::pass(threelep2_cuts, "ThreeLep2SFOS", (*getAnalysisData("ThreeLep2SFOS")));
 }
 
 

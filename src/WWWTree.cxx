@@ -337,8 +337,50 @@ void WWWTree::Init(TTree *tree) {
   if (lep_miniRelIsoCMS3_EAv2_branch) lep_miniRelIsoCMS3_EAv2_branch->SetAddress(&lep_miniRelIsoCMS3_EAv2_);
   lep_miniRelIsoCMS3_DB_branch = tree->GetBranch("lep_miniRelIsoCMS3_DB");
   if (lep_miniRelIsoCMS3_DB_branch) lep_miniRelIsoCMS3_DB_branch->SetAddress(&lep_miniRelIsoCMS3_DB_);
+  lep_pass_VVV_cutbased_veto_branch = tree->GetBranch("lep_pass_VVV_cutbased_veto");
+  if (lep_pass_VVV_cutbased_veto_branch) lep_pass_VVV_cutbased_veto_branch->SetAddress(&lep_pass_VVV_cutbased_veto_);
+  lep_pass_VVV_cutbased_veto_noiso_branch = tree->GetBranch("lep_pass_VVV_cutbased_veto_noiso");
+  if (lep_pass_VVV_cutbased_veto_noiso_branch) lep_pass_VVV_cutbased_veto_noiso_branch->SetAddress(&lep_pass_VVV_cutbased_veto_noiso_);
+  lep_pass_VVV_cutbased_veto_noiso_noip_branch = tree->GetBranch("lep_pass_VVV_cutbased_veto_noiso_noip");
+  if (lep_pass_VVV_cutbased_veto_noiso_noip_branch) lep_pass_VVV_cutbased_veto_noiso_noip_branch->SetAddress(&lep_pass_VVV_cutbased_veto_noiso_noip_);
+  lep_pass_VVV_cutbased_fo_branch = tree->GetBranch("lep_pass_VVV_cutbased_fo");
+  if (lep_pass_VVV_cutbased_fo_branch) lep_pass_VVV_cutbased_fo_branch->SetAddress(&lep_pass_VVV_cutbased_fo_);
+  lep_pass_VVV_cutbased_fo_noiso_branch = tree->GetBranch("lep_pass_VVV_cutbased_fo_noiso");
+  if (lep_pass_VVV_cutbased_fo_noiso_branch) lep_pass_VVV_cutbased_fo_noiso_branch->SetAddress(&lep_pass_VVV_cutbased_fo_noiso_);
+  lep_pass_VVV_cutbased_tight_noiso_branch = tree->GetBranch("lep_pass_VVV_cutbased_tight_noiso");
+  if (lep_pass_VVV_cutbased_tight_noiso_branch) lep_pass_VVV_cutbased_tight_noiso_branch->SetAddress(&lep_pass_VVV_cutbased_tight_noiso_);
+  lep_pass_VVV_cutbased_tight_branch = tree->GetBranch("lep_pass_VVV_cutbased_tight");
+  if (lep_pass_VVV_cutbased_tight_branch) lep_pass_VVV_cutbased_tight_branch->SetAddress(&lep_pass_VVV_cutbased_tight_);
+  lep_pass_VVV_MVAbased_tight_noiso_branch = tree->GetBranch("lep_pass_VVV_MVAbased_tight_noiso");
+  if (lep_pass_VVV_MVAbased_tight_noiso_branch) lep_pass_VVV_MVAbased_tight_noiso_branch->SetAddress(&lep_pass_VVV_MVAbased_tight_noiso_);
+  lep_pass_VVV_MVAbased_tight_branch = tree->GetBranch("lep_pass_VVV_MVAbased_tight");
+  if (lep_pass_VVV_MVAbased_tight_branch) lep_pass_VVV_MVAbased_tight_branch->SetAddress(&lep_pass_VVV_MVAbased_tight_);
+  lep_pass_VVV_baseline_branch = tree->GetBranch("lep_pass_VVV_baseline");
+  if (lep_pass_VVV_baseline_branch) lep_pass_VVV_baseline_branch->SetAddress(&lep_pass_VVV_baseline_);
+  nlep_VVV_cutbased_veto_branch = tree->GetBranch("nlep_VVV_cutbased_veto");
+  if (nlep_VVV_cutbased_veto_branch) nlep_VVV_cutbased_veto_branch->SetAddress(&nlep_VVV_cutbased_veto_);
+  nlep_VVV_cutbased_veto_noiso_branch = tree->GetBranch("nlep_VVV_cutbased_veto_noiso");
+  if (nlep_VVV_cutbased_veto_noiso_branch) nlep_VVV_cutbased_veto_noiso_branch->SetAddress(&nlep_VVV_cutbased_veto_noiso_);
+  nlep_VVV_cutbased_veto_noiso_noip_branch = tree->GetBranch("nlep_VVV_cutbased_veto_noiso_noip");
+  if (nlep_VVV_cutbased_veto_noiso_noip_branch) nlep_VVV_cutbased_veto_noiso_noip_branch->SetAddress(&nlep_VVV_cutbased_veto_noiso_noip_);
+  nlep_VVV_cutbased_fo_branch = tree->GetBranch("nlep_VVV_cutbased_fo");
+  if (nlep_VVV_cutbased_fo_branch) nlep_VVV_cutbased_fo_branch->SetAddress(&nlep_VVV_cutbased_fo_);
+  nlep_VVV_cutbased_fo_noiso_branch = tree->GetBranch("nlep_VVV_cutbased_fo_noiso");
+  if (nlep_VVV_cutbased_fo_noiso_branch) nlep_VVV_cutbased_fo_noiso_branch->SetAddress(&nlep_VVV_cutbased_fo_noiso_);
+  nlep_VVV_cutbased_tight_noiso_branch = tree->GetBranch("nlep_VVV_cutbased_tight_noiso");
+  if (nlep_VVV_cutbased_tight_noiso_branch) nlep_VVV_cutbased_tight_noiso_branch->SetAddress(&nlep_VVV_cutbased_tight_noiso_);
+  nlep_VVV_cutbased_tight_branch = tree->GetBranch("nlep_VVV_cutbased_tight");
+  if (nlep_VVV_cutbased_tight_branch) nlep_VVV_cutbased_tight_branch->SetAddress(&nlep_VVV_cutbased_tight_);
+  nlep_VVV_MVAbased_tight_noiso_branch = tree->GetBranch("nlep_VVV_MVAbased_tight_noiso");
+  if (nlep_VVV_MVAbased_tight_noiso_branch) nlep_VVV_MVAbased_tight_noiso_branch->SetAddress(&nlep_VVV_MVAbased_tight_noiso_);
+  nlep_VVV_MVAbased_tight_branch = tree->GetBranch("nlep_VVV_MVAbased_tight");
+  if (nlep_VVV_MVAbased_tight_branch) nlep_VVV_MVAbased_tight_branch->SetAddress(&nlep_VVV_MVAbased_tight_);
+  nlep_VVV_baseline_branch = tree->GetBranch("nlep_VVV_baseline");
+  if (nlep_VVV_baseline_branch) nlep_VVV_baseline_branch->SetAddress(&nlep_VVV_baseline_);
   lep_pdgId_branch = tree->GetBranch("lep_pdgId");
   if (lep_pdgId_branch) lep_pdgId_branch->SetAddress(&lep_pdgId_);
+  lep_mc_Id_branch = tree->GetBranch("lep_mc_Id");
+  if (lep_mc_Id_branch) lep_mc_Id_branch->SetAddress(&lep_mc_Id_);
   lep_dxy_branch = tree->GetBranch("lep_dxy");
   if (lep_dxy_branch) lep_dxy_branch->SetAddress(&lep_dxy_);
   lep_ip3d_branch = tree->GetBranch("lep_ip3d");
@@ -379,6 +421,8 @@ void WWWTree::Init(TTree *tree) {
   if (nisoTrack_5gev_branch) nisoTrack_5gev_branch->SetAddress(&nisoTrack_5gev_);
   nisoTrack_mt2_branch = tree->GetBranch("nisoTrack_mt2");
   if (nisoTrack_mt2_branch) nisoTrack_mt2_branch->SetAddress(&nisoTrack_mt2_);
+  nisoTrack_stop_branch = tree->GetBranch("nisoTrack_stop");
+  if (nisoTrack_stop_branch) nisoTrack_stop_branch->SetAddress(&nisoTrack_stop_);
   nisoTrack_PFLep5_woverlaps_branch = tree->GetBranch("nisoTrack_PFLep5_woverlaps");
   if (nisoTrack_PFLep5_woverlaps_branch) nisoTrack_PFLep5_woverlaps_branch->SetAddress(&nisoTrack_PFLep5_woverlaps_);
   nisoTrack_PFHad10_woverlaps_branch = tree->GetBranch("nisoTrack_PFHad10_woverlaps");
@@ -947,7 +991,28 @@ void WWWTree::GetEntry(unsigned int idx) {
   lep_miniRelIsoCMS3_EA_isLoaded = false;
   lep_miniRelIsoCMS3_EAv2_isLoaded = false;
   lep_miniRelIsoCMS3_DB_isLoaded = false;
+  lep_pass_VVV_cutbased_veto_isLoaded = false;
+  lep_pass_VVV_cutbased_veto_noiso_isLoaded = false;
+  lep_pass_VVV_cutbased_veto_noiso_noip_isLoaded = false;
+  lep_pass_VVV_cutbased_fo_isLoaded = false;
+  lep_pass_VVV_cutbased_fo_noiso_isLoaded = false;
+  lep_pass_VVV_cutbased_tight_noiso_isLoaded = false;
+  lep_pass_VVV_cutbased_tight_isLoaded = false;
+  lep_pass_VVV_MVAbased_tight_noiso_isLoaded = false;
+  lep_pass_VVV_MVAbased_tight_isLoaded = false;
+  lep_pass_VVV_baseline_isLoaded = false;
+  nlep_VVV_cutbased_veto_isLoaded = false;
+  nlep_VVV_cutbased_veto_noiso_isLoaded = false;
+  nlep_VVV_cutbased_veto_noiso_noip_isLoaded = false;
+  nlep_VVV_cutbased_fo_isLoaded = false;
+  nlep_VVV_cutbased_fo_noiso_isLoaded = false;
+  nlep_VVV_cutbased_tight_noiso_isLoaded = false;
+  nlep_VVV_cutbased_tight_isLoaded = false;
+  nlep_VVV_MVAbased_tight_noiso_isLoaded = false;
+  nlep_VVV_MVAbased_tight_isLoaded = false;
+  nlep_VVV_baseline_isLoaded = false;
   lep_pdgId_isLoaded = false;
+  lep_mc_Id_isLoaded = false;
   lep_dxy_isLoaded = false;
   lep_ip3d_isLoaded = false;
   lep_ip3derr_isLoaded = false;
@@ -968,6 +1033,7 @@ void WWWTree::GetEntry(unsigned int idx) {
   lep_glb_x2ondof_isLoaded = false;
   nisoTrack_5gev_isLoaded = false;
   nisoTrack_mt2_isLoaded = false;
+  nisoTrack_stop_isLoaded = false;
   nisoTrack_PFLep5_woverlaps_isLoaded = false;
   nisoTrack_PFHad10_woverlaps_isLoaded = false;
   ngamma_isLoaded = false;
@@ -1342,7 +1408,28 @@ void WWWTree::LoadAllBranches() {
   if (lep_miniRelIsoCMS3_EA_branch != 0) lep_miniRelIsoCMS3_EA();
   if (lep_miniRelIsoCMS3_EAv2_branch != 0) lep_miniRelIsoCMS3_EAv2();
   if (lep_miniRelIsoCMS3_DB_branch != 0) lep_miniRelIsoCMS3_DB();
+  if (lep_pass_VVV_cutbased_veto_branch != 0) lep_pass_VVV_cutbased_veto();
+  if (lep_pass_VVV_cutbased_veto_noiso_branch != 0) lep_pass_VVV_cutbased_veto_noiso();
+  if (lep_pass_VVV_cutbased_veto_noiso_noip_branch != 0) lep_pass_VVV_cutbased_veto_noiso_noip();
+  if (lep_pass_VVV_cutbased_fo_branch != 0) lep_pass_VVV_cutbased_fo();
+  if (lep_pass_VVV_cutbased_fo_noiso_branch != 0) lep_pass_VVV_cutbased_fo_noiso();
+  if (lep_pass_VVV_cutbased_tight_noiso_branch != 0) lep_pass_VVV_cutbased_tight_noiso();
+  if (lep_pass_VVV_cutbased_tight_branch != 0) lep_pass_VVV_cutbased_tight();
+  if (lep_pass_VVV_MVAbased_tight_noiso_branch != 0) lep_pass_VVV_MVAbased_tight_noiso();
+  if (lep_pass_VVV_MVAbased_tight_branch != 0) lep_pass_VVV_MVAbased_tight();
+  if (lep_pass_VVV_baseline_branch != 0) lep_pass_VVV_baseline();
+  if (nlep_VVV_cutbased_veto_branch != 0) nlep_VVV_cutbased_veto();
+  if (nlep_VVV_cutbased_veto_noiso_branch != 0) nlep_VVV_cutbased_veto_noiso();
+  if (nlep_VVV_cutbased_veto_noiso_noip_branch != 0) nlep_VVV_cutbased_veto_noiso_noip();
+  if (nlep_VVV_cutbased_fo_branch != 0) nlep_VVV_cutbased_fo();
+  if (nlep_VVV_cutbased_fo_noiso_branch != 0) nlep_VVV_cutbased_fo_noiso();
+  if (nlep_VVV_cutbased_tight_noiso_branch != 0) nlep_VVV_cutbased_tight_noiso();
+  if (nlep_VVV_cutbased_tight_branch != 0) nlep_VVV_cutbased_tight();
+  if (nlep_VVV_MVAbased_tight_noiso_branch != 0) nlep_VVV_MVAbased_tight_noiso();
+  if (nlep_VVV_MVAbased_tight_branch != 0) nlep_VVV_MVAbased_tight();
+  if (nlep_VVV_baseline_branch != 0) nlep_VVV_baseline();
   if (lep_pdgId_branch != 0) lep_pdgId();
+  if (lep_mc_Id_branch != 0) lep_mc_Id();
   if (lep_dxy_branch != 0) lep_dxy();
   if (lep_ip3d_branch != 0) lep_ip3d();
   if (lep_ip3derr_branch != 0) lep_ip3derr();
@@ -1363,6 +1450,7 @@ void WWWTree::LoadAllBranches() {
   if (lep_glb_x2ondof_branch != 0) lep_glb_x2ondof();
   if (nisoTrack_5gev_branch != 0) nisoTrack_5gev();
   if (nisoTrack_mt2_branch != 0) nisoTrack_mt2();
+  if (nisoTrack_stop_branch != 0) nisoTrack_stop();
   if (nisoTrack_PFLep5_woverlaps_branch != 0) nisoTrack_PFLep5_woverlaps();
   if (nisoTrack_PFHad10_woverlaps_branch != 0) nisoTrack_PFHad10_woverlaps();
   if (ngamma_branch != 0) ngamma();
@@ -3337,7 +3425,7 @@ const vector<bool> &WWWTree::lep_3ch_agree() {
   return *lep_3ch_agree_;
 }
 
-const vector<int> &WWWTree::lep_isFromW() {
+const vector<bool> &WWWTree::lep_isFromW() {
   if (not lep_isFromW_isLoaded) {
     if (lep_isFromW_branch != 0) {
       lep_isFromW_branch->GetEntry(index);
@@ -3350,7 +3438,7 @@ const vector<int> &WWWTree::lep_isFromW() {
   return *lep_isFromW_;
 }
 
-const vector<int> &WWWTree::lep_isFromZ() {
+const vector<bool> &WWWTree::lep_isFromZ() {
   if (not lep_isFromZ_isLoaded) {
     if (lep_isFromZ_branch != 0) {
       lep_isFromZ_branch->GetEntry(index);
@@ -3363,7 +3451,7 @@ const vector<int> &WWWTree::lep_isFromZ() {
   return *lep_isFromZ_;
 }
 
-const vector<int> &WWWTree::lep_isFromB() {
+const vector<bool> &WWWTree::lep_isFromB() {
   if (not lep_isFromB_isLoaded) {
     if (lep_isFromB_branch != 0) {
       lep_isFromB_branch->GetEntry(index);
@@ -3376,7 +3464,7 @@ const vector<int> &WWWTree::lep_isFromB() {
   return *lep_isFromB_;
 }
 
-const vector<int> &WWWTree::lep_isFromC() {
+const vector<bool> &WWWTree::lep_isFromC() {
   if (not lep_isFromC_isLoaded) {
     if (lep_isFromC_branch != 0) {
       lep_isFromC_branch->GetEntry(index);
@@ -3389,7 +3477,7 @@ const vector<int> &WWWTree::lep_isFromC() {
   return *lep_isFromC_;
 }
 
-const vector<int> &WWWTree::lep_isFromL() {
+const vector<bool> &WWWTree::lep_isFromL() {
   if (not lep_isFromL_isLoaded) {
     if (lep_isFromL_branch != 0) {
       lep_isFromL_branch->GetEntry(index);
@@ -3402,7 +3490,7 @@ const vector<int> &WWWTree::lep_isFromL() {
   return *lep_isFromL_;
 }
 
-const vector<int> &WWWTree::lep_isFromLF() {
+const vector<bool> &WWWTree::lep_isFromLF() {
   if (not lep_isFromLF_isLoaded) {
     if (lep_isFromLF_branch != 0) {
       lep_isFromLF_branch->GetEntry(index);
@@ -3571,6 +3659,266 @@ const vector<double> &WWWTree::lep_miniRelIsoCMS3_DB() {
   return *lep_miniRelIsoCMS3_DB_;
 }
 
+const vector<bool> &WWWTree::lep_pass_VVV_cutbased_veto() {
+  if (not lep_pass_VVV_cutbased_veto_isLoaded) {
+    if (lep_pass_VVV_cutbased_veto_branch != 0) {
+      lep_pass_VVV_cutbased_veto_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_cutbased_veto_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_cutbased_veto_isLoaded = true;
+  }
+  return *lep_pass_VVV_cutbased_veto_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_cutbased_veto_noiso() {
+  if (not lep_pass_VVV_cutbased_veto_noiso_isLoaded) {
+    if (lep_pass_VVV_cutbased_veto_noiso_branch != 0) {
+      lep_pass_VVV_cutbased_veto_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_cutbased_veto_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_cutbased_veto_noiso_isLoaded = true;
+  }
+  return *lep_pass_VVV_cutbased_veto_noiso_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_cutbased_veto_noiso_noip() {
+  if (not lep_pass_VVV_cutbased_veto_noiso_noip_isLoaded) {
+    if (lep_pass_VVV_cutbased_veto_noiso_noip_branch != 0) {
+      lep_pass_VVV_cutbased_veto_noiso_noip_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_cutbased_veto_noiso_noip_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_cutbased_veto_noiso_noip_isLoaded = true;
+  }
+  return *lep_pass_VVV_cutbased_veto_noiso_noip_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_cutbased_fo() {
+  if (not lep_pass_VVV_cutbased_fo_isLoaded) {
+    if (lep_pass_VVV_cutbased_fo_branch != 0) {
+      lep_pass_VVV_cutbased_fo_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_cutbased_fo_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_cutbased_fo_isLoaded = true;
+  }
+  return *lep_pass_VVV_cutbased_fo_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_cutbased_fo_noiso() {
+  if (not lep_pass_VVV_cutbased_fo_noiso_isLoaded) {
+    if (lep_pass_VVV_cutbased_fo_noiso_branch != 0) {
+      lep_pass_VVV_cutbased_fo_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_cutbased_fo_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_cutbased_fo_noiso_isLoaded = true;
+  }
+  return *lep_pass_VVV_cutbased_fo_noiso_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_cutbased_tight_noiso() {
+  if (not lep_pass_VVV_cutbased_tight_noiso_isLoaded) {
+    if (lep_pass_VVV_cutbased_tight_noiso_branch != 0) {
+      lep_pass_VVV_cutbased_tight_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_cutbased_tight_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_cutbased_tight_noiso_isLoaded = true;
+  }
+  return *lep_pass_VVV_cutbased_tight_noiso_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_cutbased_tight() {
+  if (not lep_pass_VVV_cutbased_tight_isLoaded) {
+    if (lep_pass_VVV_cutbased_tight_branch != 0) {
+      lep_pass_VVV_cutbased_tight_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_cutbased_tight_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_cutbased_tight_isLoaded = true;
+  }
+  return *lep_pass_VVV_cutbased_tight_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_MVAbased_tight_noiso() {
+  if (not lep_pass_VVV_MVAbased_tight_noiso_isLoaded) {
+    if (lep_pass_VVV_MVAbased_tight_noiso_branch != 0) {
+      lep_pass_VVV_MVAbased_tight_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_MVAbased_tight_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_MVAbased_tight_noiso_isLoaded = true;
+  }
+  return *lep_pass_VVV_MVAbased_tight_noiso_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_MVAbased_tight() {
+  if (not lep_pass_VVV_MVAbased_tight_isLoaded) {
+    if (lep_pass_VVV_MVAbased_tight_branch != 0) {
+      lep_pass_VVV_MVAbased_tight_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_MVAbased_tight_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_MVAbased_tight_isLoaded = true;
+  }
+  return *lep_pass_VVV_MVAbased_tight_;
+}
+
+const vector<bool> &WWWTree::lep_pass_VVV_baseline() {
+  if (not lep_pass_VVV_baseline_isLoaded) {
+    if (lep_pass_VVV_baseline_branch != 0) {
+      lep_pass_VVV_baseline_branch->GetEntry(index);
+    } else {
+      printf("branch lep_pass_VVV_baseline_branch does not exist!\n");
+      exit(1);
+    }
+    lep_pass_VVV_baseline_isLoaded = true;
+  }
+  return *lep_pass_VVV_baseline_;
+}
+
+const int &WWWTree::nlep_VVV_cutbased_veto() {
+  if (not nlep_VVV_cutbased_veto_isLoaded) {
+    if (nlep_VVV_cutbased_veto_branch != 0) {
+      nlep_VVV_cutbased_veto_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_cutbased_veto_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_cutbased_veto_isLoaded = true;
+  }
+  return nlep_VVV_cutbased_veto_;
+}
+
+const int &WWWTree::nlep_VVV_cutbased_veto_noiso() {
+  if (not nlep_VVV_cutbased_veto_noiso_isLoaded) {
+    if (nlep_VVV_cutbased_veto_noiso_branch != 0) {
+      nlep_VVV_cutbased_veto_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_cutbased_veto_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_cutbased_veto_noiso_isLoaded = true;
+  }
+  return nlep_VVV_cutbased_veto_noiso_;
+}
+
+const int &WWWTree::nlep_VVV_cutbased_veto_noiso_noip() {
+  if (not nlep_VVV_cutbased_veto_noiso_noip_isLoaded) {
+    if (nlep_VVV_cutbased_veto_noiso_noip_branch != 0) {
+      nlep_VVV_cutbased_veto_noiso_noip_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_cutbased_veto_noiso_noip_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_cutbased_veto_noiso_noip_isLoaded = true;
+  }
+  return nlep_VVV_cutbased_veto_noiso_noip_;
+}
+
+const int &WWWTree::nlep_VVV_cutbased_fo() {
+  if (not nlep_VVV_cutbased_fo_isLoaded) {
+    if (nlep_VVV_cutbased_fo_branch != 0) {
+      nlep_VVV_cutbased_fo_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_cutbased_fo_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_cutbased_fo_isLoaded = true;
+  }
+  return nlep_VVV_cutbased_fo_;
+}
+
+const int &WWWTree::nlep_VVV_cutbased_fo_noiso() {
+  if (not nlep_VVV_cutbased_fo_noiso_isLoaded) {
+    if (nlep_VVV_cutbased_fo_noiso_branch != 0) {
+      nlep_VVV_cutbased_fo_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_cutbased_fo_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_cutbased_fo_noiso_isLoaded = true;
+  }
+  return nlep_VVV_cutbased_fo_noiso_;
+}
+
+const int &WWWTree::nlep_VVV_cutbased_tight_noiso() {
+  if (not nlep_VVV_cutbased_tight_noiso_isLoaded) {
+    if (nlep_VVV_cutbased_tight_noiso_branch != 0) {
+      nlep_VVV_cutbased_tight_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_cutbased_tight_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_cutbased_tight_noiso_isLoaded = true;
+  }
+  return nlep_VVV_cutbased_tight_noiso_;
+}
+
+const int &WWWTree::nlep_VVV_cutbased_tight() {
+  if (not nlep_VVV_cutbased_tight_isLoaded) {
+    if (nlep_VVV_cutbased_tight_branch != 0) {
+      nlep_VVV_cutbased_tight_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_cutbased_tight_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_cutbased_tight_isLoaded = true;
+  }
+  return nlep_VVV_cutbased_tight_;
+}
+
+const int &WWWTree::nlep_VVV_MVAbased_tight_noiso() {
+  if (not nlep_VVV_MVAbased_tight_noiso_isLoaded) {
+    if (nlep_VVV_MVAbased_tight_noiso_branch != 0) {
+      nlep_VVV_MVAbased_tight_noiso_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_MVAbased_tight_noiso_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_MVAbased_tight_noiso_isLoaded = true;
+  }
+  return nlep_VVV_MVAbased_tight_noiso_;
+}
+
+const int &WWWTree::nlep_VVV_MVAbased_tight() {
+  if (not nlep_VVV_MVAbased_tight_isLoaded) {
+    if (nlep_VVV_MVAbased_tight_branch != 0) {
+      nlep_VVV_MVAbased_tight_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_MVAbased_tight_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_MVAbased_tight_isLoaded = true;
+  }
+  return nlep_VVV_MVAbased_tight_;
+}
+
+const int &WWWTree::nlep_VVV_baseline() {
+  if (not nlep_VVV_baseline_isLoaded) {
+    if (nlep_VVV_baseline_branch != 0) {
+      nlep_VVV_baseline_branch->GetEntry(index);
+    } else {
+      printf("branch nlep_VVV_baseline_branch does not exist!\n");
+      exit(1);
+    }
+    nlep_VVV_baseline_isLoaded = true;
+  }
+  return nlep_VVV_baseline_;
+}
+
 const vector<int> &WWWTree::lep_pdgId() {
   if (not lep_pdgId_isLoaded) {
     if (lep_pdgId_branch != 0) {
@@ -3582,6 +3930,19 @@ const vector<int> &WWWTree::lep_pdgId() {
     lep_pdgId_isLoaded = true;
   }
   return *lep_pdgId_;
+}
+
+const vector<int> &WWWTree::lep_mc_Id() {
+  if (not lep_mc_Id_isLoaded) {
+    if (lep_mc_Id_branch != 0) {
+      lep_mc_Id_branch->GetEntry(index);
+    } else {
+      printf("branch lep_mc_Id_branch does not exist!\n");
+      exit(1);
+    }
+    lep_mc_Id_isLoaded = true;
+  }
+  return *lep_mc_Id_;
 }
 
 const vector<float> &WWWTree::lep_dxy() {
@@ -3842,6 +4203,19 @@ const int &WWWTree::nisoTrack_mt2() {
     nisoTrack_mt2_isLoaded = true;
   }
   return nisoTrack_mt2_;
+}
+
+const int &WWWTree::nisoTrack_stop() {
+  if (not nisoTrack_stop_isLoaded) {
+    if (nisoTrack_stop_branch != 0) {
+      nisoTrack_stop_branch->GetEntry(index);
+    } else {
+      printf("branch nisoTrack_stop_branch does not exist!\n");
+      exit(1);
+    }
+    nisoTrack_stop_isLoaded = true;
+  }
+  return nisoTrack_stop_;
 }
 
 const int &WWWTree::nisoTrack_PFLep5_woverlaps() {
@@ -6823,12 +7197,12 @@ const vector<float> &lep_phi() { return mytree.lep_phi(); }
 const vector<float> &lep_mass() { return mytree.lep_mass(); }
 const vector<int> &lep_charge() { return mytree.lep_charge(); }
 const vector<bool> &lep_3ch_agree() { return mytree.lep_3ch_agree(); }
-const vector<int> &lep_isFromW() { return mytree.lep_isFromW(); }
-const vector<int> &lep_isFromZ() { return mytree.lep_isFromZ(); }
-const vector<int> &lep_isFromB() { return mytree.lep_isFromB(); }
-const vector<int> &lep_isFromC() { return mytree.lep_isFromC(); }
-const vector<int> &lep_isFromL() { return mytree.lep_isFromL(); }
-const vector<int> &lep_isFromLF() { return mytree.lep_isFromLF(); }
+const vector<bool> &lep_isFromW() { return mytree.lep_isFromW(); }
+const vector<bool> &lep_isFromZ() { return mytree.lep_isFromZ(); }
+const vector<bool> &lep_isFromB() { return mytree.lep_isFromB(); }
+const vector<bool> &lep_isFromC() { return mytree.lep_isFromC(); }
+const vector<bool> &lep_isFromL() { return mytree.lep_isFromL(); }
+const vector<bool> &lep_isFromLF() { return mytree.lep_isFromLF(); }
 const vector<double> &lep_ptRatio() { return mytree.lep_ptRatio(); }
 const vector<double> &lep_ptRel() { return mytree.lep_ptRel(); }
 const vector<double> &lep_relIso03() { return mytree.lep_relIso03(); }
@@ -6841,7 +7215,28 @@ const vector<double> &lep_relIso04EAv2() { return mytree.lep_relIso04EAv2(); }
 const vector<double> &lep_miniRelIsoCMS3_EA() { return mytree.lep_miniRelIsoCMS3_EA(); }
 const vector<double> &lep_miniRelIsoCMS3_EAv2() { return mytree.lep_miniRelIsoCMS3_EAv2(); }
 const vector<double> &lep_miniRelIsoCMS3_DB() { return mytree.lep_miniRelIsoCMS3_DB(); }
+const vector<bool> &lep_pass_VVV_cutbased_veto() { return mytree.lep_pass_VVV_cutbased_veto(); }
+const vector<bool> &lep_pass_VVV_cutbased_veto_noiso() { return mytree.lep_pass_VVV_cutbased_veto_noiso(); }
+const vector<bool> &lep_pass_VVV_cutbased_veto_noiso_noip() { return mytree.lep_pass_VVV_cutbased_veto_noiso_noip(); }
+const vector<bool> &lep_pass_VVV_cutbased_fo() { return mytree.lep_pass_VVV_cutbased_fo(); }
+const vector<bool> &lep_pass_VVV_cutbased_fo_noiso() { return mytree.lep_pass_VVV_cutbased_fo_noiso(); }
+const vector<bool> &lep_pass_VVV_cutbased_tight_noiso() { return mytree.lep_pass_VVV_cutbased_tight_noiso(); }
+const vector<bool> &lep_pass_VVV_cutbased_tight() { return mytree.lep_pass_VVV_cutbased_tight(); }
+const vector<bool> &lep_pass_VVV_MVAbased_tight_noiso() { return mytree.lep_pass_VVV_MVAbased_tight_noiso(); }
+const vector<bool> &lep_pass_VVV_MVAbased_tight() { return mytree.lep_pass_VVV_MVAbased_tight(); }
+const vector<bool> &lep_pass_VVV_baseline() { return mytree.lep_pass_VVV_baseline(); }
+const int &nlep_VVV_cutbased_veto() { return mytree.nlep_VVV_cutbased_veto(); }
+const int &nlep_VVV_cutbased_veto_noiso() { return mytree.nlep_VVV_cutbased_veto_noiso(); }
+const int &nlep_VVV_cutbased_veto_noiso_noip() { return mytree.nlep_VVV_cutbased_veto_noiso_noip(); }
+const int &nlep_VVV_cutbased_fo() { return mytree.nlep_VVV_cutbased_fo(); }
+const int &nlep_VVV_cutbased_fo_noiso() { return mytree.nlep_VVV_cutbased_fo_noiso(); }
+const int &nlep_VVV_cutbased_tight_noiso() { return mytree.nlep_VVV_cutbased_tight_noiso(); }
+const int &nlep_VVV_cutbased_tight() { return mytree.nlep_VVV_cutbased_tight(); }
+const int &nlep_VVV_MVAbased_tight_noiso() { return mytree.nlep_VVV_MVAbased_tight_noiso(); }
+const int &nlep_VVV_MVAbased_tight() { return mytree.nlep_VVV_MVAbased_tight(); }
+const int &nlep_VVV_baseline() { return mytree.nlep_VVV_baseline(); }
 const vector<int> &lep_pdgId() { return mytree.lep_pdgId(); }
+const vector<int> &lep_mc_Id() { return mytree.lep_mc_Id(); }
 const vector<float> &lep_dxy() { return mytree.lep_dxy(); }
 const vector<float> &lep_ip3d() { return mytree.lep_ip3d(); }
 const vector<float> &lep_ip3derr() { return mytree.lep_ip3derr(); }
@@ -6862,6 +7257,7 @@ const vector<float> &lep_sta_x2ondof() { return mytree.lep_sta_x2ondof(); }
 const vector<float> &lep_glb_x2ondof() { return mytree.lep_glb_x2ondof(); }
 const int &nisoTrack_5gev() { return mytree.nisoTrack_5gev(); }
 const int &nisoTrack_mt2() { return mytree.nisoTrack_mt2(); }
+const int &nisoTrack_stop() { return mytree.nisoTrack_stop(); }
 const int &nisoTrack_PFLep5_woverlaps() { return mytree.nisoTrack_PFLep5_woverlaps(); }
 const int &nisoTrack_PFHad10_woverlaps() { return mytree.nisoTrack_PFHad10_woverlaps(); }
 const int &ngamma() { return mytree.ngamma(); }

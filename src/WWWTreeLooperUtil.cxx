@@ -16,28 +16,136 @@
 //______________________________________________________________________________________
 int totalcharge()
 {
-  return abs(mytree.lep_pdgId().at(0)/abs(mytree.lep_pdgId().at(0)) +
-             mytree.lep_pdgId().at(1)/abs(mytree.lep_pdgId().at(1)) +
-             mytree.lep_pdgId().at(2)/abs(mytree.lep_pdgId().at(2)));
+  if (ana_data.lepcol["good3Llep"].size() != 3)
+    return -999;
+  return abs(ana_data.lepcol["good3Llep"][0].pdgId/abs(ana_data.lepcol["good3Llep"][0].pdgId) +
+             ana_data.lepcol["good3Llep"][1].pdgId/abs(ana_data.lepcol["good3Llep"][1].pdgId) +
+             ana_data.lepcol["good3Llep"][2].pdgId/abs(ana_data.lepcol["good3Llep"][2].pdgId));
 }
 
 //______________________________________________________________________________________
 int getNumSFOSPairs(){
+  if (ana_data.lepcol["good3Llep"].size() != 3)
+    return -999;
   /*Loops through pairs of entries in the lep_pdgId vector and counts how many have opposite value*/
   int num_SFOS = 0;
-  for (int i = 0; i < (int) mytree.lep_pdgId().size(); i++){
-    for (int j = i+1; j < (int) mytree.lep_pdgId().size(); j++){
-      if (mytree.lep_pdgId().at(i) == -mytree.lep_pdgId().at(j)) num_SFOS++;
+  for (int i = 0; i < (int) ana_data.lepcol["good3Llep"].size(); i++){
+    for (int j = i+1; j < (int) ana_data.lepcol["good3Llep"].size(); j++){
+      if (ana_data.lepcol["good3Llep"][i].pdgId == -(ana_data.lepcol["good3Llep"][j].pdgId)) num_SFOS++;
     }
   }
   return num_SFOS;
 }
 
 //______________________________________________________________________________________
+float get0SFOSMll()
+{
+  if (ana_data.lepcol["good3Llep"].size() != 3)
+    return -999;
+
+  // Sort by pdgId to count them easily
+  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_abspdgId<ObjUtil::Lepton>);
+
+  ObjUtil::Lepton& lep0 = ana_data.lepcol["good3Llep"][0];
+  ObjUtil::Lepton& lep1 = ana_data.lepcol["good3Llep"][1];
+  ObjUtil::Lepton& lep2 = ana_data.lepcol["good3Llep"][2];
+
+  float Mll = 0;
+  if (abs(lep1.pdgId) == 11) Mll = VarUtil::Mass(lep1, lep2);
+  if (abs(lep1.pdgId) == 13) Mll = VarUtil::Mass(lep0, lep1);
+  return Mll;
+}
+
+//______________________________________________________________________________________
+float get0SFOSMee()
+{
+  // The no good value is not 90 for 0SFOS, because there may not be a Mee pair
+  float Mll = -999;
+  if (ana_data.lepcol["good3Llep"].size() != 3)
+    return Mll;
+
+  // Sort by pdgId to count them easily
+  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_abspdgId<ObjUtil::Lepton>);
+
+//	  ObjUtil::Lepton& lep0 = ana_data.lepcol["good3Llep"][0];
+  ObjUtil::Lepton& lep1 = ana_data.lepcol["good3Llep"][1];
+  ObjUtil::Lepton& lep2 = ana_data.lepcol["good3Llep"][2];
+
+  if (abs(lep1.pdgId) == 11)
+    Mll = VarUtil::Mass(lep1, lep2);
+
+  return Mll;
+}
+
+//______________________________________________________________________________________
+float get1SFOSMll()
+{
+  // the "no good" value is MZ=90, since we want to Z-veto.
+  float Mll = 90;
+  if (ana_data.lepcol["good3Llep"].size() != 3)
+    return Mll;
+
+  // Sort by pdgId to count them easily
+  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_abspdgId<ObjUtil::Lepton>);
+
+  ObjUtil::Lepton& lep0 = ana_data.lepcol["good3Llep"][0];
+  ObjUtil::Lepton& lep1 = ana_data.lepcol["good3Llep"][1];
+  ObjUtil::Lepton& lep2 = ana_data.lepcol["good3Llep"][2];
+
+  if (abs(lep1.pdgId) == 11) Mll = VarUtil::Mass(lep1, lep2);
+  if (abs(lep1.pdgId) == 13) Mll = VarUtil::Mass(lep0, lep1);
+  return Mll;
+}
+
+//______________________________________________________________________________________
+float get2SFOSMll0()
+{
+  // the "no good" value is MZ=90, since we want to Z-veto.
+  if (ana_data.lepcol["good3Llep"].size() != 3)
+    return 90.;
+
+  // Sort by pdgId to count them easily
+  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_pdgId<ObjUtil::Lepton>);
+
+  ObjUtil::Lepton& lep0 = ana_data.lepcol["good3Llep"][0];
+  ObjUtil::Lepton& lep1 = ana_data.lepcol["good3Llep"][1];
+  ObjUtil::Lepton& lep2 = ana_data.lepcol["good3Llep"][2];
+
+  if (lep1.pdgId > 0)
+    return VarUtil::Mass(lep2, lep0);
+  else
+    return VarUtil::Mass(lep0, lep1);
+
+}
+
+//______________________________________________________________________________________
+float get2SFOSMll1()
+{
+  // the "no good" value is MZ=90, since we want to Z-veto.
+  if (ana_data.lepcol["good3Llep"].size() != 3)
+    return 90.;
+
+  // Sort by pdgId to count them easily
+  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_pdgId<ObjUtil::Lepton>);
+
+  ObjUtil::Lepton& lep0 = ana_data.lepcol["good3Llep"][0];
+  ObjUtil::Lepton& lep1 = ana_data.lepcol["good3Llep"][1];
+  ObjUtil::Lepton& lep2 = ana_data.lepcol["good3Llep"][2];
+
+  if (lep1.pdgId > 0)
+    return VarUtil::Mass(lep2, lep1);
+  else
+    return VarUtil::Mass(lep0, lep2);
+}
+
+//______________________________________________________________________________________
 void printEventList(string prefix)
 {
-  std::cout << prefix.c_str() << ": make_tuple(" << mytree.evt() << "," <<  mytree.run() << "," << mytree.lumi() << ")," << std::endl;
-  std::cout << prefix.c_str() << "HJ: " << mytree.run() << ":" <<  mytree.lumi() << ":" << mytree.evt() << std::endl;
+//	  std::cout << prefix.c_str() << ": make_tuple(" << mytree.evt() << "," <<  mytree.run() << "," << mytree.lumi() << ")," << std::endl;
+//	  std::cout << prefix.c_str() << "HJ: " << mytree.run() << ":" <<  mytree.lumi() << ":" << mytree.evt() << std::endl;
+  std::vector<int> eventid;
+  getEventID(eventid);
+  std::cout << prefix.c_str() << " " << eventid[0] << " " << eventid[1] << " " << eventid[2] << std::endl;
 }
 
 //______________________________________________________________________________________
@@ -153,3 +261,193 @@ void getEventID(std::vector<int>& eventid)
   eventid.push_back(mytree.lumi());
   eventid.push_back(mytree.evt());
 }
+
+//______________________________________________________________________________________
+bool isSignalSample()
+{
+  if (LoopUtil::output_name.Contains("www_") || LoopUtil::output_name.Contains("vh_nonbb"))
+    return true;
+  else
+    return false;
+}
+
+//______________________________________________________________________________________
+int getBabyVersion()
+{
+  if (LoopUtil::last_tfile_name.Contains("v0.1.5"))
+    return 5;
+  if (LoopUtil::last_tfile_name.Contains("v0.1.6"))
+    return 6;
+  return 0;
+}
+
+//______________________________________________________________________________________
+unsigned int getNLepFromX(ObjUtil::Leptons& leptons, unsigned int pidx)
+{
+  unsigned int n = 0;
+  for (auto& lepton: leptons)
+    if ((lepton.isFromX & (1 << pidx)) != 0) n++;
+  return n;
+}
+
+//______________________________________________________________________________________
+unsigned int getNLepFromW(ObjUtil::Leptons& leptons)
+{
+  return getNLepFromX(leptons, 0);
+}
+
+//______________________________________________________________________________________
+unsigned int getNLepFromZ(ObjUtil::Leptons& leptons)
+{
+  return getNLepFromX(leptons, 1);
+}
+
+//______________________________________________________________________________________
+BkgType getBkgTypeSS()
+{
+
+  // If signal sample don't do any of this stuff
+  if (isSignalSample())
+    return kTrue;
+
+  // Initialize as not belonging to any type
+  BkgType sn = kOthers;
+
+  // Leptons passing 2l selection
+  if (ana_data.lepcol["goodSSlep"].size() >= 2)
+  {
+    int nW = getNLepFromW(ana_data.lepcol["goodSSlep"]);
+    int nZ = getNLepFromW(ana_data.lepcol["goodSSlep"]);
+
+    ObjUtil::Lepton& lep0 = ana_data.lepcol["goodSSlep"][0];
+    ObjUtil::Lepton& lep1 = ana_data.lepcol["goodSSlep"][1];
+
+    int mc_id_product = lep0.mc_Id * lep1.mc_Id;
+
+    // True SS category (e.g. W+W+)
+    if (nW == 2 &&  mc_id_product > 0)
+      sn = kTrue;
+    // W+W(else) charg flip
+    else if (nW == 2)
+      sn = kChFlip;
+    else if (nZ == 2 && mc_id_product <= 0)
+      sn = kChFlip;
+    // ZZ both with a lost lepton
+    else if (nZ == 2)
+      sn = kLostLep;
+    // WZ
+    else if(nW == 1 && nZ == 1)
+      sn = kLostLep;
+    else if ((nW+nZ)==1)
+      sn = kOneFake;
+    else if ((nW+nZ)==0)
+      sn = kTwoFake;
+    else
+      sn = kOthers;
+  }
+
+  return sn;
+}
+
+//______________________________________________________________________________________
+BkgType getBkgType3L()
+{
+
+  // If signal sample don't do any of this stuff
+  if (isSignalSample())
+    return kTrue;
+
+  // Initialize with nothing
+  BkgType sn2 = kOthers;
+
+  // Leptons passing 3l lepton selection
+  if (ana_data.lepcol["good3Llep"].size() >= 3)
+  {
+    int nW = getNLepFromW(ana_data.lepcol["good3Llep"]);
+    int nZ = getNLepFromW(ana_data.lepcol["good3Llep"]);
+
+    ObjUtil::Lepton& lep0 = ana_data.lepcol["good3Llep"][0];
+    ObjUtil::Lepton& lep1 = ana_data.lepcol["good3Llep"][1];
+    ObjUtil::Lepton& lep2 = ana_data.lepcol["good3Llep"][2];
+
+    // Charge flip W+W+W+
+    if (nW == 3 && (lep0.mc_Id > 0 && lep1.mc_Id > 0 && lep2.mc_Id > 0))
+      sn2 = kChFlip;
+    // Charge flip W-W-W-
+    else if (nW == 3 && (lep0.mc_Id > 0 && lep1.mc_Id > 0 && lep2.mc_Id > 0))
+      sn2 = kChFlip;
+    else if (nW == 3)
+      sn2 = kTrue;
+    // Lost lepton for ttZ
+    else if (nW == 2 && nZ == 1)
+      sn2 = kLostLep;
+    // Neglect WZZ as LL
+    else if (nW == 1 && nZ == 2)
+      sn2 = kTrue;
+    // ZZ
+    else if (nZ == 3)
+      sn2 = kLostLep;
+    else if ((nW+nZ)==2)
+      sn2 = kOneFake;
+    else if ((nW+nZ)==1)
+      sn2 = kTwoFake;
+    else
+      sn2 = kOthers;
+  }
+
+  return sn2;
+}
+
+//______________________________________________________________________________________
+void setAnalysisDataSS()
+{
+  switch (getBkgTypeSS())
+  {
+    case kTrue:    ana_data_SS = &ana_data_SS_true;    return; break;
+    case kChFlip:  ana_data_SS = &ana_data_SS_chflip;  return; break;
+    case kLostLep: ana_data_SS = &ana_data_SS_lostlep; return; break;
+    case kOneFake: ana_data_SS = &ana_data_SS_onefake; return; break;
+    case kTwoFake: ana_data_SS = &ana_data_SS_twofake; return; break;
+    case kOthers:  ana_data_SS = &ana_data_SS_others;  return; break;
+    default: PrintUtil::error("I should not be here"); break;
+  }
+}
+
+//______________________________________________________________________________________
+void setAnalysisData3L()
+{
+  switch (getBkgType3L())
+  {
+    case kTrue:    ana_data_3L = &ana_data_3L_true;    return; break;
+    case kChFlip:  ana_data_3L = &ana_data_3L_chflip;  return; break;
+    case kLostLep: ana_data_3L = &ana_data_3L_lostlep; return; break;
+    case kOneFake: ana_data_3L = &ana_data_3L_onefake; return; break;
+    case kTwoFake: ana_data_3L = &ana_data_3L_twofake; return; break;
+    case kOthers:  ana_data_3L = &ana_data_3L_others;  return; break;
+    default: PrintUtil::error("I should not be here"); break;
+  }
+}
+
+//______________________________________________________________________________________
+ObjUtil::AnalysisData* getAnalysisData(TString prefix)
+{
+  if (getBabyVersion() < 6)
+    return &ana_data;
+
+  if (prefix.Contains("SS"))
+  {
+    setAnalysisDataSS();
+    return ana_data_SS;
+  }
+  else if (prefix.Contains("ThreeLep"))
+  {
+    setAnalysisData3L();
+    return ana_data_3L;
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+//eof

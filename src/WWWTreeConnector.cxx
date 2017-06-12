@@ -24,6 +24,8 @@ ObjUtil::Leptons getLeptons(/*WWWTree& mytree*/)
     lepton.tightcharge         = mytree.lep_3ch_agree().at(ilep);
     lepton.charge              = mytree.lep_charge().at(ilep);
     lepton.pdgId               = mytree.lep_pdgId().at(ilep);
+    if (getBabyVersion() == 6)
+      lepton.mc_Id             = mytree.lep_mc_Id().at(ilep);
 
     // Isolation related
     lepton.ptRatio             = mytree.lep_ptRatio().at(ilep);
@@ -38,11 +40,30 @@ ObjUtil::Leptons getLeptons(/*WWWTree& mytree*/)
     lepton.miniRelIsoCMS3_EA   = mytree.lep_miniRelIsoCMS3_EA().at(ilep);
     lepton.miniRelIsoCMS3_EAv2 = mytree.lep_miniRelIsoCMS3_EAv2().at(ilep);
     lepton.miniRelIsoCMS3_DB   = mytree.lep_miniRelIsoCMS3_DB().at(ilep);
-    lepton.id                  = mytree.lep_tightId().at(ilep);
+
+    if (getBabyVersion() >= 6)
+    {
+      // Lepton ID
+      if (mytree.lep_pass_VVV_cutbased_tight_noiso().at(ilep))
+        lepton.id                = 3;
+      else if (mytree.lep_pass_VVV_cutbased_fo_noiso().at(ilep))
+        lepton.id                = 2;
+      else if (mytree.lep_pass_VVV_cutbased_veto_noiso().at(ilep))
+        lepton.id                = 1;
+      else
+        lepton.id                = 0;
+      std::vector<int> eventid;
+      getEventID(eventid);
+      if (CutUtil::ifEventIdInVerboseCheckList(eventid))
+        std::cout << ilep << " " << lepton.id << std::endl;
+    }
+    else
+    {
+      lepton.id = 99;
+    }
 
     // truth matching
-    if (LoopUtil::getCurrentTFileName().Contains("WWW_v0.1.5") ||
-        LoopUtil::getCurrentTFileName().Contains("WWW_v0.1.6"))
+    if (getBabyVersion() >= 5)
     {
       lepton.isFromX = 0;
       if (mytree.lep_isFromW ().at(ilep)) lepton.isFromX |= (1<<0);

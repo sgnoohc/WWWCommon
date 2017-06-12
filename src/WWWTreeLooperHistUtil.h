@@ -11,6 +11,7 @@
 #include "WWWTree.h"
 #include "WWWTreeConnector.h"
 #include "WWWTreeLooperAnalysisData.h"
+#include "WWWTreeLooperUtil.h"
 #include "Ditto.h"
 
 using namespace Ditto;
@@ -18,7 +19,9 @@ using namespace Ditto;
 //-------------------------------------------------------------
 // Histogramming functions
 
-void fillHistograms(string prefix);
+void fillHistograms(TString prefix, ObjUtil::AnalysisData* ana_data=0);
+void fillHistogramsStandard(TString prefix, ObjUtil::AnalysisData* ana_data);
+
 //	void fillLepWPair(string prefix);
 //	void fillHistogramsTruthMatchingLeptons3L(string prefix);
 //	void fillHistogramsTruthMatchingLeptons(string prefix);

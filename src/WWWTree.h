@@ -1,6 +1,6 @@
 // -*- C++ -*-
 // This is a header file generated with the command:
-// makeCMS3ClassFiles("/nfs-7/userdata/bhashemi/WWW_babies/WWW_v0.1.5/skim/www_incl_amcnlo_skim_1.root", "t", "WWWTree", "tas", "mytree")
+// makeCMS3ClassFiles("/nfs-7/userdata/bhashemi/WWW_babies/WWW_v0.1.6/skim/www_incl_amcnlo_skim_1.root", "t", "WWWTree", "tas", "mytree")
 
 #ifndef WWWTree_H
 #define WWWTree_H
@@ -13,14 +13,14 @@
 #include "TH1F.h"
 #include "TFile.h"
 #include "TBits.h"
-#include <vector>
-#include <unistd.h>
+#include <vector> 
+#include <unistd.h> 
 typedef ROOT::Math::LorentzVector< ROOT::Math::PxPyPzE4D<float> > LorentzVector;
 
-using namespace std;
+using namespace std; 
 class WWWTree {
- private:
- protected:
+ private: 
+ protected: 
   unsigned int index;
   int      run_;
   TBranch *run_branch;
@@ -427,22 +427,22 @@ class WWWTree {
   vector<bool> *lep_3ch_agree_;
   TBranch *lep_3ch_agree_branch;
   bool     lep_3ch_agree_isLoaded;
-  vector<int> *lep_isFromW_;
+  vector<bool> *lep_isFromW_;
   TBranch *lep_isFromW_branch;
   bool     lep_isFromW_isLoaded;
-  vector<int> *lep_isFromZ_;
+  vector<bool> *lep_isFromZ_;
   TBranch *lep_isFromZ_branch;
   bool     lep_isFromZ_isLoaded;
-  vector<int> *lep_isFromB_;
+  vector<bool> *lep_isFromB_;
   TBranch *lep_isFromB_branch;
   bool     lep_isFromB_isLoaded;
-  vector<int> *lep_isFromC_;
+  vector<bool> *lep_isFromC_;
   TBranch *lep_isFromC_branch;
   bool     lep_isFromC_isLoaded;
-  vector<int> *lep_isFromL_;
+  vector<bool> *lep_isFromL_;
   TBranch *lep_isFromL_branch;
   bool     lep_isFromL_isLoaded;
-  vector<int> *lep_isFromLF_;
+  vector<bool> *lep_isFromLF_;
   TBranch *lep_isFromLF_branch;
   bool     lep_isFromLF_isLoaded;
   vector<double> *lep_ptRatio_;
@@ -481,9 +481,72 @@ class WWWTree {
   vector<double> *lep_miniRelIsoCMS3_DB_;
   TBranch *lep_miniRelIsoCMS3_DB_branch;
   bool     lep_miniRelIsoCMS3_DB_isLoaded;
+  vector<bool> *lep_pass_VVV_cutbased_veto_;
+  TBranch *lep_pass_VVV_cutbased_veto_branch;
+  bool     lep_pass_VVV_cutbased_veto_isLoaded;
+  vector<bool> *lep_pass_VVV_cutbased_veto_noiso_;
+  TBranch *lep_pass_VVV_cutbased_veto_noiso_branch;
+  bool     lep_pass_VVV_cutbased_veto_noiso_isLoaded;
+  vector<bool> *lep_pass_VVV_cutbased_veto_noiso_noip_;
+  TBranch *lep_pass_VVV_cutbased_veto_noiso_noip_branch;
+  bool     lep_pass_VVV_cutbased_veto_noiso_noip_isLoaded;
+  vector<bool> *lep_pass_VVV_cutbased_fo_;
+  TBranch *lep_pass_VVV_cutbased_fo_branch;
+  bool     lep_pass_VVV_cutbased_fo_isLoaded;
+  vector<bool> *lep_pass_VVV_cutbased_fo_noiso_;
+  TBranch *lep_pass_VVV_cutbased_fo_noiso_branch;
+  bool     lep_pass_VVV_cutbased_fo_noiso_isLoaded;
+  vector<bool> *lep_pass_VVV_cutbased_tight_noiso_;
+  TBranch *lep_pass_VVV_cutbased_tight_noiso_branch;
+  bool     lep_pass_VVV_cutbased_tight_noiso_isLoaded;
+  vector<bool> *lep_pass_VVV_cutbased_tight_;
+  TBranch *lep_pass_VVV_cutbased_tight_branch;
+  bool     lep_pass_VVV_cutbased_tight_isLoaded;
+  vector<bool> *lep_pass_VVV_MVAbased_tight_noiso_;
+  TBranch *lep_pass_VVV_MVAbased_tight_noiso_branch;
+  bool     lep_pass_VVV_MVAbased_tight_noiso_isLoaded;
+  vector<bool> *lep_pass_VVV_MVAbased_tight_;
+  TBranch *lep_pass_VVV_MVAbased_tight_branch;
+  bool     lep_pass_VVV_MVAbased_tight_isLoaded;
+  vector<bool> *lep_pass_VVV_baseline_;
+  TBranch *lep_pass_VVV_baseline_branch;
+  bool     lep_pass_VVV_baseline_isLoaded;
+  int      nlep_VVV_cutbased_veto_;
+  TBranch *nlep_VVV_cutbased_veto_branch;
+  bool     nlep_VVV_cutbased_veto_isLoaded;
+  int      nlep_VVV_cutbased_veto_noiso_;
+  TBranch *nlep_VVV_cutbased_veto_noiso_branch;
+  bool     nlep_VVV_cutbased_veto_noiso_isLoaded;
+  int      nlep_VVV_cutbased_veto_noiso_noip_;
+  TBranch *nlep_VVV_cutbased_veto_noiso_noip_branch;
+  bool     nlep_VVV_cutbased_veto_noiso_noip_isLoaded;
+  int      nlep_VVV_cutbased_fo_;
+  TBranch *nlep_VVV_cutbased_fo_branch;
+  bool     nlep_VVV_cutbased_fo_isLoaded;
+  int      nlep_VVV_cutbased_fo_noiso_;
+  TBranch *nlep_VVV_cutbased_fo_noiso_branch;
+  bool     nlep_VVV_cutbased_fo_noiso_isLoaded;
+  int      nlep_VVV_cutbased_tight_noiso_;
+  TBranch *nlep_VVV_cutbased_tight_noiso_branch;
+  bool     nlep_VVV_cutbased_tight_noiso_isLoaded;
+  int      nlep_VVV_cutbased_tight_;
+  TBranch *nlep_VVV_cutbased_tight_branch;
+  bool     nlep_VVV_cutbased_tight_isLoaded;
+  int      nlep_VVV_MVAbased_tight_noiso_;
+  TBranch *nlep_VVV_MVAbased_tight_noiso_branch;
+  bool     nlep_VVV_MVAbased_tight_noiso_isLoaded;
+  int      nlep_VVV_MVAbased_tight_;
+  TBranch *nlep_VVV_MVAbased_tight_branch;
+  bool     nlep_VVV_MVAbased_tight_isLoaded;
+  int      nlep_VVV_baseline_;
+  TBranch *nlep_VVV_baseline_branch;
+  bool     nlep_VVV_baseline_isLoaded;
   vector<int> *lep_pdgId_;
   TBranch *lep_pdgId_branch;
   bool     lep_pdgId_isLoaded;
+  vector<int> *lep_mc_Id_;
+  TBranch *lep_mc_Id_branch;
+  bool     lep_mc_Id_isLoaded;
   vector<float> *lep_dxy_;
   TBranch *lep_dxy_branch;
   bool     lep_dxy_isLoaded;
@@ -544,6 +607,9 @@ class WWWTree {
   int      nisoTrack_mt2_;
   TBranch *nisoTrack_mt2_branch;
   bool     nisoTrack_mt2_isLoaded;
+  int      nisoTrack_stop_;
+  TBranch *nisoTrack_stop_branch;
+  bool     nisoTrack_stop_isLoaded;
   int      nisoTrack_PFLep5_woverlaps_;
   TBranch *nisoTrack_PFLep5_woverlaps_branch;
   bool     nisoTrack_PFLep5_woverlaps_isLoaded;
@@ -1195,10 +1261,10 @@ class WWWTree {
   vector<float> *weightsf_lepip_FS_;
   TBranch *weightsf_lepip_FS_branch;
   bool     weightsf_lepip_FS_isLoaded;
-public:
+public: 
 void Init(TTree *tree);
-void GetEntry(unsigned int idx);
-void LoadAllBranches();
+void GetEntry(unsigned int idx); 
+void LoadAllBranches(); 
   const int &run();
   const int &lumi();
   const unsigned long long &evt();
@@ -1334,12 +1400,12 @@ void LoadAllBranches();
   const vector<float> &lep_mass();
   const vector<int> &lep_charge();
   const vector<bool> &lep_3ch_agree();
-  const vector<int> &lep_isFromW();
-  const vector<int> &lep_isFromZ();
-  const vector<int> &lep_isFromB();
-  const vector<int> &lep_isFromC();
-  const vector<int> &lep_isFromL();
-  const vector<int> &lep_isFromLF();
+  const vector<bool> &lep_isFromW();
+  const vector<bool> &lep_isFromZ();
+  const vector<bool> &lep_isFromB();
+  const vector<bool> &lep_isFromC();
+  const vector<bool> &lep_isFromL();
+  const vector<bool> &lep_isFromLF();
   const vector<double> &lep_ptRatio();
   const vector<double> &lep_ptRel();
   const vector<double> &lep_relIso03();
@@ -1352,7 +1418,28 @@ void LoadAllBranches();
   const vector<double> &lep_miniRelIsoCMS3_EA();
   const vector<double> &lep_miniRelIsoCMS3_EAv2();
   const vector<double> &lep_miniRelIsoCMS3_DB();
+  const vector<bool> &lep_pass_VVV_cutbased_veto();
+  const vector<bool> &lep_pass_VVV_cutbased_veto_noiso();
+  const vector<bool> &lep_pass_VVV_cutbased_veto_noiso_noip();
+  const vector<bool> &lep_pass_VVV_cutbased_fo();
+  const vector<bool> &lep_pass_VVV_cutbased_fo_noiso();
+  const vector<bool> &lep_pass_VVV_cutbased_tight_noiso();
+  const vector<bool> &lep_pass_VVV_cutbased_tight();
+  const vector<bool> &lep_pass_VVV_MVAbased_tight_noiso();
+  const vector<bool> &lep_pass_VVV_MVAbased_tight();
+  const vector<bool> &lep_pass_VVV_baseline();
+  const int &nlep_VVV_cutbased_veto();
+  const int &nlep_VVV_cutbased_veto_noiso();
+  const int &nlep_VVV_cutbased_veto_noiso_noip();
+  const int &nlep_VVV_cutbased_fo();
+  const int &nlep_VVV_cutbased_fo_noiso();
+  const int &nlep_VVV_cutbased_tight_noiso();
+  const int &nlep_VVV_cutbased_tight();
+  const int &nlep_VVV_MVAbased_tight_noiso();
+  const int &nlep_VVV_MVAbased_tight();
+  const int &nlep_VVV_baseline();
   const vector<int> &lep_pdgId();
+  const vector<int> &lep_mc_Id();
   const vector<float> &lep_dxy();
   const vector<float> &lep_ip3d();
   const vector<float> &lep_ip3derr();
@@ -1373,6 +1460,7 @@ void LoadAllBranches();
   const vector<float> &lep_glb_x2ondof();
   const int &nisoTrack_5gev();
   const int &nisoTrack_mt2();
+  const int &nisoTrack_stop();
   const int &nisoTrack_PFLep5_woverlaps();
   const int &nisoTrack_PFHad10_woverlaps();
   const int &ngamma();
@@ -1734,12 +1822,12 @@ namespace tas {
   const vector<float> &lep_mass();
   const vector<int> &lep_charge();
   const vector<bool> &lep_3ch_agree();
-  const vector<int> &lep_isFromW();
-  const vector<int> &lep_isFromZ();
-  const vector<int> &lep_isFromB();
-  const vector<int> &lep_isFromC();
-  const vector<int> &lep_isFromL();
-  const vector<int> &lep_isFromLF();
+  const vector<bool> &lep_isFromW();
+  const vector<bool> &lep_isFromZ();
+  const vector<bool> &lep_isFromB();
+  const vector<bool> &lep_isFromC();
+  const vector<bool> &lep_isFromL();
+  const vector<bool> &lep_isFromLF();
   const vector<double> &lep_ptRatio();
   const vector<double> &lep_ptRel();
   const vector<double> &lep_relIso03();
@@ -1752,7 +1840,28 @@ namespace tas {
   const vector<double> &lep_miniRelIsoCMS3_EA();
   const vector<double> &lep_miniRelIsoCMS3_EAv2();
   const vector<double> &lep_miniRelIsoCMS3_DB();
+  const vector<bool> &lep_pass_VVV_cutbased_veto();
+  const vector<bool> &lep_pass_VVV_cutbased_veto_noiso();
+  const vector<bool> &lep_pass_VVV_cutbased_veto_noiso_noip();
+  const vector<bool> &lep_pass_VVV_cutbased_fo();
+  const vector<bool> &lep_pass_VVV_cutbased_fo_noiso();
+  const vector<bool> &lep_pass_VVV_cutbased_tight_noiso();
+  const vector<bool> &lep_pass_VVV_cutbased_tight();
+  const vector<bool> &lep_pass_VVV_MVAbased_tight_noiso();
+  const vector<bool> &lep_pass_VVV_MVAbased_tight();
+  const vector<bool> &lep_pass_VVV_baseline();
+  const int &nlep_VVV_cutbased_veto();
+  const int &nlep_VVV_cutbased_veto_noiso();
+  const int &nlep_VVV_cutbased_veto_noiso_noip();
+  const int &nlep_VVV_cutbased_fo();
+  const int &nlep_VVV_cutbased_fo_noiso();
+  const int &nlep_VVV_cutbased_tight_noiso();
+  const int &nlep_VVV_cutbased_tight();
+  const int &nlep_VVV_MVAbased_tight_noiso();
+  const int &nlep_VVV_MVAbased_tight();
+  const int &nlep_VVV_baseline();
   const vector<int> &lep_pdgId();
+  const vector<int> &lep_mc_Id();
   const vector<float> &lep_dxy();
   const vector<float> &lep_ip3d();
   const vector<float> &lep_ip3derr();
@@ -1773,6 +1882,7 @@ namespace tas {
   const vector<float> &lep_glb_x2ondof();
   const int &nisoTrack_5gev();
   const int &nisoTrack_mt2();
+  const int &nisoTrack_stop();
   const int &nisoTrack_PFLep5_woverlaps();
   const int &nisoTrack_PFHad10_woverlaps();
   const int &ngamma();

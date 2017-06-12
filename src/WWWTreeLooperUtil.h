@@ -20,6 +20,11 @@ using namespace Ditto;
 
 int totalcharge();
 int getNumSFOSPairs();
+float get0SFOSMll();
+float get0SFOSMee();
+float get1SFOSMll();
+float get2SFOSMll0();
+float get2SFOSMll1();
 void printEventList(string prefix);
 bool passGenLevelEventFilter();
 bool passGenLevelWHWWW();
@@ -29,5 +34,28 @@ void reweightWWW2lepFilteredSample();
 void selectWtaggedJets();
 void selectWtaggedJetsViaLeadJets();
 void getEventID(std::vector<int>&);
+
+bool isSignalSample();
+int getBabyVersion();
+
+unsigned int getNLepFromX(ObjUtil::Leptons&, unsigned int);
+unsigned int getNLepFromW(ObjUtil::Leptons&);
+unsigned int getNLepFromZ(ObjUtil::Leptons&);
+
+enum BkgType {
+  kTrue,
+  kChFlip,
+  kLostLep,
+  kOneFake,
+  kTwoFake,
+  kOthers
+};
+
+BkgType getBkgTypeSS();
+BkgType getBkgType3L();
+
+void setAnalysisDataSS();
+void setAnalysisData3L();
+ObjUtil::AnalysisData* getAnalysisData(TString prefix);
 
 #endif

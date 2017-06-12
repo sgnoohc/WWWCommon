@@ -19,6 +19,7 @@ void getObjects()
   /// Get objects
   ana_data.lepcol["goodSSlep"] = getLeptons();
   ana_data.lepcol["good3Llep"] = getLeptons();
+  ana_data.lepcol["vetolep"] = getLeptons();
   ana_data.jetcol["goodSSjet"] = getJets();
   ana_data.jetcol["good3Ljet"] = getJets();
   ana_data.jetcol["medbjet"] = getJets();
@@ -36,6 +37,7 @@ void selectObjects()
 {
   Analyses::selectObjs<ObjUtil::Lepton>(ana_data.lepcol["goodSSlep"] , isGoodSSLepton);
   Analyses::selectObjs<ObjUtil::Lepton>(ana_data.lepcol["good3Llep"] , isGood3LLepton);
+  Analyses::selectObjs<ObjUtil::Lepton>(ana_data.lepcol["vetolep"]   , isVetoLepton);
   Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["goodSSjet"] , isGoodSSJet);
   Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["good3Ljet"] , isGood3LJet);
   Analyses::selectObjs<ObjUtil::Jet>   (ana_data.jetcol["medbjet"]   , isGoodWWWMediumBJet);
@@ -62,6 +64,7 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( lepton.relIso03EA < 0.06     )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.tightcharge != 0      )) return false;
+  if (!( lepton.id >= 3               )) return false;
   return true;
 }
 
@@ -73,6 +76,8 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.06     )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( lepton.id >= 3               )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
   return true;
 }
 
@@ -90,6 +95,7 @@ bool isGood3LElectron(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( lepton.id >= 3               )) return false;
   return true;
 }
 
@@ -101,6 +107,8 @@ bool isGood3LMuon(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.p4.Eta()) < 2.4  )) return false;
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
+  if (!( lepton.id >= 3               )) return false;
+  if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
   return true;
 }
 
@@ -113,16 +121,20 @@ bool isVetoLepton(ObjUtil::Lepton& lepton)
 //______________________________________________________________________________________
 bool isVetoElectron(ObjUtil::Lepton& lepton)
 {
-  if (!( lepton.p4.Pt() > 10.        )) return false;
+  if (!( lepton.p4.Pt() > 5.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
+  if (!( lepton.relIso03EA < 0.4     )) return false;
+  if (!( lepton.id == 1              )) return false;
   return true;
 }
 
 //______________________________________________________________________________________
 bool isVetoMuon(ObjUtil::Lepton& lepton)
 {
-  if (!( lepton.p4.Pt() > 10.        )) return false;
+  if (!( lepton.p4.Pt() > 5.         )) return false;
   if (!( fabs(lepton.p4.Eta()) < 2.4 )) return false;
+  if (!( lepton.relIso03EA < 0.4     )) return false;
+  if (!( lepton.id == 1              )) return false;
   return true;
 }
 

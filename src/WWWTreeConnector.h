@@ -8,6 +8,7 @@
 
 #include "Ditto.h"
 #include "WWWTree.h"
+#include "WWWTreeLooperUtil.h"
 
 using namespace Ditto;
 

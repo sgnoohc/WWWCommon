@@ -14,34 +14,43 @@
 //=====================================================================================
 
 //______________________________________________________________________________________
-void fillHistograms(string prefix)
+void fillHistograms(TString prefix, ObjUtil::AnalysisData* a)
 {
-  if (prefix == "SSmm") HistUtil::fillCounter("SR", ana_data, 0);
-  if (prefix == "SSem") HistUtil::fillCounter("SR", ana_data, 1);
-  if (prefix == "SSee") HistUtil::fillCounter("SR", ana_data, 2);
-  HistUtil::fillMET(prefix, ana_data);
-  HistUtil::fillLeps(prefix, ana_data);
-  HistUtil::fillJets(prefix, ana_data);
-  HistUtil::fillDiLepChan(prefix, ana_data);
-  HistUtil::fillDiLepVars(prefix, ana_data, 0, 1);
-  HistUtil::fillDiJetVars(prefix, ana_data, 0, 1);
+  // If looping over an older version things simplify
+  if (getBabyVersion() == 5)
+  {
+    fillHistogramsStandard(prefix, &ana_data);
+    return;
+  }
 
-//	  HistUtil::fillLepMTs(prefix, ana_data);
-//	  HistUtil::fillMjj(prefix, ana_data);
-//	  HistUtil::fillLepSumPt(prefix, ana_data);
-//	  HistUtil::fillLepMljs(prefix, ana_data);
-//	  HistUtil::fillLepDPhiljs(prefix, ana_data);
-//	  HistUtil::fillMjjWithMaxDEtajj(prefix, ana_data);
-//	  HistUtil::fillLepMlvjs(prefix, ana_data);
-//	  HistUtil::fillLepRelIso03EA(prefix, ana_data);
-//	  HistUtil::fillLepAbsIso03EA(prefix, ana_data);
-//	  HistUtil::fillLepRelIso04EA(prefix, ana_data);
-//	  HistUtil::fillLepAbsIso04EA(prefix, ana_data);
-//	  HistUtil::fillLepIP(prefix, ana_data);
-//	  HistUtil::fillLepTightCharge(prefix, ana_data);
-//	  HistUtil::fillLepNeutrinoNSol(prefix, ana_data);
-//	  fillLepWPair(prefix);
-//	  fillHiggsMassVariables(prefix);
+  // If the default method set the data to the default one ana_data
+  if (a == 0)
+    a = getAnalysisData(prefix);
+
+  (*a).leptons = ana_data.leptons;
+  (*a).jets    = ana_data.jets;
+  (*a).met     = ana_data.met;
+  (*a).wgt     = ana_data.wgt;
+
+  fillHistogramsStandard(prefix, a);
+}
+
+//______________________________________________________________________________________
+void fillHistogramsStandard(TString prefix, ObjUtil::AnalysisData* a)
+{
+  printEventList(prefix.Data());
+  if (prefix.Contains("SSmm")) HistUtil::fillCounter("SR", *a, 0);
+  if (prefix.Contains("SSem")) HistUtil::fillCounter("SR", *a, 1);
+  if (prefix.Contains("SSee")) HistUtil::fillCounter("SR", *a, 2);
+  if (prefix.Contains("0SFOS")) HistUtil::fillCounter("SR", *a, 3);
+  if (prefix.Contains("1SFOS")) HistUtil::fillCounter("SR", *a, 4);
+  if (prefix.Contains("2SFOS")) HistUtil::fillCounter("SR", *a, 5);
+  HistUtil::fillMET(prefix.Data(), *a);
+  HistUtil::fillLeps(prefix.Data(), *a);
+  HistUtil::fillJets(prefix.Data(), *a);
+  HistUtil::fillDiLepChan(prefix.Data(), *a);
+  HistUtil::fillDiLepVars(prefix.Data(), *a, 0, 1);
+  HistUtil::fillDiJetVars(prefix.Data(), *a, 0, 1);
 }
 
 //	//______________________________________________________________________________________

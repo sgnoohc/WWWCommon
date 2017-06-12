@@ -54,10 +54,9 @@ bool passSMWWWSSemAnalysis();
 bool passSMWWWSSeeAnalysis();
 
 // 3L selections
-bool passSMWWW3Lcommonselection(string prefix, int pdgidprod, int& counter);
-bool doSMWWW3L0SFOSAnalysis();
-bool doSMWWW3L1SFOSAnalysis();
-bool doSMWWW3L2SFOSAnalysis();
+bool passSMWWW3L0SFOSAnalysis();
+bool passSMWWW3L1SFOSAnalysis();
+bool passSMWWW3L2SFOSAnalysis();
 
 #endif
 //eof
