@@ -49,6 +49,11 @@ CutUtil::Cuts threelep0_cuts;
 CutUtil::Cuts threelep1_cuts;
 CutUtil::Cuts threelep2_cuts;
 
+CutUtil::Cuts sswzcr_common_cuts;
+CutUtil::Cuts sswzcrmm_cuts;
+CutUtil::Cuts sswzcrem_cuts;
+CutUtil::Cuts sswzcree_cuts;
+
 
 using namespace std::placeholders;
 
@@ -57,6 +62,7 @@ void loadEventSelections()
 {
   loadSSSelections();
   load3LSelections();
+  loadSSWZCRSelections();
 }
 
 //______________________________________________________________________________________
@@ -100,8 +106,15 @@ void loadSSmmSelections()
 void loadSSemSelections()
 {
   ssem_cuts.push_back(std::bind(SS_FlavorChan, 143, _1));
-//	  ssem_cuts.push_back(std::bind(SS_MllCut, 30, _1));
-  ssem_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  if (getBabyVersion() == 5)
+  {
+    ssem_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  }
+  else
+  {
+    ssem_cuts.push_back(std::bind(SS_MllCut, 30, _1));
+    ssem_cuts.push_back(SS_MTmaxCut);
+  }
   ssem_cuts.push_back(std::bind(SS_METCut, 40, _1));
   ssem_cuts.insert(ssem_cuts.end(), ss_common_cuts.begin(), ss_common_cuts.end());
 }
@@ -191,7 +204,8 @@ void SS_ThirdLepVeto(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
   if (getBabyVersion() >= 6)
-    cutdata.val = mytree.nlep_VVV_cutbased_tight_noiso();
+//	    cutdata.val = mytree.nlep_VVV_cutbased_tight();
+    cutdata.val = ana_data.lepcol["vetolep"].size();
   else
     cutdata.val = mytree.nlep();
   cutdata.pass = (cutdata.val == 2);
@@ -267,20 +281,6 @@ void SS_BVeto(CutUtil::CutData& cutdata)
 }
 
 //______________________________________________________________________________________
-void SS_MjjCut(float cutval, CutUtil::CutData& cutdata)
-{
-  cutdata.cutname = __FUNCTION__;
-  cutdata.val =
-    ana_data.jetcol["goodSSlep"].size() >= 2 ?
-    VarUtil::Mass(ana_data.jetcol["goodSSlep"][0],
-        ana_data.jetcol["goodSSlep"][1])
-    :
-    -999;
-  cutdata.pass = (cutdata.val > cutval);
-  getEventID(cutdata.eventid);
-}
-
-//______________________________________________________________________________________
 void SS_MllCut(float cutval, CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
@@ -318,6 +318,19 @@ void SS_ZVeto(CutUtil::CutData& cutdata)
 }
 
 //______________________________________________________________________________________
+void SS_MTmaxCut(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val =
+    ana_data.lepcol["goodSSlep"].size() >= 2 ?
+    getMTmax()
+    :
+    -999;
+  cutdata.pass = (cutdata.val > 90.);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
 void load3LSelections()
 {
   load3LCommonSelections();
@@ -334,7 +347,8 @@ void load3LCommonSelections()
   threelep_common_cuts.push_back(ThreeLep_NLepEqThreeCut);
   threelep_common_cuts.push_back(ThreeLep_TotalChargeCut);
   threelep_common_cuts.push_back(ThreeLep_NJetCut);
-//	  threelep_common_cuts.push_back(ThreeLep_PtlllCut);
+//	  if (getBabyVersion() >= 6)
+    threelep_common_cuts.push_back(ThreeLep_PtlllCut);
   threelep_common_cuts.push_back(ThreeLep_BVeto);
   threelep_common_cuts.push_back(ThreeLep_FourthLepVeto);
 //	  threelep_common_cuts.push_back(ThreeLep_IsoTrackVeto);
@@ -346,8 +360,10 @@ void load3L0SFOSSelections()
   threelep0_cuts.push_back(std::bind(ThreeLep_NSFOSPairCut, 0, _1));
   threelep0_cuts.push_back(ThreeLep_0SFOS_MllSFCut);
   threelep0_cuts.push_back(ThreeLep_0SFOS_MeeZVetoCut);
-//	  threelep0_cuts.push_back(std::bind(ThreeLep_DPhilllCut, 2.7, _1));
-  threelep0_cuts.push_back(std::bind(ThreeLep_DPhilllCut, 2.5, _1));
+//	  if (getBabyVersion() == 5)
+//	    threelep0_cuts.push_back(std::bind(ThreeLep_DPhilllCut, 2.5, _1));
+//	  if (getBabyVersion() >= 6)
+    threelep0_cuts.push_back(std::bind(ThreeLep_DPhilllCut, 2.7, _1));
   threelep0_cuts.insert(threelep0_cuts.end(), threelep_common_cuts.begin(), threelep_common_cuts.end());
 }
 
@@ -459,7 +475,8 @@ void ThreeLep_FourthLepVeto(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
   if (getBabyVersion() >= 6)
-    cutdata.val = mytree.nlep_VVV_cutbased_tight_noiso();
+//	    cutdata.val = mytree.nlep_VVV_cutbased_tight();
+    cutdata.val = ana_data.lepcol["vetolep"].size();
   else
     cutdata.val = mytree.nlep();
   cutdata.pass = (cutdata.val == 3);
@@ -531,6 +548,90 @@ void ThreeLep_2SFOS_Mll1SFOSCut(CutUtil::CutData& cutdata)
   cutdata.pass = (fabs(cutdata.val - MZ) > 20.);
   getEventID(cutdata.eventid);
 }
+
+//______________________________________________________________________________________
+void loadSSWZCRSelections()
+{
+  loadSSWZCRCommonSelections();
+  loadSSWZCReeSelections();
+  loadSSWZCRemSelections();
+  loadSSWZCRmmSelections();
+}
+
+//______________________________________________________________________________________
+void loadSSWZCRCommonSelections()
+{
+
+  // Fill the common cuts
+  sswzcr_common_cuts.clear();
+  sswzcr_common_cuts.push_back(SSWZCR_NLepEqThreeCut);
+  sswzcr_common_cuts.push_back(SSWZCR_AtLeastOneMZSFOS);
+  sswzcr_common_cuts.push_back(SS_Lep0PtCut);
+  sswzcr_common_cuts.push_back(SS_Lep1PtCut);
+  sswzcr_common_cuts.push_back(SS_NJetCut);
+  sswzcr_common_cuts.push_back(SS_Jet0PtCut);
+//	  sswzcr_common_cuts.push_back(SS_ThirdLepVeto);
+//	  sswzcr_common_cuts.push_back(SS_IsoTrackVeto);
+//	  sswzcr_common_cuts.push_back(SS_WmasswzcrCut);
+  sswzcr_common_cuts.push_back(SS_MjjCut);
+  sswzcr_common_cuts.push_back(SS_DEtajjCut);
+  sswzcr_common_cuts.push_back(SS_BVeto);
+
+}
+
+//______________________________________________________________________________________
+void loadSSWZCRmmSelections()
+{
+  sswzcrmm_cuts.push_back(std::bind(SS_FlavorChan, 169, _1));
+  sswzcrmm_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  sswzcrmm_cuts.insert(sswzcrmm_cuts.end(), sswzcr_common_cuts.begin(), sswzcr_common_cuts.end());
+}
+
+//______________________________________________________________________________________
+void loadSSWZCRemSelections()
+{
+  sswzcrem_cuts.push_back(std::bind(SS_FlavorChan, 143, _1));
+  if (getBabyVersion() == 5)
+  {
+    sswzcrem_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  }
+  else
+  {
+    sswzcrem_cuts.push_back(std::bind(SS_MllCut, 30, _1));
+    sswzcrem_cuts.push_back(SS_MTmaxCut);
+  }
+  sswzcrem_cuts.push_back(std::bind(SS_METCut, 40, _1));
+  sswzcrem_cuts.insert(sswzcrem_cuts.end(), sswzcr_common_cuts.begin(), sswzcr_common_cuts.end());
+}
+
+//______________________________________________________________________________________
+void loadSSWZCReeSelections()
+{
+  sswzcree_cuts.push_back(std::bind(SS_FlavorChan, 121, _1));
+  sswzcree_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  sswzcree_cuts.push_back(std::bind(SS_METCut, 40, _1));
+  sswzcree_cuts.push_back(SS_ZVeto);
+  sswzcree_cuts.insert(sswzcree_cuts.end(), sswzcr_common_cuts.begin(), sswzcr_common_cuts.end());
+}
+
+//______________________________________________________________________________________
+void SSWZCR_NLepEqThreeCut(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val = ana_data.lepcol["goodSSlep"].size();
+  cutdata.pass = (cutdata.val == 3);
+  getEventID(cutdata.eventid);
+}
+
+//______________________________________________________________________________________
+void SSWZCR_AtLeastOneMZSFOS(CutUtil::CutData& cutdata)
+{
+  cutdata.cutname = __FUNCTION__;
+  cutdata.val = getSSWZCRSFOSMll();
+  cutdata.pass = (fabs(cutdata.val - MZ) < 10.);
+  getEventID(cutdata.eventid);
+}
+
 
 
 //	{

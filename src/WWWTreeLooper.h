@@ -58,5 +58,11 @@ bool passSMWWW3L0SFOSAnalysis();
 bool passSMWWW3L1SFOSAnalysis();
 bool passSMWWW3L2SFOSAnalysis();
 
+// SSWZCR selections (really a three lepton region with 2 jets)
+bool passSMWWWSSWZCRmmAnalysis();
+bool passSMWWWSSWZCRemAnalysis();
+bool passSMWWWSSWZCReeAnalysis();
+
+
 #endif
 //eof

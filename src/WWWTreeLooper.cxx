@@ -118,7 +118,8 @@ void afterLoop()
   {
     if (isSignalSample())
     {
-      PlotUtil::savePlots(ana_data_SS_true.hist_db  , (LoopUtil::output_name + "_hist.root").Data());
+      PlotUtil::savePlots(ana_data_SS_true.hist_db  , (LoopUtil::output_name + "_SS_hist.root").Data());
+      PlotUtil::savePlots(ana_data_3L_true.hist_db  , (LoopUtil::output_name + "_3L_hist.root").Data());
     }
     else
     {
@@ -168,6 +169,10 @@ void runSignalRegions()
   if (passSMWWWSSemAnalysis()) fillHistograms("SSem");
   if (passSMWWWSSeeAnalysis()) fillHistograms("SSee");
 
+  if (passSMWWWSSWZCRmmAnalysis()) { fillHistograms("SSWZCRmm"); fillHistograms("SSWZCR"); }
+  if (passSMWWWSSWZCRemAnalysis()) { fillHistograms("SSWZCRem"); fillHistograms("SSWZCR"); }
+  if (passSMWWWSSWZCReeAnalysis()) { fillHistograms("SSWZCRee"); fillHistograms("SSWZCR"); }
+
   ana_data.leptons = ana_data.lepcol["good3Llep"];
   ana_data.jets    = ana_data.jetcol["good3Ljet"];
   if (passSMWWW3L0SFOSAnalysis()) fillHistograms("ThreeLep0SFOS");
@@ -198,6 +203,10 @@ bool passSMWWWSSeeAnalysis()
   return CutUtil::pass(ssee_cuts, "SSee", (*getAnalysisData("SSee")));
 }
 
+//`````````````````````````````````````````````````````````````````````````````````````
+// tri-lepton region
+//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
 //______________________________________________________________________________________
 bool passSMWWW3L0SFOSAnalysis()
 {
@@ -214,6 +223,28 @@ bool passSMWWW3L1SFOSAnalysis()
 bool passSMWWW3L2SFOSAnalysis()
 {
   return CutUtil::pass(threelep2_cuts, "ThreeLep2SFOS", (*getAnalysisData("ThreeLep2SFOS")));
+}
+
+//`````````````````````````````````````````````````````````````````````````````````````
+// SS WZ CR region (really a three lepton region with 2 jets)
+//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+//______________________________________________________________________________________
+bool passSMWWWSSWZCRmmAnalysis()
+{
+  return CutUtil::pass(sswzcrmm_cuts, "SSWZCRmm", (*getAnalysisData("SSWZCRmm")));
+}
+
+//______________________________________________________________________________________
+bool passSMWWWSSWZCRemAnalysis()
+{
+  return CutUtil::pass(sswzcrem_cuts, "SSWZCRem", (*getAnalysisData("SSWZCRem")));
+}
+
+//______________________________________________________________________________________
+bool passSMWWWSSWZCReeAnalysis()
+{
+  return CutUtil::pass(sswzcree_cuts, "SSWZCRee", (*getAnalysisData("SSWZCRee")));
 }
 
 

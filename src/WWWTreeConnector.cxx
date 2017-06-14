@@ -44,7 +44,7 @@ ObjUtil::Leptons getLeptons(/*WWWTree& mytree*/)
     if (getBabyVersion() >= 6)
     {
       // Lepton ID
-      if (mytree.lep_pass_VVV_cutbased_tight_noiso().at(ilep))
+      if (mytree.lep_pass_VVV_cutbased_tight().at(ilep))
         lepton.id                = 3;
       else if (mytree.lep_pass_VVV_cutbased_fo_noiso().at(ilep))
         lepton.id                = 2;

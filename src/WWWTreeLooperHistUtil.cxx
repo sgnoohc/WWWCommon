@@ -45,12 +45,31 @@ void fillHistogramsStandard(TString prefix, ObjUtil::AnalysisData* a)
   if (prefix.Contains("0SFOS")) HistUtil::fillCounter("SR", *a, 3);
   if (prefix.Contains("1SFOS")) HistUtil::fillCounter("SR", *a, 4);
   if (prefix.Contains("2SFOS")) HistUtil::fillCounter("SR", *a, 5);
+  if (prefix.Contains("SSWZCRmm")) { HistUtil::fillCounter("SR", *a, 6); HistUtil::fillCounter("SR", *a, 9); }
+  if (prefix.Contains("SSWZCRem")) { HistUtil::fillCounter("SR", *a, 7); HistUtil::fillCounter("SR", *a, 9); }
+  if (prefix.Contains("SSWZCRee")) { HistUtil::fillCounter("SR", *a, 8); HistUtil::fillCounter("SR", *a, 9); }
+//	  if (prefix.Contains("SSWZCR")) HistUtil::fillCounter("SR", *a, 9);
   HistUtil::fillMET(prefix.Data(), *a);
   HistUtil::fillLeps(prefix.Data(), *a);
   HistUtil::fillJets(prefix.Data(), *a);
   HistUtil::fillDiLepChan(prefix.Data(), *a);
   HistUtil::fillDiLepVars(prefix.Data(), *a, 0, 1);
   HistUtil::fillDiJetVars(prefix.Data(), *a, 0, 1);
+  if (ana_data.jetcol["goodSSjet"].size() >= 2)
+  {
+    selectWtaggedJets();
+    PlotUtil::plot1D("wmassmjj",
+        (ana_data.jetcol["WbosonSSjet"][0].p4 +
+         ana_data.jetcol["WbosonSSjet"][1].p4).M(),
+        (*a).wgt, (*a).hist_db , "", 180, 0., 180., prefix.Data());
+  }
+  HistUtil::fillLepMTs(prefix.Data(), *a);
+  if (prefix.Contains("SFOS"))
+    PlotUtil::plot1D("ptlll",
+        (ana_data.lepcol["good3Llep"][0].p4 +
+         ana_data.lepcol["good3Llep"][1].p4 +
+         ana_data.lepcol["good3Llep"][2].p4).Pt(),
+        (*a).wgt, (*a).hist_db , "ptlll", 180, 0., 180., prefix.Data());
 }
 
 //	//______________________________________________________________________________________

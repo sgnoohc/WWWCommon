@@ -23,6 +23,11 @@ extern CutUtil::Cuts threelep0_cuts;
 extern CutUtil::Cuts threelep1_cuts;
 extern CutUtil::Cuts threelep2_cuts;
 
+extern CutUtil::Cuts sswzcr_common_cuts;
+extern CutUtil::Cuts sswzcree_cuts;
+extern CutUtil::Cuts sswzcrem_cuts;
+extern CutUtil::Cuts sswzcrmm_cuts;
+
 void loadEventSelections();
 void loadSSSelections();
 void loadSSCommonSelections();
@@ -45,6 +50,7 @@ void SS_BVeto(CutUtil::CutData&);
 void SS_MllCut(float, CutUtil::CutData&);
 void SS_METCut(float, CutUtil::CutData&);
 void SS_ZVeto(CutUtil::CutData&);
+void SS_MTmaxCut(CutUtil::CutData&);
 
 void load3LSelections();
 void load3LCommonSelections();
@@ -67,5 +73,13 @@ void ThreeLep_0SFOS_MeeZVetoCut(CutUtil::CutData&);
 void ThreeLep_1SFOS_MllSFOSCut(CutUtil::CutData&);
 void ThreeLep_2SFOS_Mll0SFOSCut(CutUtil::CutData&);
 void ThreeLep_2SFOS_Mll1SFOSCut(CutUtil::CutData&);
+
+void loadSSWZCRSelections();
+void loadSSWZCRCommonSelections();
+void loadSSWZCRmmSelections();
+void loadSSWZCRemSelections();
+void loadSSWZCReeSelections();
+void SSWZCR_NLepEqThreeCut(CutUtil::CutData&);
+void SSWZCR_AtLeastOneMZSFOS(CutUtil::CutData&);
 
 #endif

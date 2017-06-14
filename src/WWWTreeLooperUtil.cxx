@@ -139,6 +139,42 @@ float get2SFOSMll1()
 }
 
 //______________________________________________________________________________________
+float getSSWZCRSFOSMll()
+{
+  // the "no good" value is MZ=90, since we want to Z-veto.
+  if (ana_data.lepcol["goodSSlep"].size() != 3)
+    return -999;
+
+  if (ana_data.lepcol["goodSSlep"].size() != 3)
+    return -999;
+  /*Loops through pairs of entries in the lep_pdgId vector and counts how many have opposite value*/
+  float MllClosestToZ = -999;
+  for (int i = 0; i < (int) ana_data.lepcol["goodSSlep"].size(); i++){
+    for (int j = i+1; j < (int) ana_data.lepcol["goodSSlep"].size(); j++){
+      if (ana_data.lepcol["goodSSlep"][i].pdgId == -(ana_data.lepcol["goodSSlep"][j].pdgId))
+      {
+        float tmpmll = VarUtil::Mass(ana_data.lepcol["goodSSlep"][i], ana_data.lepcol["goodSSlep"][j]);
+        if (fabs(tmpmll-90) < fabs(MllClosestToZ-90))
+          MllClosestToZ = tmpmll;
+      }
+    }
+  }
+  return MllClosestToZ;
+}
+
+//______________________________________________________________________________________
+float getMTmax()
+{
+  if (ana_data.lepcol["goodSSlep"].size() < 2)
+    return -999;
+  float MT0;
+  float MT1;
+  MT0 = VarUtil::MT(ana_data.lepcol["goodSSlep"][0], ana_data.met);
+  MT1 = VarUtil::MT(ana_data.lepcol["goodSSlep"][1], ana_data.met);
+  return MT0 > MT1 ? MT0 : MT1;
+}
+
+//______________________________________________________________________________________
 void printEventList(string prefix)
 {
 //	  std::cout << prefix.c_str() << ": make_tuple(" << mytree.evt() << "," <<  mytree.run() << "," << mytree.lumi() << ")," << std::endl;

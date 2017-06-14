@@ -2,7 +2,7 @@ if [ -z $1 ]; then
   echo "Must provide the output directory where the cutflow histogram exists"
   exit
 fi
-ditto_plot -v SR_  -i $1/haddoutput/ -e '--print_cutflow --print_cutflow_bins 1,2,3,4,5,6' -d cutflows_$1/
+ditto_plot -v SR_  -i $1/haddoutput/ -e '--autostack --print_cutflow --print_cutflow_bins 1,2,3,4,5,6,7,8,9,10' -d cutflows_$1/
 
 cat cutflows_$1/SR_counter.csv
 echo ""

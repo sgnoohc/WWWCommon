@@ -25,6 +25,8 @@ float get0SFOSMee();
 float get1SFOSMll();
 float get2SFOSMll0();
 float get2SFOSMll1();
+float getMTmax();
+float getSSWZCRSFOSMll();
 void printEventList(string prefix);
 bool passGenLevelEventFilter();
 bool passGenLevelWHWWW();

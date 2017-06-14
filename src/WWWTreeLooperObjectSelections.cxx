@@ -77,7 +77,8 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( lepton.relIso03EA < 0.06     )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.id >= 3               )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
+  if (getBabyVersion() == 5)
+    if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
   return true;
 }
 
@@ -108,7 +109,8 @@ bool isGood3LMuon(ObjUtil::Lepton& lepton)
   if (!( lepton.relIso03EA < 0.1      )) return false;
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.id >= 3               )) return false;
-  if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
+  if (getBabyVersion() == 5)
+    if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
   return true;
 }
 
@@ -149,7 +151,10 @@ bool isGoodSSJet(ObjUtil::Jet& jet)
 //______________________________________________________________________________________
 bool isGood3LJet(ObjUtil::Jet& jet)
 {
-  if (!( jet.p4.Pt() > 25.        )) return false;
+  if (getBabyVersion() == 5)
+    if (!( jet.p4.Pt() > 25.        )) return false;
+  if (getBabyVersion() == 6)
+    if (!( jet.p4.Pt() > 25.        )) return false;
   if (!( fabs(jet.p4.Eta()) < 4.5 )) return false;
   return true;
 }
