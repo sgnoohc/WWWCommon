@@ -203,9 +203,11 @@ void SS_Jet0PtCut(CutUtil::CutData& cutdata)
 void SS_ThirdLepVeto(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
-  if (getBabyVersion() >= 6)
+  if (getBabyVersion() == 6)
 //	    cutdata.val = mytree.nlep_VVV_cutbased_tight();
     cutdata.val = ana_data.lepcol["vetolep"].size();
+  else if (getBabyVersion() >= 9)
+    cutdata.val = mytree.nlep_VVV_MVAbased_tight_noiso();
   else
     cutdata.val = mytree.nlep();
   cutdata.pass = (cutdata.val == 2);
@@ -216,8 +218,10 @@ void SS_ThirdLepVeto(CutUtil::CutData& cutdata)
 void SS_IsoTrackVeto(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
-  if (getBabyVersion() >= 6)
+  if (getBabyVersion() == 6)
     cutdata.val = mytree.nisoTrack_PFHad10_woverlaps() + mytree.nisoTrack_PFLep5_woverlaps() - 2;
+  else if (getBabyVersion() == 9)
+    cutdata.val = mytree.nisoTrack_mt2_cleaned_VVV_MVAbased_tight_noiso();
   else
     cutdata.val = mytree.nisoTrack_mt2();
   cutdata.pass = (cutdata.val == 0);

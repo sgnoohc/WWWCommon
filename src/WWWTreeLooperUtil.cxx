@@ -314,6 +314,8 @@ int getBabyVersion()
     return 5;
   if (LoopUtil::last_tfile_name.Contains("v0.1.6"))
     return 6;
+  if (LoopUtil::last_tfile_name.Contains("v0.1.9"))
+    return 9;
   return 0;
 }
 

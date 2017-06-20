@@ -65,6 +65,10 @@ bool isGoodSSElectron(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.tightcharge != 0      )) return false;
   if (!( lepton.id >= 3               )) return false;
+  if (getBabyVersion() == 5)
+    if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
+  if (getBabyVersion() == 9)
+    if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
   return true;
 }
 
@@ -78,6 +82,8 @@ bool isGoodSSMuon(ObjUtil::Lepton& lepton)
   if (!( fabs(lepton.ip3d) < 0.015    )) return false;
   if (!( lepton.id >= 3               )) return false;
   if (getBabyVersion() == 5)
+    if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
+  if (getBabyVersion() == 9)
     if (!( fabs(lepton.p4.Eta()) < 1.4 || fabs(lepton.p4.Eta()) > 1.6  )) return false;
   return true;
 }
