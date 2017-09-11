@@ -1,4 +1,4 @@
-// vim: tabstop=2:softtabstop=2:shiftwidth=2:expandtab
+// vim: tabstop=4:softtabstop=4:shiftwidth=4:expandtab
 
 //  .
 // ..: P. Chang, philip@physics.ucsd.edu
@@ -18,6 +18,14 @@ using namespace Ditto;
 
 void getObjects();
 void selectObjects();
+
+bool isLbntSSLepton(ObjUtil::Lepton& lepton);
+bool isLbntSSElectron(ObjUtil::Lepton& lepton);
+bool isLbntSSMuon(ObjUtil::Lepton& lepton);
+
+bool isLooseSSLepton(ObjUtil::Lepton& lepton);
+bool isLooseSSElectron(ObjUtil::Lepton& lepton);
+bool isLooseSSMuon(ObjUtil::Lepton& lepton);
 
 bool isGoodSSLepton(ObjUtil::Lepton& lepton);
 bool isGoodSSElectron(ObjUtil::Lepton& lepton);

@@ -308,6 +308,15 @@ bool isSignalSample()
 }
 
 //______________________________________________________________________________________
+bool isDataSample()
+{
+  if (LoopUtil::output_name.Contains("Run2016"))
+    return true;
+  else
+    return false;
+}
+
+//______________________________________________________________________________________
 int getBabyVersion()
 {
   if (LoopUtil::last_tfile_name.Contains("v0.1.5"))
@@ -316,6 +325,8 @@ int getBabyVersion()
     return 6;
   if (LoopUtil::last_tfile_name.Contains("v0.1.9"))
     return 9;
+  if (LoopUtil::last_tfile_name.Contains("v0.1.11"))
+    return 11;
   return 0;
 }
 
@@ -345,8 +356,8 @@ BkgType getBkgTypeSS()
 {
 
   // If signal sample don't do any of this stuff
-  if (isSignalSample())
-    return kTrue;
+  if (isSignalSample() || isDataSample())
+    return kTrueBkg;
 
   // Initialize as not belonging to any type
   BkgType sn = kOthers;
@@ -355,16 +366,21 @@ BkgType getBkgTypeSS()
   if (ana_data.lepcol["goodSSlep"].size() >= 2)
   {
     int nW = getNLepFromW(ana_data.lepcol["goodSSlep"]);
-    int nZ = getNLepFromW(ana_data.lepcol["goodSSlep"]);
+    int nZ = getNLepFromZ(ana_data.lepcol["goodSSlep"]);
 
     ObjUtil::Lepton& lep0 = ana_data.lepcol["goodSSlep"][0];
     ObjUtil::Lepton& lep1 = ana_data.lepcol["goodSSlep"][1];
+
+//    std::cout << "nW: " << nW << std::endl;
+//    std::cout << "nZ: " << nZ << std::endl;
+//    std::cout << "mcId0: " << lep0.mc_Id << std::endl;
+//    std::cout << "mcId1: " << lep1.mc_Id << std::endl;
 
     int mc_id_product = lep0.mc_Id * lep1.mc_Id;
 
     // True SS category (e.g. W+W+)
     if (nW == 2 &&  mc_id_product > 0)
-      sn = kTrue;
+      sn = kTrueBkg;
     // W+W(else) charg flip
     else if (nW == 2)
       sn = kChFlip;
@@ -392,8 +408,8 @@ BkgType getBkgType3L()
 {
 
   // If signal sample don't do any of this stuff
-  if (isSignalSample())
-    return kTrue;
+  if (isSignalSample() || isDataSample())
+    return kTrueBkg;
 
   // Initialize with nothing
   BkgType sn2 = kOthers;
@@ -402,7 +418,7 @@ BkgType getBkgType3L()
   if (ana_data.lepcol["good3Llep"].size() >= 3)
   {
     int nW = getNLepFromW(ana_data.lepcol["good3Llep"]);
-    int nZ = getNLepFromW(ana_data.lepcol["good3Llep"]);
+    int nZ = getNLepFromZ(ana_data.lepcol["good3Llep"]);
 
     ObjUtil::Lepton& lep0 = ana_data.lepcol["good3Llep"][0];
     ObjUtil::Lepton& lep1 = ana_data.lepcol["good3Llep"][1];
@@ -415,13 +431,13 @@ BkgType getBkgType3L()
     else if (nW == 3 && (lep0.mc_Id > 0 && lep1.mc_Id > 0 && lep2.mc_Id > 0))
       sn2 = kChFlip;
     else if (nW == 3)
-      sn2 = kTrue;
+      sn2 = kTrueBkg;
     // Lost lepton for ttZ
     else if (nW == 2 && nZ == 1)
       sn2 = kLostLep;
     // Neglect WZZ as LL
     else if (nW == 1 && nZ == 2)
-      sn2 = kTrue;
+      sn2 = kTrueBkg;
     // ZZ
     else if (nZ == 3)
       sn2 = kLostLep;
@@ -441,7 +457,7 @@ void setAnalysisDataSS()
 {
   switch (getBkgTypeSS())
   {
-    case kTrue:    ana_data_SS = &ana_data_SS_true;    return; break;
+    case kTrueBkg: ana_data_SS = &ana_data_SS_true;    return; break;
     case kChFlip:  ana_data_SS = &ana_data_SS_chflip;  return; break;
     case kLostLep: ana_data_SS = &ana_data_SS_lostlep; return; break;
     case kOneFake: ana_data_SS = &ana_data_SS_onefake; return; break;
@@ -456,7 +472,7 @@ void setAnalysisData3L()
 {
   switch (getBkgType3L())
   {
-    case kTrue:    ana_data_3L = &ana_data_3L_true;    return; break;
+    case kTrueBkg: ana_data_3L = &ana_data_3L_true;    return; break;
     case kChFlip:  ana_data_3L = &ana_data_3L_chflip;  return; break;
     case kLostLep: ana_data_3L = &ana_data_3L_lostlep; return; break;
     case kOneFake: ana_data_3L = &ana_data_3L_onefake; return; break;
@@ -485,6 +501,48 @@ ObjUtil::AnalysisData* getAnalysisData(TString prefix)
   else
   {
     return 0;
+  }
+}
+
+//______________________________________________________________________________________
+bool modifyGoodSSLepContainerForApplicationRegion()
+{
+  if ( ana_data.lepcol["lbntSSlep"].size() == 1 &&
+       ana_data.lepcol["goodSSlep"].size() == 1 )
+  {
+    ana_data.lepcol["goodSSlepBackup"] = ana_data.lepcol["goodSSlep"];
+    ana_data.lepcol["goodSSlep"].clear();
+    ana_data.lepcol["goodSSlep"].push_back(ana_data.lepcol["goodSSlep"][0]);
+    ana_data.lepcol["goodSSlep"].push_back(ana_data.lepcol["lbntSSlep"][0]);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+//______________________________________________________________________________________
+void restoreGoodSSLepContainer()
+{
+   ana_data.lepcol["goodSSlep"] = ana_data.lepcol["goodSSlepBackup"];
+}
+
+//______________________________________________________________________________________
+bool modifyGoodSSLepContainerForOLOT()
+{
+  if ( ana_data.lepcol["looseSSlep"].size() == 2 &&
+       ana_data.lepcol["goodSSlep"].size() >= 1 )
+  {
+    ana_data.lepcol["goodSSlepBackup"] = ana_data.lepcol["goodSSlep"];
+    ana_data.lepcol["goodSSlep"].clear();
+    ana_data.lepcol["goodSSlep"].push_back(ana_data.lepcol["looseSSlep"][0]);
+    ana_data.lepcol["goodSSlep"].push_back(ana_data.lepcol["looseSSlep"][1]);
+    return true;
+  }
+  else
+  {
+    return false;
   }
 }
 

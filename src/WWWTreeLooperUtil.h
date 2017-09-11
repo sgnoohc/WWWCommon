@@ -38,6 +38,7 @@ void selectWtaggedJetsViaLeadJets();
 void getEventID(std::vector<int>&);
 
 bool isSignalSample();
+bool isDataSample();
 int getBabyVersion();
 
 unsigned int getNLepFromX(ObjUtil::Leptons&, unsigned int);
@@ -45,7 +46,7 @@ unsigned int getNLepFromW(ObjUtil::Leptons&);
 unsigned int getNLepFromZ(ObjUtil::Leptons&);
 
 enum BkgType {
-  kTrue,
+  kTrueBkg,
   kChFlip,
   kLostLep,
   kOneFake,
@@ -59,5 +60,9 @@ BkgType getBkgType3L();
 void setAnalysisDataSS();
 void setAnalysisData3L();
 ObjUtil::AnalysisData* getAnalysisData(TString prefix);
+
+bool modifyGoodSSLepContainerForApplicationRegion();
+bool modifyGoodSSLepContainerForOLOT();
+void restoreGoodSSLepContainer();
 
 #endif

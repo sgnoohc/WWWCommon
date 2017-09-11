@@ -45,12 +45,15 @@ void fillHistogramsStandard(TString prefix, ObjUtil::AnalysisData* a)
   if (prefix.Contains("0SFOS")) HistUtil::fillCounter("SR", *a, 3);
   if (prefix.Contains("1SFOS")) HistUtil::fillCounter("SR", *a, 4);
   if (prefix.Contains("2SFOS")) HistUtil::fillCounter("SR", *a, 5);
-  if (prefix.Contains("SSWZCRmm")) { HistUtil::fillCounter("SR", *a, 6); HistUtil::fillCounter("SR", *a, 9); }
-  if (prefix.Contains("SSWZCRem")) { HistUtil::fillCounter("SR", *a, 7); HistUtil::fillCounter("SR", *a, 9); }
-  if (prefix.Contains("SSWZCRee")) { HistUtil::fillCounter("SR", *a, 8); HistUtil::fillCounter("SR", *a, 9); }
-//	  if (prefix.Contains("SSWZCR")) HistUtil::fillCounter("SR", *a, 9);
+  if (prefix.Contains("SSARmm")) { HistUtil::fillCounter("SR", *a, 6); }
+  if (prefix.Contains("SSARem")) { HistUtil::fillCounter("SR", *a, 7); }
+  if (prefix.Contains("SSARee")) { HistUtil::fillCounter("SR", *a, 8); }
+  if (prefix.Contains("SSWZCRmm")) { HistUtil::fillCounter("SR", *a, 9); }
+  if (prefix.Contains("SSWZCRem")) { HistUtil::fillCounter("SR", *a,10); }
+  if (prefix.Contains("SSWZCRee")) { HistUtil::fillCounter("SR", *a,11); }
   HistUtil::fillMET(prefix.Data(), *a);
   HistUtil::fillLeps(prefix.Data(), *a);
+  HistUtil::fillFakeLeps(prefix.Data(), *a);
   HistUtil::fillJets(prefix.Data(), *a);
   HistUtil::fillDiLepChan(prefix.Data(), *a);
   HistUtil::fillDiLepVars(prefix.Data(), *a, 0, 1);

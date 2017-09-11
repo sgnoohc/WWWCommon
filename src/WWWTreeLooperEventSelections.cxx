@@ -37,7 +37,7 @@
 
 #include "WWWTreeLooperEventSelections.h"
 
-#define MZ 90.
+#define MZ 91.1876
 
 CutUtil::Cuts ss_common_cuts;
 CutUtil::Cuts ssmm_cuts;
@@ -54,6 +54,11 @@ CutUtil::Cuts sswzcrmm_cuts;
 CutUtil::Cuts sswzcrem_cuts;
 CutUtil::Cuts sswzcree_cuts;
 
+CutUtil::Cuts ssar_common_cuts;
+CutUtil::Cuts ssarmm_cuts;
+CutUtil::Cuts ssarem_cuts;
+CutUtil::Cuts ssaree_cuts;
+
 
 using namespace std::placeholders;
 
@@ -63,6 +68,7 @@ void loadEventSelections()
   loadSSSelections();
   load3LSelections();
   loadSSWZCRSelections();
+  loadSSARSelections();
 }
 
 //______________________________________________________________________________________
@@ -207,7 +213,7 @@ void SS_ThirdLepVeto(CutUtil::CutData& cutdata)
 //	    cutdata.val = mytree.nlep_VVV_cutbased_tight();
     cutdata.val = ana_data.lepcol["vetolep"].size();
   else if (getBabyVersion() >= 9)
-    cutdata.val = mytree.nlep_VVV_MVAbased_tight_noiso();
+    cutdata.val = mytree.nlep_VVV_cutbased_veto();
   else
     cutdata.val = mytree.nlep();
   cutdata.pass = (cutdata.val == 2);
@@ -220,8 +226,8 @@ void SS_IsoTrackVeto(CutUtil::CutData& cutdata)
   cutdata.cutname = __FUNCTION__;
   if (getBabyVersion() == 6)
     cutdata.val = mytree.nisoTrack_PFHad10_woverlaps() + mytree.nisoTrack_PFLep5_woverlaps() - 2;
-  else if (getBabyVersion() == 9)
-    cutdata.val = mytree.nisoTrack_mt2_cleaned_VVV_MVAbased_tight_noiso();
+  else if (getBabyVersion() >= 9)
+    cutdata.val = mytree.nisoTrack_mt2_cleaned_VVV_cutbased_veto();
   else
     cutdata.val = mytree.nisoTrack_mt2();
   cutdata.pass = (cutdata.val == 0);
@@ -245,6 +251,17 @@ void SS_WmassCut(CutUtil::CutData& cutdata)
   }
   cutdata.pass = (cutdata.val < 100. && cutdata.val > 60.);
   getEventID(cutdata.eventid);
+  if (CutUtil::ifEventIdInVerboseCheckList(cutdata.eventid))
+  {
+    std::cout << " good jets" << std::endl;
+    for (auto& jet : ana_data.jetcol["goodSSjet"])
+    {
+      jet.p4.Print();
+    }
+    std::cout << " W boson tagged jets" << std::endl;
+    ana_data.jetcol["WbosonSSjet"][0].p4.Print();
+    ana_data.jetcol["WbosonSSjet"][1].p4.Print();
+  }
 }
 
 //______________________________________________________________________________________
@@ -478,9 +495,11 @@ void ThreeLep_BVeto(CutUtil::CutData& cutdata)
 void ThreeLep_FourthLepVeto(CutUtil::CutData& cutdata)
 {
   cutdata.cutname = __FUNCTION__;
-  if (getBabyVersion() >= 6)
+  if (getBabyVersion() == 6)
 //	    cutdata.val = mytree.nlep_VVV_cutbased_tight();
     cutdata.val = ana_data.lepcol["vetolep"].size();
+  else if (getBabyVersion() >= 9)
+    cutdata.val = mytree.nlep_VVV_cutbased_veto();
   else
     cutdata.val = mytree.nlep();
   cutdata.pass = (cutdata.val == 3);
@@ -493,6 +512,8 @@ void ThreeLep_IsoTrackVeto(CutUtil::CutData& cutdata)
   cutdata.cutname = __FUNCTION__;
   if (getBabyVersion() >= 6)
     cutdata.val = mytree.nisoTrack_PFHad10_woverlaps() + mytree.nisoTrack_PFLep5_woverlaps() - 3;
+  else if (getBabyVersion() >= 9)
+    cutdata.val = mytree.nisoTrack_mt2_cleaned_VVV_cutbased_veto();
   else
     cutdata.val = mytree.nisoTrack_mt2();
   cutdata.pass = (cutdata.val == 0);
@@ -636,108 +657,68 @@ void SSWZCR_AtLeastOneMZSFOS(CutUtil::CutData& cutdata)
   getEventID(cutdata.eventid);
 }
 
+//______________________________________________________________________________________
+void loadSSARSelections()
+{
+  loadSSARCommonSelections();
+  loadSSARemSelections();
+  loadSSARmmSelections();
+  loadSSAReeSelections();
+}
 
+//______________________________________________________________________________________
+void loadSSARCommonSelections()
+{
 
-//	{
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.lepcol["good3Llep"].size() == 3           )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( getNumSFOSPairs() == type                          )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( fabs(VarUtil::DPhi(
-//	                                                           ana_data.lepcol["good3Llep"][0].p4 +
-//	                                                           ana_data.lepcol["good3Llep"][1].p4 +
-//	                                                           ana_data.lepcol["good3Llep"][2].p4,
-//	                                                           ana_data.met.p4)) > 2.5                            )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["good3Ljet"].size() <= 1           )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(prefix, ana_data, counter); if (!( ana_data.jetcol["lssbjet"].size() == 0             )) return failed(__LINE__);
+  // Fill the common cuts
+  ssar_common_cuts.clear();
+  ssar_common_cuts.push_back(SS_NLepEqTwoCut);
+  ssar_common_cuts.push_back(SS_Lep0PtCut);
+  ssar_common_cuts.push_back(SS_Lep1PtCut);
+  ssar_common_cuts.push_back(SS_NJetCut);
+  ssar_common_cuts.push_back(SS_Jet0PtCut);
+  ssar_common_cuts.push_back(SS_ThirdLepVeto);
+  ssar_common_cuts.push_back(SS_IsoTrackVeto);
+  ssar_common_cuts.push_back(SS_WmassCut);
+  ssar_common_cuts.push_back(SS_MjjCut);
+  ssar_common_cuts.push_back(SS_DEtajjCut);
+  ssar_common_cuts.push_back(SS_BVeto);
 
-//	//______________________________________________________________________________________
-//	bool doSMWWW3L0SFOSAnalysis()
-//	{
-//	  /// Cutflow
-//	  int counter = 0;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 0, counter) )) return failed(__LINE__);
-//	
-//	  ObjUtil::Lepton lep0 = ana_data.lepcol["good3Llep"][0];
-//	  ObjUtil::Lepton lep1 = ana_data.lepcol["good3Llep"][1];
-//	  ObjUtil::Lepton lep2 = ana_data.lepcol["good3Llep"][2];
-//	
-//	  float Mll = 0;
-//	  if (abs(lep1.pdgId) == 11) Mll = VarUtil::Mass(lep1, lep2);
-//	  if (abs(lep1.pdgId) == 13) Mll = VarUtil::Mass(lep0, lep1);
-//	
-//	  float Mee = 0;
-//	  if (abs(lep1.pdgId) == 11) Mee = Mll;
-//	
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( Mll > 20.            )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mee - MZ) > 15. )) return failed(__LINE__);
-//	
-//	  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 3);
-//	  /// Select object containers for plotting
-//	  fillHistograms(__FUNCTION__);
-//	  fillHistogramsTruthMatchingLeptons3L(__FUNCTION__);
-//	  printEventList("3L0SFOS");
-//	  return true;
-//	}
-//	
-//	//______________________________________________________________________________________
-//	bool doSMWWW3L1SFOSAnalysis()
-//	{
-//	  /// Cutflow
-//	  int counter = 0;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 1, counter) )) return failed(__LINE__);
-//	
-//	  ObjUtil::Lepton lep0 = ana_data.lepcol["good3Llep"][0];
-//	  ObjUtil::Lepton lep1 = ana_data.lepcol["good3Llep"][1];
-//	  ObjUtil::Lepton lep2 = ana_data.lepcol["good3Llep"][2];
-//	
-//	  float Mll = 0;
-//	  if (abs(lep1.pdgId) == 11) Mll = VarUtil::Mass(lep1, lep2);
-//	  if (abs(lep1.pdgId) == 13) Mll = VarUtil::Mass(lep0, lep1);
-//	
-//	  std::cout << __LINE__ << " " << Mll << std::endl;
-//	
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( (MZ - Mll > 35.) || (Mll - MZ > 20.) )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 45.           )) return failed(__LINE__);
-//	
-//	  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 4);
-//	  /// Select object containers for plotting
-//	  fillHistograms(__FUNCTION__);
-//	  printEventList("3L1SFOS");
-//	  return true;
-//	}
-//	
-//	//______________________________________________________________________________________
-//	bool doSMWWW3L2SFOSAnalysis()
-//	{
-//	  /// Cutflow
-//	  int counter = 0;
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( passSMWWW3Lcommonselection(__FUNCTION__, 2, counter) )) return failed(__LINE__);
-//	
-//	  std::sort(ana_data.lepcol["good3Llep"].begin(), ana_data.lepcol["good3Llep"].end(), comparator_pdgId<ObjUtil::Lepton>);
-//	
-//	  ObjUtil::Lepton lep0 = ana_data.lepcol["good3Llep"][0];
-//	  ObjUtil::Lepton lep1 = ana_data.lepcol["good3Llep"][1];
-//	  ObjUtil::Lepton lep2 = ana_data.lepcol["good3Llep"][2];
-//	
-//	  float Mll0 = 0;
-//	  float Mll1 = 0;
-//	  if (lep1.pdgId > 0)
-//	  {
-//	    Mll0 = VarUtil::Mass(lep2, lep0);
-//	    Mll1 = VarUtil::Mass(lep2, lep1);
-//	  }
-//	  else
-//	  {
-//	    Mll0 = VarUtil::Mass(lep0, lep1);
-//	    Mll1 = VarUtil::Mass(lep0, lep2);
-//	  }
-//	
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll0 - MZ) > 20.      )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( fabs(Mll1 - MZ) > 20.      )) return failed(__LINE__);
-//	  HistUtil::fillCutflow(__FUNCTION__, ana_data, counter); if (!( ana_data.met.p4.Pt() > 55. )) return failed(__LINE__);
-//	
-//	  HistUtil::fillCounter("SMWWWAnalysis_SR_counts", ana_data, 5);
-//	  /// Select object containers for plotting
-//	  fillHistograms(__FUNCTION__);
-//	  printEventList("3L2SFOS");
-//	  return true;
-//	}
+}
+
+//______________________________________________________________________________________
+void loadSSARmmSelections()
+{
+  ssarmm_cuts.push_back(std::bind(SS_FlavorChan, 169, _1));
+  ssarmm_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  ssarmm_cuts.insert(ssarmm_cuts.end(), ssar_common_cuts.begin(), ssar_common_cuts.end());
+}
+
+//______________________________________________________________________________________
+void loadSSARemSelections()
+{
+  ssarem_cuts.push_back(std::bind(SS_FlavorChan, 143, _1));
+  if (getBabyVersion() == 5)
+  {
+    ssarem_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  }
+  else
+  {
+    ssarem_cuts.push_back(std::bind(SS_MllCut, 30, _1));
+    ssarem_cuts.push_back(SS_MTmaxCut);
+  }
+  ssarem_cuts.push_back(std::bind(SS_METCut, 40, _1));
+  ssarem_cuts.insert(ssarem_cuts.end(), ssar_common_cuts.begin(), ssar_common_cuts.end());
+}
+
+//______________________________________________________________________________________
+void loadSSAReeSelections()
+{
+  ssaree_cuts.push_back(std::bind(SS_FlavorChan, 121, _1));
+  ssaree_cuts.push_back(std::bind(SS_MllCut, 40, _1));
+  ssaree_cuts.push_back(std::bind(SS_METCut, 40, _1));
+  ssaree_cuts.push_back(SS_ZVeto);
+  ssaree_cuts.insert(ssaree_cuts.end(), ssar_common_cuts.begin(), ssar_common_cuts.end());
+}
+
+// eof

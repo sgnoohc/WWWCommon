@@ -63,6 +63,10 @@ bool passSMWWWSSWZCRmmAnalysis();
 bool passSMWWWSSWZCRemAnalysis();
 bool passSMWWWSSWZCReeAnalysis();
 
+// SSAR selections
+bool passSMWWWSSARmmAnalysis();
+bool passSMWWWSSARemAnalysis();
+bool passSMWWWSSAReeAnalysis();
 
 #endif
 //eof

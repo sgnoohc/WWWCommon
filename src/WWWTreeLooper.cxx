@@ -113,10 +113,13 @@ void processWWWTreeEvent()
 //______________________________________________________________________________________
 void afterLoop()
 {
+
+    PrintUtil::print( TString::Format( "baby version I am working with is %d",getBabyVersion()) );
+
     // Save histograms
     if ( getBabyVersion() >= 6 )
     {
-        if ( isSignalSample() )
+        if ( isSignalSample() || isDataSample() )
         {
             PlotUtil::savePlots( ana_data_SS_true.hist_db, ( LoopUtil::output_name + "_SS_hist.root" ).Data() );
             PlotUtil::savePlots( ana_data_3L_true.hist_db, ( LoopUtil::output_name + "_3L_hist.root" ).Data() );
@@ -170,15 +173,29 @@ void runSignalRegions()
     if ( passSMWWWSSemAnalysis() ) fillHistograms( "SSem" );
     if ( passSMWWWSSeeAnalysis() ) fillHistograms( "SSee" );
 
-    if ( passSMWWWSSWZCRmmAnalysis() ) { fillHistograms( "SSWZCRmm" ); fillHistograms( "SSWZCR" ); }
-    if ( passSMWWWSSWZCRemAnalysis() ) { fillHistograms( "SSWZCRem" ); fillHistograms( "SSWZCR" ); }
-    if ( passSMWWWSSWZCReeAnalysis() ) { fillHistograms( "SSWZCRee" ); fillHistograms( "SSWZCR" ); }
+    // N.B.
+    // The below util function modifies the lepton conatiner by hand
+    // to run SS SR the same as SS AR with little extra coding.
+    if ( modifyGoodSSLepContainerForOLOT() )
+    {
+        ana_data.leptons = ana_data.lepcol["goodSSlep"];
+        ana_data.jets    = ana_data.jetcol["goodSSjet"];
+        if ( passSMWWWSSARmmAnalysis() ) fillHistograms( "SSARmm" );
+        if ( passSMWWWSSARemAnalysis() ) fillHistograms( "SSARem" );
+        if ( passSMWWWSSAReeAnalysis() ) fillHistograms( "SSARee" );
+        // restore it back to normal
+        restoreGoodSSLepContainer();
+    }
 
-    ana_data.leptons = ana_data.lepcol["good3Llep"];
-    ana_data.jets    = ana_data.jetcol["good3Ljet"];
-    if ( passSMWWW3L0SFOSAnalysis() ) fillHistograms( "ThreeLep0SFOS" );
-    if ( passSMWWW3L1SFOSAnalysis() ) fillHistograms( "ThreeLep1SFOS" );
-    if ( passSMWWW3L2SFOSAnalysis() ) fillHistograms( "ThreeLep2SFOS" );
+//    if ( passSMWWWSSWZCRmmAnalysis() ) { fillHistograms( "SSWZCRmm" ); fillHistograms( "SSWZCR" ); }
+//    if ( passSMWWWSSWZCRemAnalysis() ) { fillHistograms( "SSWZCRem" ); fillHistograms( "SSWZCR" ); }
+//    if ( passSMWWWSSWZCReeAnalysis() ) { fillHistograms( "SSWZCRee" ); fillHistograms( "SSWZCR" ); }
+//
+//    ana_data.leptons = ana_data.lepcol["good3Llep"];
+//    ana_data.jets    = ana_data.jetcol["good3Ljet"];
+//    if ( passSMWWW3L0SFOSAnalysis() ) fillHistograms( "ThreeLep0SFOS" );
+//    if ( passSMWWW3L1SFOSAnalysis() ) fillHistograms( "ThreeLep1SFOS" );
+//    if ( passSMWWW3L2SFOSAnalysis() ) fillHistograms( "ThreeLep2SFOS" );
 }
 
 
@@ -248,9 +265,27 @@ bool passSMWWWSSWZCReeAnalysis()
     return CutUtil::pass( sswzcree_cuts, "SSWZCRee", ( *getAnalysisData( "SSWZCRee" ) ) );
 }
 
+//`````````````````````````````````````````````````````````````````````````````````````
+// SS AR region (Loose but not Tight region)
+//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
+//______________________________________________________________________________________
+bool passSMWWWSSARmmAnalysis()
+{
+    return CutUtil::pass( ssarmm_cuts, "SSARmm", ( *getAnalysisData( "SSARmm" ) ) );
+}
 
+//______________________________________________________________________________________
+bool passSMWWWSSARemAnalysis()
+{
+    return CutUtil::pass( ssarem_cuts, "SSARem", ( *getAnalysisData( "SSARem" ) ) );
+}
 
+//______________________________________________________________________________________
+bool passSMWWWSSAReeAnalysis()
+{
+    return CutUtil::pass( ssaree_cuts, "SSARee", ( *getAnalysisData( "SSARee" ) ) );
+}
 
 
 

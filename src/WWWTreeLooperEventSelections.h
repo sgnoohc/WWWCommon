@@ -28,6 +28,11 @@ extern CutUtil::Cuts sswzcree_cuts;
 extern CutUtil::Cuts sswzcrem_cuts;
 extern CutUtil::Cuts sswzcrmm_cuts;
 
+extern CutUtil::Cuts ssar_common_cuts;
+extern CutUtil::Cuts ssarmm_cuts;
+extern CutUtil::Cuts ssarem_cuts;
+extern CutUtil::Cuts ssaree_cuts;
+
 void loadEventSelections();
 void loadSSSelections();
 void loadSSCommonSelections();
@@ -81,5 +86,13 @@ void loadSSWZCRemSelections();
 void loadSSWZCReeSelections();
 void SSWZCR_NLepEqThreeCut(CutUtil::CutData&);
 void SSWZCR_AtLeastOneMZSFOS(CutUtil::CutData&);
+
+void loadSSARSelections();
+void loadSSARCommonSelections();
+void loadSSARmmSelections();
+void loadSSARemSelections();
+void loadSSAReeSelections();
+//void SSWZCR_NLepEqThreeCut(CutUtil::CutData&);
+//void SSWZCR_AtLeastOneMZSFOS(CutUtil::CutData&);
 
 #endif
